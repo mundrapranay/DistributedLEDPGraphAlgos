@@ -49,6 +49,7 @@ go run main.go -config_file ${name_of_new_config_file} --workers ${number of wor
 
 Note that you only need to provide the name of the config file, not the path.
 
+
 **Sample YAML Config File (`experiments/configs/twitter.yaml`):**
 
 ```yaml
@@ -56,7 +57,7 @@ graphs:
   - "twitter"
 graph_sizes:
   - 41652230
-algo_name: kcoreLDP
+algo_name: kcoreLDP 
 num_workers: 81
 eta: 0.9
 epsilon: 0.5
@@ -68,6 +69,8 @@ noise: true
 output_file_tag: "with_noise_gcp"
 graph_loc: "/home/ubuntu/graph-dp-experiments/graphs"
 ```
+
+`For algo_name, we have the following options: ${kcoreLDP, kcoreCDP, triangle_counting}`
 
 ### Reproduce Experimental Results
 

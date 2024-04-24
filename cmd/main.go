@@ -10,8 +10,8 @@ import (
 func main() {
 	var configFile string
 	var workers int
-	flag.StringVar(&configFile, "config_file", "kcore_noise.yaml", "path to the configuration file")
-	flag.IntVar(&workers, "workers", 81, "number of workers")
+	flag.StringVar(&configFile, "config_file", "wiki.yaml", "path to the configuration file")
+	flag.IntVar(&workers, "workers", 17, "number of workers")
 	flag.Parse()
 
 	if configFile == "" {

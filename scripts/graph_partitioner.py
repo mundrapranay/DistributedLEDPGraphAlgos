@@ -66,10 +66,9 @@ def calculate_workloads(n, num_process):
 
 def partition_graph(graph, n):
     processes = n - 1
-    graph_directory = '/home/pranaymundra/graph-dp-experiments/graphs/{0}_partitioned_{1}/'.format(graph.lower(), n)
+    graph_directory = '/home/ubuntu/graph-dp-experiments/graphs/{0}_partitioned_{1}/'.format(graph.lower(), n)
     if not os.path.exists(graph_directory):
-        f = open('/home/pranaymundra/graph-dp-experiments/graphs/{0}_adj'.format(graph), 'r')
-        # f = open('/home/ubuntu/TriangleLDP/data/{0}/{1}_adj.txt'.format(graph, graph.lower()), 'r')
+        f = open('/home/ubuntu/graph-dp-experiments/graphs/{0}_adj'.format(graph), 'r')
         lines = f.readlines()
         lines = [line.strip() for line in lines]
         f.close()
@@ -102,7 +101,7 @@ def partition_graph(graph, n):
 
 
 def load_graph(graph):
-    f = open('/home/pranaymundra/graph-dp-experiments/graphs/{0}_adj'.format(graph), 'r')
+    f = open('/home/ubuntu/graph-dp-experiments/graphs/{0}_adj'.format(graph), 'r')
     lines = f.readlines()
     del lines[0]
     lines = [line.strip() for line in lines]
@@ -166,15 +165,6 @@ def reindex_and_generate_subgraph(graphname, k):
     out.close()
     print('Nodes: {0}\t Edges: {1}\n'.format(len(subgraph), edges))
 
-
-
-
-
-def imdb_fix(missing_nodes, graph):
-    with open('/home/pranaymundra/graph-dp-experiments/graphs/{0}_adj'.format(graph), 'a') as out:
-        for node in missing_nodes:
-            out.write('{0} {1}\n'.format(node, -1))
-    out.close()
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()

@@ -16,7 +16,6 @@ type ExpirementConfig struct {
 	Num_Workers int      `yaml:"num_workers"`
 	Eta         float64  `yaml:"eta"`
 	Epsilon     float64  `yaml:"epsilon"`
-	Epsilon_T   float64  `yaml:"epsilon_t"`
 	Psi         float64  `yaml:"psi"`
 	Bias        bool     `yaml:"bias"`
 	Bias_Factor int      `yaml:"bias_factor"`
@@ -61,8 +60,8 @@ func Runner(fileName string, workers int) {
 						algorithms.KCoreCDPCoord(graph_size, exp_config.Psi, exp_config.Epsilon, factor, exp_config.Bias, bf, exp_config.Noise, graph_loc, outputFile)
 					} else if exp_config.AlgoName == "kcoreLDP" {
 						algorithms.KCoreLDPCoord(graph_size, exp_config.Psi, exp_config.Epsilon, factor, exp_config.Bias, bf, exp_config.Noise, baseFileName, workerFilesNames, outputFile)
-					} else if exp_config.AlgoName == "triangle_counting_correct" {
-						algorithms.TCountCoord(graph_size, exp_config.Psi, exp_config.Epsilon, exp_config.Epsilon_T, factor, exp_config.Bias, exp_config.Bias_Factor, exp_config.Noise, baseFileName, workerFilesNames, outputFile)
+					} else if exp_config.AlgoName == "triangle_counting" {
+						algorithms.TCountCoord(graph_size, exp_config.Psi, exp_config.Epsilon, factor, exp_config.Bias, exp_config.Bias_Factor, exp_config.Noise, baseFileName, workerFilesNames, outputFile)
 					}
 					fmt.Printf("Done with Exp:%s_%.2f_%t_%d\n", graph, factor, exp_config.Bias, bf)
 				}

@@ -177,7 +177,7 @@ func workerCountTriangles(workerID int, epsilon float64, offset int, graph [][]i
 	// fmt.Printf("Worker Count %d Done\n", workerID)
 }
 
-func TCountCoord(n int, phi float64, epsilon float64, epsilon_t float64, factor float64, bias bool, bias_factor int, noise bool, baseFileName string, workerFileNames []string, outputFileName string) {
+func TCountCoord(n int, phi float64, epsilon float64, factor float64, bias bool, bias_factor int, noise bool, baseFileName string, workerFileNames []string, outputFileName string) {
 
 	outputFile, err := os.Create(outputFileName)
 	if err != nil {
@@ -187,7 +187,7 @@ func TCountCoord(n int, phi float64, epsilon float64, epsilon_t float64, factor 
 	defer outputFile.Close()
 
 	startTime := time.Now()
-	lds := KCoreLDPTCount(n, phi, epsilon_t/3, factor, bias, bias_factor, noise, baseFileName, workerFileNames)
+	lds := KCoreLDPTCount(n, phi, epsilon/3, factor, bias, bias_factor, noise, baseFileName, workerFileNames)
 	kcoreTime := time.Now()
 	kcore_time := kcoreTime.Sub(startTime)
 	fmt.Fprintf(outputFile, "KCore Time: %.8f\n", kcore_time.Seconds())
@@ -231,7 +231,7 @@ func TCountCoord(n int, phi float64, epsilon float64, epsilon_t float64, factor 
 		}
 		go func(workerID int, graph [][]int) {
 			offset := workerID * chunk
-			workerRR(workerID, n, epsilon_t/3, offset, workLoad, noise, graph_v2, t_coordinator)
+			workerRR(workerID, n, epsilon/3, offset, workLoad, noise, graph_v2, t_coordinator)
 		}(i, graph_v2)
 	}
 
@@ -247,7 +247,7 @@ func TCountCoord(n int, phi float64, epsilon float64, epsilon_t float64, factor 
 		graph_v2 := worker_graphs_v2[i]
 		go func(workerID int, graph [][]int) {
 			offset := workerID * chunk
-			workerCountTriangles(workerID, epsilon_t/3, offset, graph_v2, lds, t_coordinator)
+			workerCountTriangles(workerID, epsilon/3, offset, graph_v2, lds, t_coordinator)
 		}(i, graph_v2)
 		worker_graphs_v2[i] = make([][]int, 1)
 	}

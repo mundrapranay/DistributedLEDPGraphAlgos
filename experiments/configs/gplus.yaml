@@ -2,15 +2,14 @@ graphs:
   - "gplus"
 graph_sizes:
   - 107614
-algo_name: triangle_counting_correct
+algo_name: triangle_counting
 num_workers: 81
 eta: 0.9
-epsilon: 0.5
-epsilon_t: 1.0
+epsilon: 1.0
 psi: 0.5
 bias: true
 bias_factor: 8
 runs: 5
 noise: true
 output_file_tag: "with_noise_gcp"
-graph_loc: "/home/pranaymundra/graph-dp-experiments/graphs"
+graph_loc: "/home/ubuntu/graph-dp-experiments/graphs"
