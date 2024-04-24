@@ -1,0 +1,4 @@
+github.com/golang/glog v1.1.1 h1:jxpi2eWoU84wbX9iIEyAeeoac3FLuifZpY9tcNUD9kw=
+github.com/golang/glog v1.1.1/go.mod h1:zR+okUeTbrL6EL3xHUDxZuEtGv04p5shwip1+mL/rLQ=
+github.com/google/differential-privacy/go/v2 v2.1.0 h1:v3hCOAaUMnY7Fkk+osv3cgMXUAFqaI2l8agICV6IJl4=
+github.com/google/differential-privacy/go/v2 v2.1.0/go.mod h1:KRaNc5O0mzJ6cBC3iJbQNk9OHTzRLdmp1IXMaFlOxt8=
