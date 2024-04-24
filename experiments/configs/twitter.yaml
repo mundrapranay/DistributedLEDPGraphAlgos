@@ -1,0 +1,15 @@
+graphs:
+  - "twitter"
+graph_sizes:
+  - 41652230
+algo_name: kcoreLDP
+num_workers: 81
+eta: 0.9
+epsilon: 0.5
+psi: 0.5
+bias: true
+bias_factor: 8
+runs: 1
+noise: true
+output_file_tag: "with_noise_gcp_ctime"
+graph_loc: "/home/pranaymundra/graph-dp-experiments/graphs"
