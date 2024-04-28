@@ -63,7 +63,7 @@ func Runner(fileName string, workers int) {
 					} else if exp_config.AlgoName == "triangle_countingLDP" {
 						algorithms.TCountCoord(graph_size, exp_config.Psi, exp_config.Epsilon, factor, exp_config.Bias, exp_config.Bias_Factor, exp_config.Noise, baseFileName, workerFilesNames, outputFile)
 					} else if exp_config.AlgoName == "triangle_countingCDP" {
-						algorithms.TriangleCountingCDP(n, exp_config.Psi, exp_config.Epsilon, factor, exp_config.Bias, exp_config.Bias_Factor, exp_config.Noise, graph_loc, outputFile)
+						algorithms.TriangleCountingCDP(graph_size, exp_config.Psi, exp_config.Epsilon, factor, exp_config.Bias, exp_config.Bias_Factor, exp_config.Noise, graph_loc, outputFile)
 					}
 					fmt.Printf("Done with Exp:%s_%.2f_%t_%d\n", graph, factor, exp_config.Bias, bf)
 				}
