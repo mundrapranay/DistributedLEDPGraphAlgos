@@ -1,4 +1,4 @@
-module github.com/mundrapranay/DistributedLDPGraphAlgos
+module github.com/mundrapranay/DistributedLEDPGraphAlgos
 
 go 1.21
 

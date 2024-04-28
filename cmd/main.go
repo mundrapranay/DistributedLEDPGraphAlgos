@@ -4,7 +4,7 @@ import (
 	"flag"
 	"fmt"
 
-	"github.com/mundrapranay/DistributedLDPGraphAlgos/experiments"
+	"github.com/mundrapranay/DistributedLEDPGraphAlgos/experiments"
 )
 
 func main() {

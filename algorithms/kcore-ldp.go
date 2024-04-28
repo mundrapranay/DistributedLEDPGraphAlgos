@@ -7,8 +7,8 @@ import (
 	"sync"
 	"time"
 
-	datastructures "github.com/mundrapranay/DistributedLDPGraphAlgos/data-structures"
-	distribution "github.com/mundrapranay/DistributedLDPGraphAlgos/noise"
+	datastructures "github.com/mundrapranay/DistributedLEDPGraphAlgos/data-structures"
+	distribution "github.com/mundrapranay/DistributedLEDPGraphAlgos/noise"
 )
 
 type KCoreVertex struct {

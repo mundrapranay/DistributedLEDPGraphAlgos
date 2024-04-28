@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 
-	"github.com/mundrapranay/DistributedLDPGraphAlgos/algorithms"
+	"github.com/mundrapranay/DistributedLEDPGraphAlgos/algorithms"
 
 	"gopkg.in/yaml.v2"
 )
@@ -60,8 +60,10 @@ func Runner(fileName string, workers int) {
 						algorithms.KCoreCDPCoord(graph_size, exp_config.Psi, exp_config.Epsilon, factor, exp_config.Bias, bf, exp_config.Noise, graph_loc, outputFile)
 					} else if exp_config.AlgoName == "kcoreLDP" {
 						algorithms.KCoreLDPCoord(graph_size, exp_config.Psi, exp_config.Epsilon, factor, exp_config.Bias, bf, exp_config.Noise, baseFileName, workerFilesNames, outputFile)
-					} else if exp_config.AlgoName == "triangle_counting" {
+					} else if exp_config.AlgoName == "triangle_countingLDP" {
 						algorithms.TCountCoord(graph_size, exp_config.Psi, exp_config.Epsilon, factor, exp_config.Bias, exp_config.Bias_Factor, exp_config.Noise, baseFileName, workerFilesNames, outputFile)
+					} else if exp_config.AlgoName == "triangle_countingCDP" {
+						algorithms.TriangleCountingCDP(n, exp_config.Psi, exp_config.Epsilon, factor, exp_config.Bias, exp_config.Bias_Factor, exp_config.Noise, graph_loc, outputFile)
 					}
 					fmt.Printf("Done with Exp:%s_%.2f_%t_%d\n", graph, factor, exp_config.Bias, bf)
 				}
