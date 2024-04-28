@@ -21,21 +21,19 @@ Run `sh setup.sh`
 We install golang, and make the necessary data and graph directory. All output files are stored in `${HOME}/results/` and graph files are stored as `${graph-name}_adj` in `${HOME}/graph-dp-experiments/graphs/`.
 
 ## Graphs
-### k-Core Decomposition LDP
-- DBLP : 
-- Brain : 
-- Orkut : 
-- Livejournal :
-- Twitter :
-- Friendster : 
-
-
-### Triangle Counting LDP
-- Wiki : https://snap.stanford.edu/data/wiki-Vote.html
-- Enron : https://snap.stanford.edu/data/email-Enron.html
-- Brightkite : https://snap.stanford.edu/data/loc-Brightkite.html
-- Gplus : https://snap.stanford.edu/data/ego-Gplus.html
-- DBLP :
+- email-eu-core : https://snap.stanford.edu/data/email-Eu-core-temporal.html
+- wiki : https://snap.stanford.edu/data/wiki-Vote.html
+- enron : https://snap.stanford.edu/data/email-Enron.html
+- brightkite : https://snap.stanford.edu/data/loc-Brightkite.html
+- ego-twitter: https://snap.stanford.edu/data/ego-Twitter.html
+- gplus : https://snap.stanford.edu/data/ego-Gplus.html
+- stanford: https://snap.stanford.edu/data/web-Stanford.html
+- dBLP :
+- brain : 
+- orkut : 
+- livejournal :
+- twitter :
+- friendster : 
 
 Note: Use the following script the format Gplus: https://github.com/TriangleLDP/TriangleLDP/blob/main/python/ReadGPlus.py
 
