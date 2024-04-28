@@ -1,4 +1,4 @@
-# DistributedLDPGraphAlgos
+# DistributedLEDPGraphAlgos
 
 This repository contains a golang implementation for Practical and Accurate Local Differentially Private Graph Algorithms.
 
