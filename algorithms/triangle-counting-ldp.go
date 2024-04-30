@@ -9,6 +9,7 @@ import (
 	"sync"
 	"time"
 
+	google_laplace "github.com/google/differential-privacy/go/v2/noise"
 	datastructures "github.com/mundrapranay/DistributedLEDPGraphAlgos/data-structures"
 	distribution "github.com/mundrapranay/DistributedLEDPGraphAlgos/noise"
 	"golang.org/x/exp/slices"
@@ -21,6 +22,7 @@ type TCountCoordinator struct {
 	worker_wg                 sync.WaitGroup
 	X                         [][]bool
 	workerChannelsTCount      map[int]chan float64
+	workerChannelsMaxOut      map[int]chan float64
 }
 
 func (coord *TCountCoordinator) sendDataRR(workerID int, noised_neighbours [][]int) {
@@ -39,6 +41,16 @@ func (coord *TCountCoordinator) sendDataTCount(workerID int, private_tcount floa
 
 	if ch, ok := coord.workerChannelsTCount[workerID]; ok {
 		ch <- private_tcount
+	}
+
+}
+
+func (coord *TCountCoordinator) sendMaxNoisyOutDegree(workerID int, private_max_dv float64) {
+	coord.lock.Lock()
+	defer coord.lock.Unlock()
+
+	if ch, ok := coord.workerChannelsMaxOut[workerID]; ok {
+		ch <- private_max_dv
 	}
 
 }
@@ -70,6 +82,21 @@ func (coord *TCountCoordinator) aggregateCounts() float64 {
 		coord.lock.Unlock()
 	}
 	return t_count
+}
+
+func (coord *TCountCoordinator) computePublicNoisyOutDegree() float64 {
+	// fmt.Print("Counting\n")
+	noisy_dv := 0.0
+	for _, ch := range coord.workerChannelsMaxOut {
+		channel_data := <-ch
+		// fmt.Printf("Worker %d %.8f Done\n", id, channel_data)
+		coord.lock.Lock()
+		if channel_data > noisy_dv {
+			noisy_dv = channel_data
+		}
+		coord.lock.Unlock()
+	}
+	return noisy_dv
 }
 
 func loadGraphTCount(filename string, offset int, bilateral bool) [][]int {
@@ -135,7 +162,43 @@ func workerRR(workerID int, n int, epsilon float64, offset int, workLoad int, no
 	// fmt.Printf("Worker RR %d Done\n", workerID)
 }
 
-func workerCountTriangles(workerID int, epsilon float64, offset int, graph [][]int, lds *datastructures.LDS, coordinator *TCountCoordinator) {
+func workerMaxOutDegree(workerID int, n int, epsilon float64, offset int, graph [][]int, lds *datastructures.LDS, coordinator *TCountCoordinator) {
+	workerNoisyDv := 0.0
+	for id, neighbours := range graph {
+		// only keep outgoing edges
+		var outgoing_edges []int
+		node_level, err := lds.GetLevel(uint(id + offset))
+		if err != nil {
+			fmt.Println(err.Error())
+		}
+		for _, neighbour := range neighbours {
+			j_level, err := lds.GetLevel(uint(neighbour))
+			if err != nil {
+				fmt.Println(err.Error())
+			}
+			if j_level > node_level {
+				outgoing_edges = append(outgoing_edges, neighbour)
+			} else if j_level == node_level {
+				if go_rand.Float64() <= 0.5 {
+					outgoing_edges = append(outgoing_edges, neighbour)
+				}
+			}
+		}
+		outDegree := float64(len(outgoing_edges))
+		geomDist := distribution.NewGeomDistribution(epsilon)
+		noisy_out_degree := outDegree + float64(geomDist.TwoSidedGeometric())
+		if noisy_out_degree > workerNoisyDv {
+			workerNoisyDv = noisy_out_degree
+		}
+	}
+
+	// t_coordinator.sendData_a_count(workerID, noised_neighbours, outgoing_edges)
+	coordinator.sendMaxNoisyOutDegree(workerID, workerNoisyDv)
+	coordinator.worker_wg.Done()
+	fmt.Printf("Worker Count %d Done\n", workerID)
+}
+
+func workerCountTriangles(workerID int, epsilon float64, noisy_out_degree float64, offset int, graph [][]int, lds *datastructures.LDS, coordinator *TCountCoordinator) {
 	var b2i = map[bool]float64{false: 0, true: 1}
 	workerTCount := 0.0
 	u := math.Exp(epsilon) + 1.0
@@ -162,15 +225,17 @@ func workerCountTriangles(workerID int, epsilon float64, offset int, graph [][]i
 			}
 		}
 		sort.Ints(outgoing_edges)
-		for j := 0; j < len(outgoing_edges); j++ {
-			for k := j + 1; k < len(outgoing_edges); k++ {
+		end := int(math.Min(noisy_out_degree, float64(len(outgoing_edges))))
+		for j := 0; j < end; j++ {
+			for k := j + 1; k < end; k++ {
 				localTCount += (b2i[coordinator.X[outgoing_edges[j]][outgoing_edges[k]]]*u - 1) / denom
 			}
 		}
-		outDegree := float64(len(outgoing_edges))
-		geomDist := distribution.NewGeomDistribution(epsilon / (2 * outDegree))
-		localTCount += float64(geomDist.TwoSidedGeometric())
-		workerTCount += localTCount
+		localNoisyTcount, err := google_laplace.Laplace().AddNoiseFloat64(localTCount, 1, noisy_out_degree, epsilon/2, 0)
+		if err != nil {
+			fmt.Printf("Not able to sample\n")
+		}
+		workerTCount += localNoisyTcount
 	}
 	coordinator.sendDataTCount(workerID, workerTCount)
 	coordinator.worker_wg.Done()
@@ -187,7 +252,7 @@ func TCountCoord(n int, phi float64, epsilon float64, factor float64, bias bool,
 	defer outputFile.Close()
 
 	startTime := time.Now()
-	lds := KCoreLDPTCount(n, phi, epsilon/3, factor, bias, bias_factor, noise, baseFileName, workerFileNames)
+	lds := KCoreLDPTCount(n, phi, epsilon/4, factor, bias, bias_factor, noise, baseFileName, workerFileNames)
 	kcoreTime := time.Now()
 	kcore_time := kcoreTime.Sub(startTime)
 	fmt.Fprintf(outputFile, "KCore Time: %.8f\n", kcore_time.Seconds())
@@ -199,6 +264,7 @@ func TCountCoord(n int, phi float64, epsilon float64, factor float64, bias bool,
 	t_coordinator := &TCountCoordinator{
 		workerChannelsNeighborsRR: make(map[int]chan [][]int, number_of_workers),
 		workerChannelsTCount:      make(map[int]chan float64, number_of_workers),
+		workerChannelsMaxOut:      make(map[int]chan float64, number_of_workers),
 		X:                         make([][]bool, n),
 	}
 	for i := range t_coordinator.X {
@@ -214,6 +280,7 @@ func TCountCoord(n int, phi float64, epsilon float64, factor float64, bias bool,
 		worker_graphs_v2 = append(worker_graphs_v2, graph_v2)
 		t_coordinator.workerChannelsNeighborsRR[i] = make(chan [][]int, len(graph_v2))
 		t_coordinator.workerChannelsTCount[i] = make(chan float64, 1)
+		t_coordinator.workerChannelsMaxOut[i] = make(chan float64, 1)
 	}
 	preProcessingTime := time.Now()
 	preTime := preProcessingTime.Sub(startTime)
@@ -231,7 +298,7 @@ func TCountCoord(n int, phi float64, epsilon float64, factor float64, bias bool,
 		}
 		go func(workerID int, graph [][]int) {
 			offset := workerID * chunk
-			workerRR(workerID, n, epsilon/3, offset, workLoad, noise, graph_v2, t_coordinator)
+			workerRR(workerID, n, epsilon/4, offset, workLoad, noise, graph_v2, t_coordinator)
 		}(i, graph_v2)
 	}
 
@@ -241,13 +308,26 @@ func TCountCoord(n int, phi float64, epsilon float64, factor float64, bias bool,
 	fmt.Fprintf(outputFile, "Publish RR Time: %.8f\n", superStepTime.Sub(preProcessingTime).Seconds())
 
 	OEtime := time.Now()
+
+	t_coordinator.worker_wg.Add(number_of_workers)
+	for i := 0; i < number_of_workers; i++ {
+		graph_v2 := worker_graphs_v2[i]
+		go func(workerID int, graph [][]int) {
+			offset := workerID * chunk
+			workerMaxOutDegree(workerID, n, epsilon/4, offset, graph_v2, lds, t_coordinator)
+		}(i, graph_v2)
+		// worker_graphs_v2[i] = make([][]int, 1)
+	}
+	t_coordinator.wg.Wait()
+
+	max_noisy_out_degree := t_coordinator.computePublicNoisyOutDegree()
 	// compute tcount and publish
 	t_coordinator.worker_wg.Add(number_of_workers)
 	for i := 0; i < number_of_workers; i++ {
 		graph_v2 := worker_graphs_v2[i]
 		go func(workerID int, graph [][]int) {
 			offset := workerID * chunk
-			workerCountTriangles(workerID, epsilon/3, offset, graph_v2, lds, t_coordinator)
+			workerCountTriangles(workerID, epsilon/4, max_noisy_out_degree, offset, graph_v2, lds, t_coordinator)
 		}(i, graph_v2)
 		worker_graphs_v2[i] = make([][]int, 1)
 	}
