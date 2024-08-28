@@ -2,13 +2,14 @@ package algorithms
 
 import (
 	"fmt"
+	datastructures "github.com/mundrapranay/DistributedLEDPGraphAlgos/data-structures"
+	distribution "github.com/mundrapranay/DistributedLEDPGraphAlgos/noise"
+	gompi "github.com/sbromberger/gompi"
+	"log"
 	"math"
 	"os"
 	"sync"
 	"time"
-
-	datastructures "github.com/mundrapranay/DistributedLEDPGraphAlgos/data-structures"
-	distribution "github.com/mundrapranay/DistributedLEDPGraphAlgos/noise"
 )
 
 type KCoreVertex struct {
@@ -35,22 +36,37 @@ func (coord *KCoreCoordinator) sendData(workerID int, nextLevels [2][]int) {
 	if ch, ok := coord.workerChannels[workerID]; ok {
 		ch <- nextLevels
 	}
+
 }
 
-func (coord *KCoreCoordinator) processData(chunk int) {
-	for workerID, ch := range coord.workerChannels {
+//func (coord *KCoreCoordinator) processData(chunk int) {
+//	for workerID, ch := range coord.workerChannels {
+//
+//		// Receive nextLevels from the worker's channel
+//		channel_data := <-ch
+//		nextLevels := channel_data[0]
+//		permanentZero := channel_data[1]
+//		coord.lock.Lock()
+//		for vertexID, nextLevel := range nextLevels {
+//			if nextLevel == 1 && permanentZero[vertexID] != 0 {
+//				coord.lds.LevelIncrease(uint(vertexID + workerID*chunk))
+//			}
+//		}
+//		coord.lock.Unlock()
+//	}
+//}
 
-		// Receive nextLevels from the worker's channel
-		channel_data := <-ch
-		nextLevels := channel_data[0]
-		permanentZero := channel_data[1]
-		coord.lock.Lock()
-		for vertexID, nextLevel := range nextLevels {
-			if nextLevel == 1 && permanentZero[vertexID] != 0 {
-				coord.lds.LevelIncrease(uint(vertexID + workerID*chunk))
+func (coord *KCoreCoordinator) updateLevels(workerID int, nextLevels []int32, permanentZeros []int32, chunk int) {
+	coord.lock.Lock()
+	defer coord.lock.Unlock()
+
+	for vertexID, nextLevel := range nextLevels {
+		if nextLevel == 1 && permanentZeros[vertexID] != 0 {
+			err := coord.lds.LevelIncrease(uint(vertexID + workerID*chunk))
+			if err != nil {
+				log.Fatalf(err.Error())
 			}
 		}
-		coord.lock.Unlock()
 	}
 }
 
@@ -89,11 +105,11 @@ func loadGraphWorker(filename string, offset int, lambda float64, levels_per_gro
 	return processed_graph
 }
 
-func workerKCore(workerID int, round int, lambda float64, psi float64, group_index float64, offset int, workLoad int, rounds_param float64, noise bool, graph map[int]*KCoreVertex, coordinator *KCoreCoordinator) {
+func workerKCore(workerID int, round int, lambda float64, psi float64, group_index float64, offset int, workLoad int, rounds_param float64, noise bool, graph map[int]*KCoreVertex, currentLevels []int32) ([]int32, []int32) {
 
 	// perform computation for each vertex
-	nextLevels := make([]int, workLoad)
-	permanentZeros := make([]int, workLoad)
+	nextLevels := make([]int32, workLoad)
+	permanentZeros := make([]int32, workLoad)
 	for i := 0; i < len(permanentZeros); i++ {
 		permanentZeros[i] = 1
 		nextLevels[i] = 0
@@ -103,18 +119,12 @@ func workerKCore(workerID int, round int, lambda float64, psi float64, group_ind
 			vertex.permanent_zero = 0
 			permanentZeros[vertex.id-offset] = 0
 		}
-		vertex_level, err := coordinator.lds.GetLevel(uint(vertex.id))
-		if err != nil {
-			fmt.Printf(err.Error())
-		}
+		vertex_level := int(currentLevels[vertex.id])
 		vertex.current_level = int(vertex_level)
 		if vertex.current_level == round && vertex.permanent_zero != 0 {
 			neighbor_count := 0
 			for _, ngh := range vertex.neighbours {
-				ngh_level, err := coordinator.lds.GetLevel(uint(ngh))
-				if err != nil {
-					fmt.Printf(err.Error())
-				}
+				ngh_level := int(currentLevels[ngh])
 				if int(ngh_level) == round {
 					neighbor_count++
 				}
@@ -138,9 +148,10 @@ func workerKCore(workerID int, round int, lambda float64, psi float64, group_ind
 			}
 		}
 	}
-	data_to_send := [2][]int{nextLevels, permanentZeros}
-	coordinator.sendData(workerID, data_to_send)
-	coordinator.worker_wg.Done()
+	//data_to_send := [2][]int{nextLevels, permanentZeros}
+	//coordinator.sendData(workerID, data_to_send)
+	//coordinator.worker_wg.Done()
+	return nextLevels, permanentZeros
 }
 
 func log_a_to_base_b(a int, b float64) float64 {
@@ -163,152 +174,177 @@ func estimateCoreNumbers(lds *datastructures.LDS, n int, phi float64, lambda flo
 	return core_numbers
 }
 
-func KCoreLDPTCount(n int, psi float64, epsilon float64, factor float64, bias bool, bias_factor int, noise bool, baseFileName string, workerFileNames []string) *datastructures.LDS {
-
-	levels_per_group := math.Ceil(log_a_to_base_b(n, 1.0+psi)) / 4
-	rounds_param := math.Ceil(4.0 * math.Pow(log_a_to_base_b(n, 1.0+psi), 1.2))
-	number_of_rounds := int(rounds_param)
-	super_step1_geom_factor := epsilon * factor
-	super_step2_geom_factor := epsilon * (1.0 - factor)
-
-	number_of_workers := len(workerFileNames)
-	chunk := n / number_of_workers
-	extra := n % number_of_workers
-
-	// create a coordinator
-	coordinator := &KCoreCoordinator{
-		lds:            datastructures.NewLDS(n, levels_per_group),
-		workerChannels: make(map[int]chan [2][]int, number_of_workers),
-	}
-	coordinator.wg.Add(1)
-
-	// Preprocess the graphs into an array of workerGraphs.
-	var worker_graphs []map[int]*KCoreVertex
-	for i := 0; i < number_of_workers; i++ {
-		filename := baseFileName + workerFileNames[i]
-		offset := i * chunk
-		graph := loadGraphWorker(filename, offset, super_step1_geom_factor, levels_per_group, bias, bias_factor, noise, false)
-		worker_graphs = append(worker_graphs, graph)
-		coordinator.workerChannels[i] = make(chan [2][]int, len(graph))
-	}
-
-	// main loop
-	for round := 0; round < number_of_rounds-2; round++ {
-
-		group_index := coordinator.lds.GroupForLevel(uint(round))
-		coordinator.worker_wg.Add(number_of_workers)
-
-		for i := 0; i < number_of_workers; i++ {
-
-			graph := worker_graphs[i]
-			go func(workerID int, r int, graph map[int]*KCoreVertex) {
-				// perform computation
-				offset := workerID * chunk
-				var workLoad int
-				if workerID == number_of_workers-1 {
-					workLoad = chunk + extra
-				} else {
-					workLoad = chunk
-				}
-				workerKCore(workerID, r, super_step2_geom_factor, psi, float64(group_index), offset, workLoad, rounds_param, noise, graph, coordinator)
-			}(i, round, graph)
-		}
-
-		// wait for all workers to finish
-		coordinator.worker_wg.Wait()
-
-		// process received messages
-		coordinator.processData(chunk)
-	}
-
-	for _, ch := range coordinator.workerChannels {
-		close(ch)
-	}
-
-	return coordinator.lds
-}
+//func KCoreLDPTCount(n int, psi float64, epsilon float64, factor float64, bias bool, bias_factor int, noise bool, baseFileName string, workerFileNames []string) *datastructures.LDS {
+//
+//	levels_per_group := math.Ceil(log_a_to_base_b(n, 1.0+psi)) / 4
+//	rounds_param := math.Ceil(4.0 * math.Pow(log_a_to_base_b(n, 1.0+psi), 1.2))
+//	number_of_rounds := int(rounds_param)
+//	super_step1_geom_factor := epsilon * factor
+//	super_step2_geom_factor := epsilon * (1.0 - factor)
+//
+//	number_of_workers := len(workerFileNames)
+//	chunk := n / number_of_workers
+//	extra := n % number_of_workers
+//
+//	// create a coordinator
+//	coordinator := &KCoreCoordinator{
+//		lds:            datastructures.NewLDS(n, levels_per_group),
+//		workerChannels: make(map[int]chan [2][]int, number_of_workers),
+//	}
+//	coordinator.wg.Add(1)
+//
+//	// Preprocess the graphs into an array of workerGraphs.
+//	var worker_graphs []map[int]*KCoreVertex
+//	for i := 0; i < number_of_workers; i++ {
+//		filename := baseFileName + workerFileNames[i]
+//		offset := i * chunk
+//		graph := loadGraphWorker(filename, offset, super_step1_geom_factor, levels_per_group, bias, bias_factor, noise, false)
+//		worker_graphs = append(worker_graphs, graph)
+//		coordinator.workerChannels[i] = make(chan [2][]int, len(graph))
+//	}
+//
+//	// main loop
+//	for round := 0; round < number_of_rounds-2; round++ {
+//
+//		group_index := coordinator.lds.GroupForLevel(uint(round))
+//		coordinator.worker_wg.Add(number_of_workers)
+//
+//		for i := 0; i < number_of_workers; i++ {
+//
+//			graph := worker_graphs[i]
+//			go func(workerID int, r int, graph map[int]*KCoreVertex) {
+//				// perform computation
+//				offset := workerID * chunk
+//				var workLoad int
+//				if workerID == number_of_workers-1 {
+//					workLoad = chunk + extra
+//				} else {
+//					workLoad = chunk
+//				}
+//				workerKCore(workerID, r, super_step2_geom_factor, psi, float64(group_index), offset, workLoad, rounds_param, noise, graph, coordinator)
+//			}(i, round, graph)
+//		}
+//
+//		// wait for all workers to finish
+//		coordinator.worker_wg.Wait()
+//
+//		// process received messages
+//		coordinator.processData(chunk)
+//	}
+//
+//	for _, ch := range coordinator.workerChannels {
+//		close(ch)
+//	}
+//
+//	return coordinator.lds
+//}
 
 func KCoreLDPCoord(n int, psi float64, epsilon float64, factor float64, bias bool, bias_factor int, noise bool, baseFileName string, workerFileNames []string, outputFileName string) {
 
-	outputFile, err := os.Create(outputFileName)
-	if err != nil {
-		fmt.Println("Error creating file:", err)
-		return
-	}
-	defer outputFile.Close()
-
 	startTime := time.Now()
-	levels_per_group := math.Ceil(log_a_to_base_b(n, 1.0+psi)) / 4
-	rounds_param := math.Ceil(4.0 * math.Pow(log_a_to_base_b(n, 1.0+psi), 1.2))
-	number_of_rounds := int(rounds_param)
-	lambda := 0.5
-	super_step1_geom_factor := epsilon * factor
-	super_step2_geom_factor := epsilon * (1.0 - factor)
+	gompi.Start(false)
+	defer gompi.Stop()
 
-	number_of_workers := len(workerFileNames)
-	chunk := n / number_of_workers
-	extra := n % number_of_workers
+	comm := gompi.NewCommunicator(nil)
+	numberOfWorkers := comm.Size() - 1
+	rank := comm.Rank()
+
+	if rank == 0 {
+		log.Printf("Running with %d workers and 1 coordinator", numberOfWorkers)
+	}
+
+	levelsPerGroup := math.Ceil(log_a_to_base_b(n, 1.0+psi)) / 4
+	roundsParam := math.Ceil(4.0 * math.Pow(log_a_to_base_b(n, 1.0+psi), 1.2))
+	numberOfRounds := int(roundsParam)
+	lambda := 0.5
+	superStep1GeomFactor := epsilon * factor
+	superStep2GeomFactor := epsilon * (1.0 - factor)
+
+	//number_of_workers := len(workerFileNames)
+	chunk := n / numberOfWorkers
+	extra := n % numberOfWorkers
 
 	// create a coordinator
-	coordinator := &KCoreCoordinator{
-		lds:            datastructures.NewLDS(n, levels_per_group),
-		workerChannels: make(map[int]chan [2][]int, number_of_workers),
+	var coordinator KCoreCoordinator
+	if rank == 0 {
+		coordinator = KCoreCoordinator{
+			lds: datastructures.NewLDS(n, levelsPerGroup),
+		}
 	}
-	coordinator.wg.Add(1)
 
-	// Preprocess the graphs into an array of workerGraphs.
-	var worker_graphs []map[int]*KCoreVertex
-	for i := 0; i < number_of_workers; i++ {
-		filename := baseFileName + workerFileNames[i]
-		offset := i * chunk
-		graph := loadGraphWorker(filename, offset, super_step1_geom_factor, levels_per_group, bias, bias_factor, noise, false)
-		worker_graphs = append(worker_graphs, graph)
-		coordinator.workerChannels[i] = make(chan [2][]int, len(graph))
+	var graph map[int]*KCoreVertex
+	if rank > 0 {
+		offset := (rank - 1) * chunk
+		graph = loadGraphWorker(baseFileName+workerFileNames[rank-1], offset, superStep1GeomFactor, levelsPerGroup, bias, bias_factor, noise, false)
 	}
-	preProcessingTime := time.Now()
-	preTime := preProcessingTime.Sub(startTime)
-	fmt.Fprintf(outputFile, "Preprocessing Time: %.8f\n", preTime.Seconds())
+
+	var currentLevels []int32
+	var groupIndex float64
+	var groupIndexToSend []float64
+	if rank == 0 {
+		currentLevels = make([]int32, n)
+		groupIndex = 0
+	}
 
 	// main loop
-	for round := 0; round < number_of_rounds-2; round++ {
-
-		group_index := coordinator.lds.GroupForLevel(uint(round))
-		coordinator.worker_wg.Add(number_of_workers)
-
-		for i := 0; i < number_of_workers; i++ {
-
-			graph := worker_graphs[i]
-			go func(workerID int, r int, graph map[int]*KCoreVertex) {
-				// perform computation
-				offset := workerID * chunk
-				var workLoad int
-				if workerID == number_of_workers-1 {
-					workLoad = chunk + extra
-				} else {
-					workLoad = chunk
+	for round := 0; round < numberOfRounds-2; round++ {
+		// coordinator gets current levels & group index, and broadcasts the same
+		if rank == 0 {
+			for i := 0; i < n; i++ {
+				level, err := coordinator.lds.GetLevel(uint(i))
+				if err != nil {
+					log.Fatalf(err.Error())
 				}
-				workerKCore(workerID, r, super_step2_geom_factor, psi, float64(group_index), offset, workLoad, rounds_param, noise, graph, coordinator)
-			}(i, round, graph)
+				currentLevels[i] = int32(level)
+			}
+			groupIndex = float64(coordinator.lds.GroupForLevel(uint(round)))
+			groupIndexToSend = []float64{groupIndex}
+			// broadcast
+			comm.BcastInt32s(currentLevels, 0)
+			comm.BcastFloat64s(groupIndexToSend, 0)
+
+		} else {
+			offset := (rank - 1) * chunk
+			var workLoad int
+			if rank == numberOfWorkers {
+				workLoad = chunk + extra
+			} else {
+				workLoad = chunk
+			}
+			nextLevels, permanentZeros := workerKCore(rank-1, round, superStep2GeomFactor, psi, groupIndexToSend[0], offset, workLoad, roundsParam, noise, graph, currentLevels)
+			comm.SendInt32s(nextLevels, 0, 0)
+			comm.SendInt32s(permanentZeros, 0, 1)
 		}
 
-		// wait for all workers to finish
-		coordinator.worker_wg.Wait()
+		if rank == 0 {
+			for worker := 1; worker <= numberOfWorkers; worker++ {
+				var receivedNextLevels, receivedPermanentZeros []int32
+				receivedNextLevels, _ = comm.RecvInt32s(worker, 0)
+				receivedPermanentZeros, _ = comm.RecvInt32s(worker, 1)
+				coordinator.updateLevels(worker-1, receivedNextLevels, receivedPermanentZeros, chunk)
+			}
+		}
 
-		// process received messages
-		coordinator.processData(chunk)
-	}
-
-	for _, ch := range coordinator.workerChannels {
-		close(ch)
+		comm.Barrier()
 	}
 
 	// estimate core numbers function
-	estimated_core_numbers := estimateCoreNumbers(coordinator.lds, n, psi, lambda, float64(levels_per_group))
+	estimatedCoreNumbers := estimateCoreNumbers(coordinator.lds, n, psi, lambda, float64(levelsPerGroup))
 	endTime := time.Now()
-	for i, value := range estimated_core_numbers {
-		fmt.Fprintf(outputFile, "%d: %.4f\n", i, value)
+	if rank == 0 {
+		outputFile, err := os.Create(outputFileName)
+		if err != nil {
+			fmt.Println("Error creating file:", err)
+			return
+		}
+		defer outputFile.Close()
+
+		for i, value := range estimatedCoreNumbers {
+			fmt.Fprintf(outputFile, "%d: %.4f\n", i, value)
+		}
+
+		algoTime := endTime.Sub(startTime)
+		fmt.Fprintf(outputFile, "Algorithm Time: %.8f\n", algoTime.Seconds())
+		outputFile.Close()
 	}
-	algoTime := endTime.Sub(preProcessingTime)
-	fmt.Fprintf(outputFile, "Algorithm Time: %.8f\n", algoTime.Seconds())
-	outputFile.Close()
 }

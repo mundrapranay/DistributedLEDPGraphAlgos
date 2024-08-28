@@ -53,9 +53,9 @@ func Runner(fileName string, workers int) {
 				graph_size := exp_config.Graph_Sizes[index]
 				var outputFile string
 				graph_loc := fmt.Sprintf("%s/%s", exp_config.Graph_Loc, graph)
-				baseFileName := fmt.Sprintf("%s/%s_partitioned_%d/", exp_config.Graph_Loc, graph, exp_config.Num_Workers)
+				baseFileName := exp_config.Graph_Loc
 				for bf := exp_config.Bias_Factor; bf <= exp_config.Bias_Factor; bf++ {
-					outputFile = fmt.Sprintf("/home/ubuntu/results/%s_%s_%.2f_%d_%d_%d_%d_%d_%.2f_%s.txt", graph, exp_config.AlgoName, factor, b2i[exp_config.Bias], b2i[exp_config.Noise], bf, run_id, exp_config.Num_Workers, eps_t, exp_config.ExpTag)
+					outputFile = fmt.Sprintf("/home/pm886/palmer_scratch/%s_%s_%.2f_%d_%d_%d_%d_%d_%.2f_%s.txt", graph, exp_config.AlgoName, factor, b2i[exp_config.Bias], b2i[exp_config.Noise], bf, run_id, exp_config.Num_Workers, eps_t, exp_config.ExpTag)
 					if exp_config.AlgoName == "kcoreCDP" {
 						algorithms.KCoreCDPCoord(graph_size, exp_config.Psi, exp_config.Epsilon, factor, exp_config.Bias, bf, exp_config.Noise, graph_loc, outputFile)
 					} else if exp_config.AlgoName == "kcoreLDP" {

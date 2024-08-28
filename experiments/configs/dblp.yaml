@@ -2,8 +2,8 @@ graphs:
   - "dblp"
 graph_sizes:
   - 317080
-algo_name: triangle_counting
-num_workers: 81
+algo_name: kcoreLDP
+num_workers: 21
 eta: 0.9
 epsilon: 1.0
 psi: 0.5
@@ -12,4 +12,4 @@ runs : 5
 bias_factor: 8
 noise: true
 output_file_tag: "with_noise_gcp"
-graph_loc: "/home/ubuntu/graph-dp-experiments/graphs"
+graph_loc: "/home/pm886/palmer_scratch/graphs/dblp_20/"
