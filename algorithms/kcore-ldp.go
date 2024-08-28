@@ -40,7 +40,7 @@ type KCoreVertex struct {
 func updateLevels(workerID int, nextLevels []int32, permanentZeros []int32, chunk int, lds *datastructures.LDS) {
 	for vertexID, nextLevel := range nextLevels {
 		if nextLevel == 1 && permanentZeros[vertexID] != 0 {
-			//log.Printf("Level Increased for Vertex: %v", vertexID+workerID*chunk)
+			log.Printf("Level Increased for Vertex: %v", vertexID+workerID*chunk)
 			err := lds.LevelIncrease(uint(vertexID + workerID*chunk))
 			if err != nil {
 				log.Fatalf(err.Error())
