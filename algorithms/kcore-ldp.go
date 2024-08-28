@@ -8,7 +8,6 @@ import (
 	"log"
 	"math"
 	"os"
-	"sync"
 	"time"
 )
 
@@ -19,24 +18,6 @@ type KCoreVertex struct {
 	permanent_zero  int
 	round_threshold int
 	neighbours      []int
-}
-
-type KCoreCoordinator struct {
-	lds            *datastructures.LDS
-	workerChannels map[int]chan [2][]int
-	lock           sync.Mutex
-	wg             sync.WaitGroup
-	worker_wg      sync.WaitGroup
-}
-
-func (coord *KCoreCoordinator) sendData(workerID int, nextLevels [2][]int) {
-	coord.lock.Lock()
-	defer coord.lock.Unlock()
-
-	if ch, ok := coord.workerChannels[workerID]; ok {
-		ch <- nextLevels
-	}
-
 }
 
 //func (coord *KCoreCoordinator) processData(chunk int) {
@@ -56,14 +37,11 @@ func (coord *KCoreCoordinator) sendData(workerID int, nextLevels [2][]int) {
 //	}
 //}
 
-func (coord *KCoreCoordinator) updateLevels(workerID int, nextLevels []int32, permanentZeros []int32, chunk int) {
-	coord.lock.Lock()
-	defer coord.lock.Unlock()
-
+func updateLevels(workerID int, nextLevels []int32, permanentZeros []int32, chunk int, lds *datastructures.LDS) {
 	for vertexID, nextLevel := range nextLevels {
 		if nextLevel == 1 && permanentZeros[vertexID] != 0 {
-			log.Printf("Level Increased for Vertex: %v", vertexID+workerID*chunk)
-			err := coord.lds.LevelIncrease(uint(vertexID + workerID*chunk))
+			//log.Printf("Level Increased for Vertex: %v", vertexID+workerID*chunk)
+			err := lds.LevelIncrease(uint(vertexID + workerID*chunk))
 			if err != nil {
 				log.Fatalf(err.Error())
 			}
@@ -92,7 +70,7 @@ func loadGraphWorker(filename string, offset int, lambda float64, levels_per_gro
 			noised_degree += 1
 		}
 
-		threshold := math.Ceil(log_a_to_base_b(int(noised_degree), 2)) * levels_per_group
+		threshold := math.Ceil(logAToBaseB(int(noised_degree), 2)) * levels_per_group
 		vertex := &KCoreVertex{
 			id:              node,
 			current_level:   0,
@@ -120,27 +98,27 @@ func workerKCore(workerID int, round int, lambda float64, psi float64, group_ind
 			vertex.permanent_zero = 0
 			permanentZeros[vertex.id-offset] = 0
 		}
-		vertex_level := int(currentLevels[vertex.id])
-		vertex.current_level = int(vertex_level)
+		vertexLevel := int(currentLevels[vertex.id])
+		vertex.current_level = int(vertexLevel)
 		if vertex.current_level == round && vertex.permanent_zero != 0 {
-			neighbor_count := 0
+			neighborCount := 0
 			for _, ngh := range vertex.neighbours {
-				ngh_level := int(currentLevels[ngh])
-				if int(ngh_level) == round {
-					neighbor_count++
+				nghLevel := int(currentLevels[ngh])
+				if int(nghLevel) == round {
+					neighborCount++
 				}
 			}
-			noised_neighbor_count := int64(neighbor_count)
+			noisedNeighborCount := int64(neighborCount)
 			if noise {
 				scale := lambda / (2.0 * float64(vertex.round_threshold))
 				geomDist := distribution.NewGeomDistribution(scale)
-				noise_sampled := geomDist.TwoSidedGeometric()
-				extra_bias := int64(3 * (2 * math.Exp(scale)) / math.Pow((math.Exp(2*scale)-1), 3))
-				noised_neighbor_count += noise_sampled
-				noised_neighbor_count += extra_bias
+				noiseSampled := geomDist.TwoSidedGeometric()
+				extraBias := int64(3 * (2 * math.Exp(scale)) / math.Pow(math.Exp(2*scale)-1, 3))
+				noisedNeighborCount += noiseSampled
+				noisedNeighborCount += extraBias
 			}
 
-			if noised_neighbor_count > int64(math.Pow((1+psi), group_index)) {
+			if noisedNeighborCount > int64(math.Pow(1+psi, group_index)) {
 				vertex.next_level = 1
 				nextLevels[vertex.id-offset] = 1
 			} else {
@@ -155,24 +133,24 @@ func workerKCore(workerID int, round int, lambda float64, psi float64, group_ind
 	return nextLevels, permanentZeros
 }
 
-func log_a_to_base_b(a int, b float64) float64 {
+func logAToBaseB(a int, b float64) float64 {
 	return math.Log2(float64(a)) / math.Log2(b)
 }
 
 func estimateCoreNumbers(lds *datastructures.LDS, n int, phi float64, lambda float64, levels_per_group float64) []float64 {
-	core_numbers := make([]float64, n)
-	two_plus_lambda := 2.0 + lambda
-	one_plus_phi := 1.0 + phi
+	coreNumbers := make([]float64, n)
+	twoPlusLambda := 2.0 + lambda
+	onePlusPhi := 1.0 + phi
 	for i := 0; i < n; i++ {
-		node_level, err := lds.GetLevel(uint(i))
+		nodeLevel, err := lds.GetLevel(uint(i))
 		if err != nil {
 			fmt.Printf(err.Error())
 		}
-		frac_numerator := node_level + 1.0
-		power := math.Max(math.Floor(float64(frac_numerator)/levels_per_group)-1.0, 0.0)
-		core_numbers[i] = two_plus_lambda * math.Pow(one_plus_phi, power)
+		fracNumerator := nodeLevel + 1.0
+		power := math.Max(math.Floor(float64(fracNumerator)/levels_per_group)-1.0, 0.0)
+		coreNumbers[i] = twoPlusLambda * math.Pow(onePlusPhi, power)
 	}
-	return core_numbers
+	return coreNumbers
 }
 
 //func KCoreLDPTCount(n int, psi float64, epsilon float64, factor float64, bias bool, bias_factor int, noise bool, baseFileName string, workerFileNames []string) *datastructures.LDS {
@@ -254,8 +232,8 @@ func KCoreLDPCoord(n int, psi float64, epsilon float64, factor float64, bias boo
 		log.Printf("Running with %d workers and 1 coordinator", numberOfWorkers)
 	}
 
-	levelsPerGroup := math.Ceil(log_a_to_base_b(n, 1.0+psi)) / 4
-	roundsParam := math.Ceil(4.0 * math.Pow(log_a_to_base_b(n, 1.0+psi), 1.2))
+	levelsPerGroup := math.Ceil(logAToBaseB(n, 1.0+psi)) / 4
+	roundsParam := math.Ceil(4.0 * math.Pow(logAToBaseB(n, 1.0+psi), 1.2))
 	numberOfRounds := int(roundsParam)
 	lambda := 0.5
 	superStep1GeomFactor := epsilon * factor
@@ -265,12 +243,10 @@ func KCoreLDPCoord(n int, psi float64, epsilon float64, factor float64, bias boo
 	chunk := n / numberOfWorkers
 	extra := n % numberOfWorkers
 
-	// create a coordinator
-	var coordinator KCoreCoordinator
+	// create a coordinator maintained lds
+	var lds *datastructures.LDS
 	if rank == 0 {
-		coordinator = KCoreCoordinator{
-			lds: datastructures.NewLDS(n, levelsPerGroup),
-		}
+		lds = datastructures.NewLDS(n, levelsPerGroup)
 	}
 
 	var graph map[int]*KCoreVertex
@@ -288,13 +264,14 @@ func KCoreLDPCoord(n int, psi float64, epsilon float64, factor float64, bias boo
 			currentLevels := make([]int32, n)
 			groupIndex := 0.0
 			for i := 0; i < n; i++ {
-				level, err := coordinator.lds.GetLevel(uint(i))
+				level, err := lds.GetLevel(uint(i))
 				if err != nil {
 					log.Fatalf(err.Error())
 				}
 				currentLevels[i] = int32(level)
 			}
-			groupIndex = float64(coordinator.lds.GroupForLevel(uint(round)))
+			groupIndex = float64(lds.GroupForLevel(uint(round)))
+			log.Printf("Round %d, Group Index: %.4f", round, groupIndex)
 			// broadcast
 			for worker := 1; worker <= numberOfWorkers; worker++ {
 				comm.SendInt32s(currentLevels, worker, 2)
@@ -330,7 +307,7 @@ func KCoreLDPCoord(n int, psi float64, epsilon float64, factor float64, bias boo
 				receivedPermanentZeros, _ = comm.RecvInt32s(worker, 1)
 				//log.Printf("next levels from worker %d status: %d", worker, st1.GetError())
 				//log.Printf("permZeros from worker %d status: %d", worker, st2.GetError())
-				coordinator.updateLevels(worker-1, receivedNextLevels, receivedPermanentZeros, chunk)
+				updateLevels(worker-1, receivedNextLevels, receivedPermanentZeros, chunk, lds)
 				//log.Printf("Data received by coordinator from worker %d for round %d", worker, round)
 			}
 			log.Printf("Done with round %d", round)
@@ -343,7 +320,7 @@ func KCoreLDPCoord(n int, psi float64, epsilon float64, factor float64, bias boo
 	//estimatedCoreNumbers := estimateCoreNumbers(coordinator.lds, n, psi, lambda, float64(levelsPerGroup))
 	//endTime := time.Now()
 	if rank == 0 {
-		estimatedCoreNumbers := estimateCoreNumbers(coordinator.lds, n, psi, lambda, float64(levelsPerGroup))
+		estimatedCoreNumbers := estimateCoreNumbers(lds, n, psi, lambda, levelsPerGroup)
 		endTime := time.Now()
 		outputFile, err := os.Create(outputFileName)
 		if err != nil {

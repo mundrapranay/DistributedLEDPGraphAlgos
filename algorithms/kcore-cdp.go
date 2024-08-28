@@ -19,8 +19,8 @@ func KCoreCDPCoord(n int, phi float64, epsilon float64, factor float64, bias boo
 	defer outputFile.Close()
 
 	startTime := time.Now()
-	levels_per_group := math.Ceil(log_a_to_base_b(n, 1.0+phi)) / 4
-	rounds_param := math.Ceil(4.0 * math.Pow(log_a_to_base_b(n, 1.0+phi), 1.2))
+	levels_per_group := math.Ceil(logAToBaseB(n, 1.0+phi)) / 4
+	rounds_param := math.Ceil(4.0 * math.Pow(logAToBaseB(n, 1.0+phi), 1.2))
 	number_of_rounds := int(rounds_param)
 	lambda := 0.5
 	super_step1_geom_factor := epsilon * factor
@@ -93,8 +93,8 @@ func KCoreCDPCoord(n int, phi float64, epsilon float64, factor float64, bias boo
 }
 
 func KCoreCDPACount(n int, phi float64, epsilon float64, factor float64, bias bool, bias_factor int, noise bool, graphFileName string) *datastructures.LDS {
-	levels_per_group := math.Ceil(log_a_to_base_b(n, 1.0+phi)) / 4
-	rounds_param := math.Ceil(4.0 * math.Pow(log_a_to_base_b(n, 1.0+phi), 1.2))
+	levels_per_group := math.Ceil(logAToBaseB(n, 1.0+phi)) / 4
+	rounds_param := math.Ceil(4.0 * math.Pow(logAToBaseB(n, 1.0+phi), 1.2))
 	number_of_rounds := int(rounds_param)
 	super_step1_geom_factor := epsilon * factor
 	super_step2_geom_factor := epsilon * (1.0 - factor)
