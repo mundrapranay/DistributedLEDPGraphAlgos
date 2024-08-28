@@ -7,7 +7,8 @@
 #SBATCH --cpus-per-task=8
 #SBATCH --mem-per-cpu=3G
 
-sh load-modules.sh
+#sh load-modules.sh
+ml Go/1.21.4 OpenMPI/4.1.4-GCC-12.2.0
 cd cmd
 go build -o main main.go
 mpirun -np $SLURM_NTASKS ./main

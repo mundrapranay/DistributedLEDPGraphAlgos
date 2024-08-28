@@ -41,7 +41,7 @@ func Runner(fileName string, workers int) {
 
 	exp_config.Num_Workers = workers
 	var workerFilesNames []string
-	for i := 1; i < exp_config.Num_Workers; i++ {
+	for i := 0; i < exp_config.Num_Workers; i++ {
 		workerFilesNames = append(workerFilesNames, fmt.Sprintf("%d.txt", i))
 	}
 
