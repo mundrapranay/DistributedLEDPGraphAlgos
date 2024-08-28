@@ -1,0 +1,6 @@
+# github.com/sbromberger/gompi
+../../go/pkg/mod/github.com/sbromberger/gompi@v0.2.0/mpi.go:18:10: fatal error: mpi.h: No such file or directory
+ #include "mpi.h"
+          ^~~~~~~
+compilation terminated.
+/var/spool/slurmd/job1136410/slurm_script: line 13: mpirun: command not found

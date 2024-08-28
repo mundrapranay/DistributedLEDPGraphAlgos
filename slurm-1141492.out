@@ -1,0 +1,43 @@
+2024/08/28 17:45:12 Running with 20 workers and 1 coordinator
+2024/08/28 17:45:12 Starting main loop, worker 0
+2024/08/28 17:45:12 Graph Loaded /home/pm886/palmer_scratch/graphs/dblp_20/19.txt by worker: 20
+2024/08/28 17:45:12 Starting main loop, worker 20
+2024/08/28 17:45:12 Graph Loaded /home/pm886/palmer_scratch/graphs/dblp_20/18.txt by worker: 19
+2024/08/28 17:45:12 Starting main loop, worker 19
+2024/08/28 17:45:12 Graph Loaded /home/pm886/palmer_scratch/graphs/dblp_20/15.txt by worker: 16
+2024/08/28 17:45:12 Starting main loop, worker 16
+2024/08/28 17:45:12 Graph Loaded /home/pm886/palmer_scratch/graphs/dblp_20/16.txt by worker: 17
+2024/08/28 17:45:12 Starting main loop, worker 17
+2024/08/28 17:45:12 Graph Loaded /home/pm886/palmer_scratch/graphs/dblp_20/14.txt by worker: 15
+2024/08/28 17:45:12 Starting main loop, worker 15
+2024/08/28 17:45:12 Graph Loaded /home/pm886/palmer_scratch/graphs/dblp_20/10.txt by worker: 11
+2024/08/28 17:45:12 Starting main loop, worker 11
+2024/08/28 17:45:12 Graph Loaded /home/pm886/palmer_scratch/graphs/dblp_20/13.txt by worker: 14
+2024/08/28 17:45:12 Graph Loaded /home/pm886/palmer_scratch/graphs/dblp_20/11.txt by worker: 12
+2024/08/28 17:45:12 Starting main loop, worker 12
+2024/08/28 17:45:12 Starting main loop, worker 14
+2024/08/28 17:45:12 Graph Loaded /home/pm886/palmer_scratch/graphs/dblp_20/12.txt by worker: 13
+2024/08/28 17:45:12 Starting main loop, worker 13
+2024/08/28 17:45:12 Graph Loaded /home/pm886/palmer_scratch/graphs/dblp_20/9.txt by worker: 10
+2024/08/28 17:45:12 Starting main loop, worker 10
+2024/08/28 17:45:12 Graph Loaded /home/pm886/palmer_scratch/graphs/dblp_20/8.txt by worker: 9
+2024/08/28 17:45:12 Starting main loop, worker 9
+2024/08/28 17:45:12 Graph Loaded /home/pm886/palmer_scratch/graphs/dblp_20/7.txt by worker: 8
+2024/08/28 17:45:12 Starting main loop, worker 8
+2024/08/28 17:45:12 Graph Loaded /home/pm886/palmer_scratch/graphs/dblp_20/17.txt by worker: 18
+2024/08/28 17:45:12 Starting main loop, worker 18
+2024/08/28 17:45:12 Graph Loaded /home/pm886/palmer_scratch/graphs/dblp_20/6.txt by worker: 7
+2024/08/28 17:45:12 Starting main loop, worker 7
+2024/08/28 17:45:12 Graph Loaded /home/pm886/palmer_scratch/graphs/dblp_20/5.txt by worker: 6
+2024/08/28 17:45:12 Starting main loop, worker 6
+2024/08/28 17:45:12 Graph Loaded /home/pm886/palmer_scratch/graphs/dblp_20/3.txt by worker: 4
+2024/08/28 17:45:12 Starting main loop, worker 4
+2024/08/28 17:45:12 Graph Loaded /home/pm886/palmer_scratch/graphs/dblp_20/2.txt by worker: 3
+2024/08/28 17:45:12 Starting main loop, worker 3
+2024/08/28 17:45:12 Graph Loaded /home/pm886/palmer_scratch/graphs/dblp_20/4.txt by worker: 5
+2024/08/28 17:45:12 Starting main loop, worker 5
+2024/08/28 17:45:12 Graph Loaded /home/pm886/palmer_scratch/graphs/dblp_20/1.txt by worker: 2
+2024/08/28 17:45:12 Starting main loop, worker 2
+2024/08/28 17:45:12 Graph Loaded /home/pm886/palmer_scratch/graphs/dblp_20/0.txt by worker: 1
+2024/08/28 17:45:12 Starting main loop, worker 1
+slurmstepd: error: *** JOB 1141492 ON r803u11n01 CANCELLED AT 2024-08-28T17:48:20 ***
