@@ -282,7 +282,7 @@ func KCoreLDPCoord(n int, psi float64, epsilon float64, factor float64, bias boo
 	currentLevels := make([]int32, n)
 	groupIndexToSend := make([]float64, 1)
 
-	log.Println("Starting main loop")
+	log.Printf("Starting main loop, worker %d", rank)
 	// main loop
 	for round := 0; round < numberOfRounds-2; round++ {
 		// coordinator gets current levels & group index, and broadcasts the same
