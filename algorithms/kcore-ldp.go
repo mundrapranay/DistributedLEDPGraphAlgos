@@ -298,6 +298,7 @@ func KCoreLDPCoord(n int, psi float64, epsilon float64, factor float64, bias boo
 			// broadcast
 			comm.BcastInt32s(currentLevels, 0)
 			comm.BcastFloat64s(groupIndexToSend, 0)
+			log.Printf("Data sent by coordinator for round %d", round)
 
 		} else {
 			offset := (rank - 1) * chunk
@@ -310,6 +311,7 @@ func KCoreLDPCoord(n int, psi float64, epsilon float64, factor float64, bias boo
 			nextLevels, permanentZeros := workerKCore(rank-1, round, superStep2GeomFactor, psi, groupIndexToSend[0], offset, workLoad, roundsParam, noise, graph, currentLevels)
 			comm.SendInt32s(nextLevels, 0, 0)
 			comm.SendInt32s(permanentZeros, 0, 1)
+			log.Printf("Data sent by worker %d for round %d", rank, round)
 		}
 
 		if rank == 0 {
@@ -318,6 +320,7 @@ func KCoreLDPCoord(n int, psi float64, epsilon float64, factor float64, bias boo
 				receivedNextLevels, _ = comm.RecvInt32s(worker, 0)
 				receivedPermanentZeros, _ = comm.RecvInt32s(worker, 1)
 				coordinator.updateLevels(worker-1, receivedNextLevels, receivedPermanentZeros, chunk)
+				log.Printf("Data received by coordinator from worker %d for round %d", worker, round)
 			}
 			log.Printf("Done with round %d", round)
 		}
