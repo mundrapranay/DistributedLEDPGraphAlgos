@@ -5,7 +5,7 @@
 #SBATCH --nodes=21
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=8
-#SBATCH --mem-per-cpu=8G
+#SBATCH --mem-per-cpu=3G
 
 sh load-modules.sh
 cd cmd
