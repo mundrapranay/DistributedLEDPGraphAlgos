@@ -338,9 +338,11 @@ func KCoreLDPCoord(n int, psi float64, epsilon float64, factor float64, bias boo
 	}
 
 	// estimate core numbers function
-	estimatedCoreNumbers := estimateCoreNumbers(coordinator.lds, n, psi, lambda, float64(levelsPerGroup))
-	endTime := time.Now()
+	//estimatedCoreNumbers := estimateCoreNumbers(coordinator.lds, n, psi, lambda, float64(levelsPerGroup))
+	//endTime := time.Now()
 	if rank == 0 {
+		estimatedCoreNumbers := estimateCoreNumbers(coordinator.lds, n, psi, lambda, float64(levelsPerGroup))
+		endTime := time.Now()
 		outputFile, err := os.Create(outputFileName)
 		if err != nil {
 			fmt.Println("Error creating file:", err)
