@@ -273,9 +273,10 @@ func KCoreLDPCoord(n int, psi float64, epsilon float64, factor float64, bias boo
 	}
 
 	var graph map[int]*KCoreVertex
-	if rank > 0 {
+	if rank != 0 {
 		offset := (rank - 1) * chunk
 		graph = loadGraphWorker(baseFileName+workerFileNames[rank-1], offset, superStep1GeomFactor, levelsPerGroup, bias, bias_factor, noise, false)
+		log.Printf("Graph Loaded %v by worker: %d", baseFileName+workerFileNames[rank-1], rank)
 	}
 
 	var currentLevels []int32
@@ -286,6 +287,7 @@ func KCoreLDPCoord(n int, psi float64, epsilon float64, factor float64, bias boo
 		groupIndex = 0
 	}
 
+	log.Println("Starting main loop")
 	// main loop
 	for round := 0; round < numberOfRounds-2; round++ {
 		// coordinator gets current levels & group index, and broadcasts the same
