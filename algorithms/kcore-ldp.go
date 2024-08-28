@@ -279,14 +279,13 @@ func KCoreLDPCoord(n int, psi float64, epsilon float64, factor float64, bias boo
 		log.Printf("Graph Loaded %v by worker: %d", baseFileName+workerFileNames[rank-1], rank)
 	}
 
-	currentLevels := make([]int32, n)
-	groupIndexToSend := make([]float64, 1)
-
 	log.Printf("Starting main loop, worker %d", rank)
 	// main loop
 	for round := 0; round < numberOfRounds-2; round++ {
 		// coordinator gets current levels & group index, and broadcasts the same
 		if rank == 0 {
+			currentLevels := make([]int32, n)
+			groupIndex := 0.0
 			for i := 0; i < n; i++ {
 				level, err := coordinator.lds.GetLevel(uint(i))
 				if err != nil {
@@ -294,13 +293,20 @@ func KCoreLDPCoord(n int, psi float64, epsilon float64, factor float64, bias boo
 				}
 				currentLevels[i] = int32(level)
 			}
-			groupIndexToSend[0] = float64(coordinator.lds.GroupForLevel(uint(round)))
+			groupIndex = float64(coordinator.lds.GroupForLevel(uint(round)))
 			// broadcast
-			comm.BcastInt32s(currentLevels, 0)
-			comm.BcastFloat64s(groupIndexToSend, 0)
-			log.Printf("Data sent by coordinator for round %d", round)
+			for worker := 1; worker <= numberOfWorkers; worker++ {
+				comm.SendInt32s(currentLevels, worker, 2)
+				comm.SendFloat64(groupIndex, worker, 3)
+				log.Printf("Data sent by coordinator for round %d to worker %d", round, worker)
+			}
+			//comm.BcastInt32s(currentLevels, 0)
+			//comm.BcastFloat64s(groupIndexToSend, 0)
+			//log.Printf("Data sent by coordinator for round %d", round)
 
 		} else {
+			currentLevelsWorkers, _ := comm.RecvInt32s(0, 2)
+			groupIndexWorkers, _ := comm.RecvFloat64(0, 3)
 			offset := (rank - 1) * chunk
 			var workLoad int
 			if rank == numberOfWorkers {
@@ -308,7 +314,7 @@ func KCoreLDPCoord(n int, psi float64, epsilon float64, factor float64, bias boo
 			} else {
 				workLoad = chunk
 			}
-			nextLevels, permanentZeros := workerKCore(rank-1, round, superStep2GeomFactor, psi, groupIndexToSend[0], offset, workLoad, roundsParam, noise, graph, currentLevels)
+			nextLevels, permanentZeros := workerKCore(rank-1, round, superStep2GeomFactor, psi, groupIndexWorkers, offset, workLoad, roundsParam, noise, graph, currentLevelsWorkers)
 			comm.SendInt32s(nextLevels, 0, 0)
 			comm.SendInt32s(permanentZeros, 0, 1)
 			log.Printf("Data sent by worker %d for round %d", rank, round)
@@ -317,8 +323,11 @@ func KCoreLDPCoord(n int, psi float64, epsilon float64, factor float64, bias boo
 		if rank == 0 {
 			for worker := 1; worker <= numberOfWorkers; worker++ {
 				var receivedNextLevels, receivedPermanentZeros []int32
-				receivedNextLevels, _ = comm.RecvInt32s(worker, 0)
-				receivedPermanentZeros, _ = comm.RecvInt32s(worker, 1)
+				var st1, st2 gompi.Status
+				receivedNextLevels, st1 = comm.RecvInt32s(worker, 0)
+				receivedPermanentZeros, st2 = comm.RecvInt32s(worker, 1)
+				log.Printf("next levels from worker %d status: %d", worker, st1.GetError())
+				log.Printf("permZeros from worker %d status: %d", worker, st2.GetError())
 				coordinator.updateLevels(worker-1, receivedNextLevels, receivedPermanentZeros, chunk)
 				log.Printf("Data received by coordinator from worker %d for round %d", worker, round)
 			}
