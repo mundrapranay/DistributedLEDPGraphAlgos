@@ -360,5 +360,5 @@ func KCoreLDPCoord(n int, psi float64, epsilon float64, factor float64, bias boo
 		fmt.Fprintf(outputFile, "Algorithm Time: %.8f\n", algoTime.Seconds())
 		outputFile.Close()
 	}
-	gompi.Stop()
+	//gompi.Stop()
 }
