@@ -323,6 +323,7 @@ func KCoreLDPCoord(n int, psi float64, epsilon float64, factor float64, bias boo
 				receivedPermanentZeros, _ = comm.RecvInt32s(worker, 1)
 				coordinator.updateLevels(worker-1, receivedNextLevels, receivedPermanentZeros, chunk)
 			}
+			log.Printf("Done with round %d", round)
 		}
 
 		comm.Barrier()
