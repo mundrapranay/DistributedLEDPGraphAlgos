@@ -8,7 +8,7 @@ eta: 0.9
 epsilon: 1.0
 psi: 0.5
 bias: true
-runs : 5
+runs : 1
 bias_factor: 8
 noise: true
 output_file_tag: "with_noise_gcp"

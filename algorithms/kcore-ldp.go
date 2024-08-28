@@ -307,6 +307,7 @@ func KCoreLDPCoord(n int, psi float64, epsilon float64, factor float64, bias boo
 		} else {
 			currentLevelsWorkers, _ := comm.RecvInt32s(0, 2)
 			groupIndexWorkers, _ := comm.RecvFloat64(0, 3)
+			log.Printf("SIze of currentLevels %d recieved by worker %d", len(currentLevelsWorkers), rank)
 			offset := (rank - 1) * chunk
 			var workLoad int
 			if rank == numberOfWorkers {
@@ -323,13 +324,13 @@ func KCoreLDPCoord(n int, psi float64, epsilon float64, factor float64, bias boo
 		if rank == 0 {
 			for worker := 1; worker <= numberOfWorkers; worker++ {
 				var receivedNextLevels, receivedPermanentZeros []int32
-				var st1, st2 gompi.Status
-				receivedNextLevels, st1 = comm.RecvInt32s(worker, 0)
-				receivedPermanentZeros, st2 = comm.RecvInt32s(worker, 1)
-				log.Printf("next levels from worker %d status: %d", worker, st1.GetError())
-				log.Printf("permZeros from worker %d status: %d", worker, st2.GetError())
+				//var st1, st2 gompi.Status
+				receivedNextLevels, _ = comm.RecvInt32s(worker, 0)
+				receivedPermanentZeros, _ = comm.RecvInt32s(worker, 1)
+				//log.Printf("next levels from worker %d status: %d", worker, st1.GetError())
+				//log.Printf("permZeros from worker %d status: %d", worker, st2.GetError())
 				coordinator.updateLevels(worker-1, receivedNextLevels, receivedPermanentZeros, chunk)
-				log.Printf("Data received by coordinator from worker %d for round %d", worker, round)
+				//log.Printf("Data received by coordinator from worker %d for round %d", worker, round)
 			}
 			log.Printf("Done with round %d", round)
 		}
@@ -358,4 +359,5 @@ func KCoreLDPCoord(n int, psi float64, epsilon float64, factor float64, bias boo
 		fmt.Fprintf(outputFile, "Algorithm Time: %.8f\n", algoTime.Seconds())
 		outputFile.Close()
 	}
+	gompi.Stop()
 }
