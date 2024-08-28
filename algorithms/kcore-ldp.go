@@ -279,13 +279,8 @@ func KCoreLDPCoord(n int, psi float64, epsilon float64, factor float64, bias boo
 		log.Printf("Graph Loaded %v by worker: %d", baseFileName+workerFileNames[rank-1], rank)
 	}
 
-	var currentLevels []int32
-	var groupIndex float64
-	var groupIndexToSend []float64
-	if rank == 0 {
-		currentLevels = make([]int32, n)
-		groupIndex = 0
-	}
+	currentLevels := make([]int32, n)
+	groupIndexToSend := make([]float64, 1)
 
 	log.Println("Starting main loop")
 	// main loop
@@ -299,8 +294,7 @@ func KCoreLDPCoord(n int, psi float64, epsilon float64, factor float64, bias boo
 				}
 				currentLevels[i] = int32(level)
 			}
-			groupIndex = float64(coordinator.lds.GroupForLevel(uint(round)))
-			groupIndexToSend = []float64{groupIndex}
+			groupIndexToSend[0] = float64(coordinator.lds.GroupForLevel(uint(round)))
 			// broadcast
 			comm.BcastInt32s(currentLevels, 0)
 			comm.BcastFloat64s(groupIndexToSend, 0)
