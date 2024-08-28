@@ -1,6 +1,6 @@
 #!/bin/sh
 #SBATCH --job-name=kcoreLDP
-#SBATCH --partition=day
+#SBATCH --partition=mpi
 #SBATCH --time=8:00:00
 #SBATCH --nodes=21
 #SBATCH --ntasks-per-node=1
