@@ -62,6 +62,7 @@ func (coord *KCoreCoordinator) updateLevels(workerID int, nextLevels []int32, pe
 
 	for vertexID, nextLevel := range nextLevels {
 		if nextLevel == 1 && permanentZeros[vertexID] != 0 {
+			log.Printf("Level Increased for Vertex: %v", vertexID+workerID*chunk)
 			err := coord.lds.LevelIncrease(uint(vertexID + workerID*chunk))
 			if err != nil {
 				log.Fatalf(err.Error())
