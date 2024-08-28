@@ -252,7 +252,8 @@ func TCountCoord(n int, phi float64, epsilon float64, factor float64, bias bool,
 	defer outputFile.Close()
 
 	startTime := time.Now()
-	lds := KCoreLDPTCount(n, phi, epsilon/4, factor, bias, bias_factor, noise, baseFileName, workerFileNames)
+	//lds := KCoreLDPTCount(n, phi, epsilon/4, factor, bias, bias_factor, noise, baseFileName, workerFileNames)
+	var lds datastructures.LDS
 	kcoreTime := time.Now()
 	kcore_time := kcoreTime.Sub(startTime)
 	fmt.Fprintf(outputFile, "KCore Time: %.8f\n", kcore_time.Seconds())
@@ -314,7 +315,7 @@ func TCountCoord(n int, phi float64, epsilon float64, factor float64, bias bool,
 		graph_v2 := worker_graphs_v2[i]
 		go func(workerID int, graph [][]int) {
 			offset := workerID * chunk
-			workerMaxOutDegree(workerID, n, epsilon/4, offset, graph_v2, lds, t_coordinator)
+			workerMaxOutDegree(workerID, n, epsilon/4, offset, graph_v2, &lds, t_coordinator)
 		}(i, graph_v2)
 		// worker_graphs_v2[i] = make([][]int, 1)
 	}
@@ -327,7 +328,7 @@ func TCountCoord(n int, phi float64, epsilon float64, factor float64, bias bool,
 		graph_v2 := worker_graphs_v2[i]
 		go func(workerID int, graph [][]int) {
 			offset := workerID * chunk
-			workerCountTriangles(workerID, epsilon/4, max_noisy_out_degree, offset, graph_v2, lds, t_coordinator)
+			workerCountTriangles(workerID, epsilon/4, max_noisy_out_degree, offset, graph_v2, &lds, t_coordinator)
 		}(i, graph_v2)
 		worker_graphs_v2[i] = make([][]int, 1)
 	}
