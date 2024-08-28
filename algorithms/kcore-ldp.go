@@ -50,9 +50,9 @@ func updateLevels(workerID int, nextLevels []int32, permanentZeros []int32, chun
 }
 
 // loadGraph loads the graph from a file.
-func loadGraphWorker(filename string, offset int, lambda float64, levels_per_group float64, bias bool, bias_factor int, noise bool, bidirectional bool) map[int]*KCoreVertex {
+func loadGraphWorker(filename string, offset int, lambda float64, levelsPerGroup float64, bias bool, biasFactor int, noise bool, bidirectional bool) map[int]*KCoreVertex {
 
-	processed_graph := make(map[int]*KCoreVertex)
+	processedGraph := make(map[int]*KCoreVertex)
 	graph, err := datastructures.NewGraph(filename, bidirectional)
 	if err != nil {
 		fmt.Printf(err.Error())
@@ -60,17 +60,17 @@ func loadGraphWorker(filename string, offset int, lambda float64, levels_per_gro
 
 	for node, neighbours := range graph.AdjacencyList {
 		degree := len(neighbours)
-		noised_degree := int64(degree)
+		noisedDegree := int64(degree)
 		if noise {
 			geomDist := distribution.NewGeomDistribution(lambda / 2.0)
-			noise_sampled := geomDist.TwoSidedGeometric()
-			noised_degree += noise_sampled
-			noised_degree -= int64(math.Min(float64(bias_factor)*float64((2*math.Exp(lambda))/(math.Exp(2*lambda)-1)), float64(noised_degree)))
+			noiseSampled := geomDist.TwoSidedGeometric()
+			noisedDegree += noiseSampled
+			noisedDegree -= int64(math.Min(float64(biasFactor)*float64((2*math.Exp(lambda))/(math.Exp(2*lambda)-1)), float64(noisedDegree)))
 			// to ensure degree is atleast 2
-			noised_degree += 1
+			noisedDegree += 1
 		}
 
-		threshold := math.Ceil(logAToBaseB(int(noised_degree), 2)) * levels_per_group
+		threshold := math.Ceil(logAToBaseB(int(noisedDegree), 2)) * levelsPerGroup
 		vertex := &KCoreVertex{
 			id:              node,
 			current_level:   0,
@@ -79,9 +79,9 @@ func loadGraphWorker(filename string, offset int, lambda float64, levels_per_gro
 			round_threshold: int(threshold) + 1,
 			neighbours:      neighbours,
 		}
-		processed_graph[node-offset] = vertex
+		processedGraph[node-offset] = vertex
 	}
-	return processed_graph
+	return processedGraph
 }
 
 func workerKCore(workerID int, round int, lambda float64, psi float64, group_index float64, offset int, workLoad int, rounds_param float64, noise bool, graph map[int]*KCoreVertex, currentLevels []int32) ([]int32, []int32) {
