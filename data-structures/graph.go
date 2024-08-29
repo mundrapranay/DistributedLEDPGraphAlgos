@@ -45,7 +45,7 @@ func NewGraph(filename string, bidirectional bool) (*Graph, error) {
 		}
 		adjacencyList[vertex] = neighbors1
 
-		// Uncomment the following lines if bidirectional edges are needed
+		// if bidirectional edges are needed
 		if bidirectional {
 			neighbors2 := adjacencyList[ngh]
 			neighbors2 = append(neighbors2, vertex)

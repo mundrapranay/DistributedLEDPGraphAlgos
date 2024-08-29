@@ -219,7 +219,7 @@ func estimateCoreNumbers(lds *datastructures.LDS, n int, phi float64, lambda flo
 //	return coordinator.lds
 //}
 
-func KCoreLDPCoord(n int, phi float64, epsilon float64, factor float64, bias bool, bias_factor int, noise bool, baseFileName string, workerFileNames []string, outputFileName string) {
+func KCoreLDPCoord(n int, phi float64, epsilon float64, factor float64, bias bool, biasFactor int, noise bool, baseFileName string, workerFileNames []string, outputFileName string) {
 
 	startTime := time.Now()
 	gompi.Start(false)
@@ -253,7 +253,7 @@ func KCoreLDPCoord(n int, phi float64, epsilon float64, factor float64, bias boo
 	var graph map[int]*KCoreVertex
 	if rank != 0 {
 		offset := (rank - 1) * chunk
-		graph = loadGraphWorker(baseFileName+workerFileNames[rank-1], offset, superStep1GeomFactor, levelsPerGroup, bias, bias_factor, noise, false)
+		graph = loadGraphWorker(baseFileName+workerFileNames[rank-1], offset, superStep1GeomFactor, levelsPerGroup, bias, biasFactor, noise, false)
 		log.Printf("Graph Loaded %v by worker: %d", baseFileName+workerFileNames[rank-1], rank)
 	}
 
