@@ -288,7 +288,7 @@ func KCoreLDPCoord(n int, phi float64, epsilon float64, factor float64, bias boo
 			currentLevelsWorkers, _ := comm.RecvInt32s(0, 2)
 			groupIndexWorkers, _ := comm.RecvFloat64(0, 3)
 			roundWorker, _ := comm.RecvInt32(0, 4)
-			log.Printf("SIze of currentLevels %d recieved by worker %d", len(currentLevelsWorkers), rank)
+			log.Printf("Size of currentLevels %d recieved by worker %d", len(currentLevelsWorkers), rank)
 			offset := (rank - 1) * chunk
 			var workLoad int
 			if rank == numberOfWorkers {
@@ -300,6 +300,9 @@ func KCoreLDPCoord(n int, phi float64, epsilon float64, factor float64, bias boo
 			comm.SendInt32s(nextLevels, 0, 0)
 			//comm.SendInt32s(permanentZeros, 0, 1)
 			log.Printf("Data sent by worker %d for round %d", rank, round)
+			currentLevelsWorkers = nil
+			groupIndexWorkers = 0.0
+			roundWorker = 0
 		}
 
 		if rank == 0 {
