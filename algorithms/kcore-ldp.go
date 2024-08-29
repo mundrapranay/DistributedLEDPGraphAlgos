@@ -263,7 +263,8 @@ func KCoreLDPCoord(n int, phi float64, epsilon float64, factor float64, bias boo
 		// coordinator gets current levels & group index, and broadcasts the same
 		if rank == 0 {
 			currentLevels := make([]int32, n)
-			groupIndex := 0.0
+			groupIndex := make([]float64, 1)
+			rounds := make([]int32, 1)
 			for i := 0; i < n; i++ {
 				level, err := lds.GetLevel(i)
 				if err != nil {
@@ -271,23 +272,36 @@ func KCoreLDPCoord(n int, phi float64, epsilon float64, factor float64, bias boo
 				}
 				currentLevels[i] = int32(level)
 			}
-			groupIndex = float64(lds.GroupForLevel(uint(round)))
+			groupIndex = append(groupIndex, float64(lds.GroupForLevel(round)))
+			rounds = append(rounds, int32(round))
 			log.Printf("Round %d, Group Index: %.4f", round, groupIndex)
 			// broadcast
-			for worker := 1; worker <= numberOfWorkers; worker++ {
-				comm.SendInt32s(currentLevels, worker, 2)
-				comm.SendFloat64(groupIndex, worker, 3)
-				comm.SendInt32(int32(round), worker, 4)
-				log.Printf("Data sent by coordinator for round %d to worker %d", round, worker)
-			}
+			//for worker := 1; worker <= numberOfWorkers; worker++ {
+			//	comm.SendInt32s(currentLevels, worker, 2)
+			//	comm.SendFloat64(groupIndex, worker, 3)
+			//	comm.SendInt32(int32(round), worker, 4)
+			//	log.Printf("Data sent by coordinator for round %d to worker %d", round, worker)
+			//}
+
 			//comm.BcastInt32s(currentLevels, 0)
 			//comm.BcastFloat64s(groupIndexToSend, 0)
 			//log.Printf("Data sent by coordinator for round %d", round)
+			comm.BcastInt32s(currentLevels, 0)
+			comm.BcastFloat64s(groupIndex, 0)
+			comm.BcastInt32s(rounds, 0)
 
 		} else {
-			currentLevelsWorkers, _ := comm.RecvInt32s(0, 2)
-			groupIndexWorkers, _ := comm.RecvFloat64(0, 3)
-			roundWorker, _ := comm.RecvInt32(0, 4)
+			//currentLevelsWorkers, _ := comm.RecvInt32s(0, 2)
+			//groupIndexWorkers, _ := comm.RecvFloat64(0, 3)
+			//roundWorker, _ := comm.RecvInt32(0, 4)
+			var currentLevelsWorkers []int32
+			var groupIndexWorkers []float64
+			var roundsWorkers []int32
+
+			// receive the broadcast data
+			comm.BcastInt32s(currentLevelsWorkers, 0)
+			comm.BcastFloat64s(groupIndexWorkers, 0)
+			comm.BcastInt32s(roundsWorkers, 0)
 			log.Printf("Size of currentLevels %d recieved by worker %d", len(currentLevelsWorkers), rank)
 			offset := (rank - 1) * chunk
 			var workLoad int
@@ -296,13 +310,13 @@ func KCoreLDPCoord(n int, phi float64, epsilon float64, factor float64, bias boo
 			} else {
 				workLoad = chunk
 			}
-			nextLevels := workerKCore(rank-1, int(roundWorker), superStep2GeomFactor, phi, groupIndexWorkers, offset, workLoad, roundsParam, noise, graph, currentLevelsWorkers)
+			nextLevels := workerKCore(rank-1, int(roundsWorkers[0]), superStep2GeomFactor, phi, groupIndexWorkers[0], offset, workLoad, roundsParam, noise, graph, currentLevelsWorkers)
 			comm.SendInt32s(nextLevels, 0, 0)
 			//comm.SendInt32s(permanentZeros, 0, 1)
 			log.Printf("Data sent by worker %d for round %d", rank, round)
-			currentLevelsWorkers = nil
-			groupIndexWorkers = 0.0
-			roundWorker = 0
+			//currentLevelsWorkers = nil
+			//groupIndexWorkers = nil
+			//roundWorker = 0
 		}
 
 		if rank == 0 {

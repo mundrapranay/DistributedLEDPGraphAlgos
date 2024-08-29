@@ -33,7 +33,7 @@ func KCoreCDPCoord(n int, phi float64, epsilon float64, factor float64, bias boo
 	fmt.Fprintf(outputFile, "Preprocessing Time: %.8f\n", preTime.Seconds())
 
 	for round := 0; round < number_of_rounds-2; round++ {
-		group_index := lds.GroupForLevel(uint(round))
+		group_index := lds.GroupForLevel(round)
 
 		for _, vertex := range graph {
 			if vertex.round_threshold == round {
@@ -102,7 +102,7 @@ func KCoreCDPACount(n int, phi float64, epsilon float64, factor float64, bias bo
 	graph := loadGraphWorker(graphFileName, 0, super_step1_geom_factor, levels_per_group, bias, bias_factor, noise, true)
 	lds := datastructures.NewLDS(n, levels_per_group)
 	for round := 0; round < number_of_rounds-2; round++ {
-		group_index := lds.GroupForLevel(uint(round))
+		group_index := lds.GroupForLevel(round)
 
 		for _, vertex := range graph {
 			if vertex.round_threshold == round {

@@ -52,6 +52,6 @@ func (lds *LDS) LevelIncrease(u int) error {
 	return nil
 }
 
-func (lds *LDS) GroupForLevel(level uint) uint {
-	return uint(math.Floor(float64(level) / lds.levelsPerGroup))
+func (lds *LDS) GroupForLevel(level int) int {
+	return int(math.Floor(float64(level) / lds.levelsPerGroup))
 }
