@@ -21,19 +21,19 @@ Run `sh setup.sh`
 We install golang, and make the necessary data and graph directory. All output files are stored in `${HOME}/results/` and graph files are stored as `${graph-name}_adj` in `${HOME}/graph-dp-experiments/graphs/`.
 
 ## Graphs
-- email-eu-core : https://snap.stanford.edu/data/email-Eu-core-temporal.html
-- wiki : https://snap.stanford.edu/data/wiki-Vote.html
-- enron : https://snap.stanford.edu/data/email-Enron.html
-- brightkite : https://snap.stanford.edu/data/loc-Brightkite.html
-- ego-twitter: https://snap.stanford.edu/data/ego-Twitter.html
-- gplus : https://snap.stanford.edu/data/ego-Gplus.html
-- stanford: https://snap.stanford.edu/data/web-Stanford.html
-- dBLP :
-- brain : 
-- orkut : 
-- livejournal :
-- twitter :
-- friendster : 
+- email-eu-core : https://storage.googleapis.com/ledp-graphs/graphs/email-eu-core_adj_f
+- wiki : https://storage.googleapis.com/ledp-graphs/graphs/wiki_adj_f
+- enron : https://storage.googleapis.com/ledp-graphs/graphs/enron_adj_f
+- brightkite : https://storage.googleapis.com/ledp-graphs/graphs/brightkite_adj_f
+- ego-twitter: https://storage.googleapis.com/ledp-graphs/graphs/ego-twitter_adj_f
+- gplus : https://storage.googleapis.com/ledp-graphs/graphs/gplus_adj_f
+- stanford: https://storage.googleapis.com/ledp-graphs/graphs/stanford_adj_f
+- dblp : https://storage.googleapis.com/ledp-graphs/graphs/dblp_adj_f
+- brain : https://storage.googleapis.com/ledp-graphs/graphs/brain_adj
+- orkut : https://storage.googleapis.com/ledp-graphs/graphs/orkut_adj
+- livejournal : https://storage.googleapis.com/ledp-graphs/graphs/livejournal_adj
+- twitter : https://storage.googleapis.com/ledp-graphs/graphs/twitter_adj
+- friendster : https://storage.googleapis.com/ledp-graphs/graphs/friendster_adj
 
 Note: Use the following script the format Gplus: https://github.com/TriangleLDP/TriangleLDP/blob/main/python/ReadGPlus.py
 
