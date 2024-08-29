@@ -4,9 +4,8 @@ graph_sizes:
   - 58228
 algo_name: triangle_counting
 num_workers: 81
-eta: 0.9
 epsilon: 1.0
-psi: 0.5
+phi: 0.5
 bias: true
 bias_factor: 8
 runs: 5

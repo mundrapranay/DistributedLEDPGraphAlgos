@@ -4,9 +4,8 @@ graph_sizes:
   - 3072441
 algo_name: kcoreLDP
 num_workers: 81
-eta: 0.9
 epsilon: 0.5
-psi: 0.5
+phi: 0.5
 bias: true
 bias_factor: 8
 runs: 1
