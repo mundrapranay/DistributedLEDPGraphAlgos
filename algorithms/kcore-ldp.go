@@ -218,7 +218,7 @@ func estimateCoreNumbers(lds *datastructures.LDS, n int, phi float64, lambda flo
 //	return coordinator.lds
 //}
 
-func KCoreLDPCoord(n int, psi float64, epsilon float64, factor float64, bias bool, bias_factor int, noise bool, baseFileName string, workerFileNames []string, outputFileName string) {
+func KCoreLDPCoord(n int, phi float64, epsilon float64, factor float64, bias bool, bias_factor int, noise bool, baseFileName string, workerFileNames []string, outputFileName string) {
 
 	startTime := time.Now()
 	gompi.Start(false)
@@ -232,8 +232,8 @@ func KCoreLDPCoord(n int, psi float64, epsilon float64, factor float64, bias boo
 		log.Printf("Running with %d workers and 1 coordinator", numberOfWorkers)
 	}
 
-	levelsPerGroup := math.Ceil(logAToBaseB(n, 1.0+psi)) / 4
-	roundsParam := math.Ceil(4.0 * math.Pow(logAToBaseB(n, 1.0+psi), 1.2))
+	levelsPerGroup := math.Ceil(logAToBaseB(n, 1.0+phi)) / 4
+	roundsParam := math.Ceil(4.0 * math.Pow(logAToBaseB(n, 1.0+phi), 1.2))
 	numberOfRounds := int(roundsParam)
 	lambda := 0.5
 	superStep1GeomFactor := epsilon * factor
@@ -293,7 +293,7 @@ func KCoreLDPCoord(n int, psi float64, epsilon float64, factor float64, bias boo
 			} else {
 				workLoad = chunk
 			}
-			nextLevels, permanentZeros := workerKCore(rank-1, round, superStep2GeomFactor, psi, groupIndexWorkers, offset, workLoad, roundsParam, noise, graph, currentLevelsWorkers)
+			nextLevels, permanentZeros := workerKCore(rank-1, round, superStep2GeomFactor, phi, groupIndexWorkers, offset, workLoad, roundsParam, noise, graph, currentLevelsWorkers)
 			comm.SendInt32s(nextLevels, 0, 0)
 			comm.SendInt32s(permanentZeros, 0, 1)
 			log.Printf("Data sent by worker %d for round %d", rank, round)
@@ -320,7 +320,7 @@ func KCoreLDPCoord(n int, psi float64, epsilon float64, factor float64, bias boo
 	//estimatedCoreNumbers := estimateCoreNumbers(coordinator.lds, n, psi, lambda, float64(levelsPerGroup))
 	//endTime := time.Now()
 	if rank == 0 {
-		estimatedCoreNumbers := estimateCoreNumbers(lds, n, psi, lambda, levelsPerGroup)
+		estimatedCoreNumbers := estimateCoreNumbers(lds, n, phi, lambda, levelsPerGroup)
 		endTime := time.Now()
 		outputFile, err := os.Create(outputFileName)
 		if err != nil {

@@ -14,9 +14,8 @@ type ExpirementConfig struct {
 	Graph_Sizes []int    `yaml:"graph_sizes"`
 	AlgoName    string   `yaml:"algo_name"`
 	Num_Workers int      `yaml:"num_workers"`
-	Eta         float64  `yaml:"eta"`
 	Epsilon     float64  `yaml:"epsilon"`
-	Psi         float64  `yaml:"psi"`
+	Phi         float64  `yaml:"phi"`
 	Bias        bool     `yaml:"bias"`
 	Bias_Factor int      `yaml:"bias_factor"`
 	Runs        int      `yaml:"runs"`
@@ -55,13 +54,13 @@ func Runner(fileName string, workers int) {
 			for bf := exp_config.Bias_Factor; bf <= exp_config.Bias_Factor; bf++ {
 				outputFile = fmt.Sprintf("/home/pm886/palmer_scratch/%s_%s_%.2f_%d_%d_%d_%d_%d_%.2f_%s.txt", graph, exp_config.AlgoName, factor, b2i[exp_config.Bias], b2i[exp_config.Noise], bf, run_id, exp_config.Num_Workers, exp_config.Epsilon, exp_config.ExpTag)
 				if exp_config.AlgoName == "kcoreCDP" {
-					algorithms.KCoreCDPCoord(graph_size, exp_config.Psi, exp_config.Epsilon, factor, exp_config.Bias, bf, exp_config.Noise, graph_loc, outputFile)
+					algorithms.KCoreCDPCoord(graph_size, exp_config.Phi, exp_config.Epsilon, factor, exp_config.Bias, bf, exp_config.Noise, graph_loc, outputFile)
 				} else if exp_config.AlgoName == "kcoreLDP" {
-					algorithms.KCoreLDPCoord(graph_size, exp_config.Psi, exp_config.Epsilon, factor, exp_config.Bias, bf, exp_config.Noise, baseFileName, workerFilesNames, outputFile)
+					algorithms.KCoreLDPCoord(graph_size, exp_config.Phi, exp_config.Epsilon, factor, exp_config.Bias, bf, exp_config.Noise, baseFileName, workerFilesNames, outputFile)
 				} else if exp_config.AlgoName == "triangle_countingLDP" {
-					algorithms.TCountCoord(graph_size, exp_config.Psi, exp_config.Epsilon, factor, exp_config.Bias, exp_config.Bias_Factor, exp_config.Noise, baseFileName, workerFilesNames, outputFile)
+					algorithms.TCountCoord(graph_size, exp_config.Phi, exp_config.Epsilon, factor, exp_config.Bias, exp_config.Bias_Factor, exp_config.Noise, baseFileName, workerFilesNames, outputFile)
 				} else if exp_config.AlgoName == "triangle_countingCDP" {
-					algorithms.TriangleCountingCDP(graph_size, exp_config.Psi, exp_config.Epsilon, factor, exp_config.Bias, exp_config.Bias_Factor, exp_config.Noise, graph_loc, outputFile)
+					algorithms.TriangleCountingCDP(graph_size, exp_config.Phi, exp_config.Epsilon, factor, exp_config.Bias, exp_config.Bias_Factor, exp_config.Noise, graph_loc, outputFile)
 				}
 				fmt.Printf("Done with Exp:%s_%.2f_%t_%d\n", graph, factor, exp_config.Bias, bf)
 			}
