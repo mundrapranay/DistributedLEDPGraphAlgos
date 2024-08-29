@@ -286,9 +286,13 @@ func KCoreLDPCoord(n int, phi float64, epsilon float64, factor float64, bias boo
 			//log.Printf("Data sent by coordinator for round %d", round)
 
 		} else {
-			currentLevelsWorkers, _ := comm.RecvInt32s(0, 2)
-			groupIndexWorkers, _ := comm.RecvFloat64(0, 3)
-			roundWorker, _ := comm.RecvInt32(0, 4)
+			var currentLevelsWorkers []int32
+			var groupIndexWorkers float64
+			var roundWorker int32
+
+			currentLevelsWorkers, _ = comm.RecvInt32s(0, 2)
+			groupIndexWorkers, _ = comm.RecvFloat64(0, 3)
+			roundWorker, _ = comm.RecvInt32(0, 4)
 			log.Printf("Size of currentLevels %d recieved by worker %d for round %d", len(currentLevelsWorkers), rank, roundWorker)
 			offset := (rank - 1) * chunk
 			var workLoad int
@@ -315,7 +319,7 @@ func KCoreLDPCoord(n int, phi float64, epsilon float64, factor float64, bias boo
 				//log.Printf("next levels from worker %d status: %d", worker, st1.GetError())
 				//log.Printf("permZeros from worker %d status: %d", worker, st2.GetError())
 				updateLevels(worker-1, receivedNextLevels, chunk, lds)
-				receivedNextLevels = nil
+				//receivedNextLevels = nil
 				//log.Printf("Data received by coordinator from worker %d for round %d", worker, round)
 			}
 			log.Printf("Done with round %d", round)
