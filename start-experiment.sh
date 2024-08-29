@@ -1,7 +1,7 @@
 #!/bin/sh
 #SBATCH --job-name=kcoreLDP
 #SBATCH --partition=day
-#SBATCH --time=8:00:00
+#SBATCH --time=00:10:00
 #SBATCH --nodes=64
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=4
