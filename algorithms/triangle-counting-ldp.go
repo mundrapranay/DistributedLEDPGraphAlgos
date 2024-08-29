@@ -167,12 +167,12 @@ func workerMaxOutDegree(workerID int, n int, epsilon float64, offset int, graph 
 	for id, neighbours := range graph {
 		// only keep outgoing edges
 		var outgoing_edges []int
-		node_level, err := lds.GetLevel(uint(id + offset))
+		node_level, err := lds.GetLevel(id + offset)
 		if err != nil {
 			fmt.Println(err.Error())
 		}
 		for _, neighbour := range neighbours {
-			j_level, err := lds.GetLevel(uint(neighbour))
+			j_level, err := lds.GetLevel(neighbour)
 			if err != nil {
 				fmt.Println(err.Error())
 			}
@@ -207,12 +207,12 @@ func workerCountTriangles(workerID int, epsilon float64, noisy_out_degree float6
 		localTCount := 0.0
 		// only keep outgoing edges
 		var outgoing_edges []int
-		node_level, err := lds.GetLevel(uint(id + offset))
+		node_level, err := lds.GetLevel(id + offset)
 		if err != nil {
 			fmt.Println(err.Error())
 		}
 		for _, neighbour := range neighbours {
-			j_level, err := lds.GetLevel(uint(neighbour))
+			j_level, err := lds.GetLevel(neighbour)
 			if err != nil {
 				fmt.Println(err.Error())
 			}

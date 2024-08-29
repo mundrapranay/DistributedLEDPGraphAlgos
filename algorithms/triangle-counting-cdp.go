@@ -114,12 +114,12 @@ func TriangleCountingCDP(n int, psi float64, epsilon float64, factor float64, bi
 	for id, neighbours := range graph {
 		// only keep outgoing edges
 		var outgoing_edges []int
-		node_level, err := lds.GetLevel(uint(id))
+		node_level, err := lds.GetLevel(id)
 		if err != nil {
 			fmt.Println(err.Error())
 		}
 		for _, neighbour := range neighbours {
-			j_level, err := lds.GetLevel(uint(neighbour))
+			j_level, err := lds.GetLevel(neighbour)
 			if err != nil {
 				fmt.Println(err.Error())
 			}
@@ -149,12 +149,12 @@ func TriangleCountingCDP(n int, psi float64, epsilon float64, factor float64, bi
 		localTCount := 0.0
 		// only keep outgoing edges
 		var outgoing_edges []int
-		node_level, err := lds.GetLevel(uint(id))
+		node_level, err := lds.GetLevel(id)
 		if err != nil {
 			fmt.Println(err.Error())
 		}
 		for _, neighbour := range neighbours {
-			j_level, err := lds.GetLevel(uint(neighbour))
+			j_level, err := lds.GetLevel(neighbour)
 			if err != nil {
 				fmt.Println(err.Error())
 			}
