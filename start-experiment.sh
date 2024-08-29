@@ -1,12 +1,11 @@
 #!/bin/sh
 #SBATCH --job-name=kcoreLDP
-#SBATCH --partition=mpi
+#SBATCH --partition=day
 #SBATCH --time=8:00:00
-#SBATCH --nodes=21
+#SBATCH --nodes=81
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=8
-#SBATCH --mem=0
-#SBATCH --exclusive
+#SBATCH --mem-per-cpu=8G
 
 #sh load-modules.sh
 ml Go/1.21.4 OpenMPI/4.1.4-GCC-12.2.0
