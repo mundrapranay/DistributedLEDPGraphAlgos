@@ -40,7 +40,7 @@ func KCoreCDPCoord(n int, phi float64, epsilon float64, factor float64, bias boo
 				vertex.permanent_zero = 0
 			}
 
-			vertex_level, err := lds.GetLevel(uint(vertex.id))
+			vertex_level, err := lds.GetLevel(vertex.id)
 			if err != nil {
 				fmt.Printf(err.Error())
 			}
@@ -49,7 +49,7 @@ func KCoreCDPCoord(n int, phi float64, epsilon float64, factor float64, bias boo
 			if vertex.current_level == round && vertex.permanent_zero != 0 {
 				neighbor_count := 0
 				for _, ngh := range vertex.neighbours {
-					ngh_level, err := lds.GetLevel(uint(ngh))
+					ngh_level, err := lds.GetLevel(ngh)
 					if err != nil {
 						fmt.Printf(err.Error())
 					}
@@ -77,7 +77,7 @@ func KCoreCDPCoord(n int, phi float64, epsilon float64, factor float64, bias boo
 
 		for _, vertex := range graph {
 			if vertex.next_level == 1 && vertex.permanent_zero != 0 {
-				lds.LevelIncrease(uint(vertex.id))
+				lds.LevelIncrease(vertex.id)
 			}
 		}
 	}
@@ -109,7 +109,7 @@ func KCoreCDPACount(n int, phi float64, epsilon float64, factor float64, bias bo
 				vertex.permanent_zero = 0
 			}
 
-			vertex_level, err := lds.GetLevel(uint(vertex.id))
+			vertex_level, err := lds.GetLevel(vertex.id)
 			if err != nil {
 				fmt.Printf(err.Error())
 			}
@@ -118,7 +118,7 @@ func KCoreCDPACount(n int, phi float64, epsilon float64, factor float64, bias bo
 			if vertex.current_level == round && vertex.permanent_zero != 0 {
 				neighbor_count := 0
 				for _, ngh := range vertex.neighbours {
-					ngh_level, err := lds.GetLevel(uint(ngh))
+					ngh_level, err := lds.GetLevel(ngh)
 					if err != nil {
 						fmt.Printf(err.Error())
 					}
@@ -156,7 +156,7 @@ func KCoreCDPACount(n int, phi float64, epsilon float64, factor float64, bias bo
 
 		for _, vertex := range graph {
 			if vertex.next_level == 1 && vertex.permanent_zero != 0 {
-				lds.LevelIncrease(uint(vertex.id))
+				lds.LevelIncrease(vertex.id)
 			}
 		}
 	}

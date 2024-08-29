@@ -37,11 +37,12 @@ type KCoreVertex struct {
 //	}
 //}
 
-func updateLevels(workerID int, nextLevels []int32, permanentZeros []int32, chunk int, lds *datastructures.LDS) {
+func updateLevels(workerID int, nextLevels []int32, chunk int, lds *datastructures.LDS) {
 	for vertexID, nextLevel := range nextLevels {
-		if nextLevel == 1 && permanentZeros[vertexID] != 0 {
+		//if nextLevel == 1 && permanentZeros[vertexID] != 0 {
+		if nextLevel == 1 {
 			//log.Printf("Level Increased for Vertex: %v", vertexID+workerID*chunk)
-			err := lds.LevelIncrease(uint(vertexID + workerID*chunk))
+			err := lds.LevelIncrease(vertexID + workerID*chunk)
 			if err != nil {
 				log.Fatalf(err.Error())
 			}
@@ -84,19 +85,19 @@ func loadGraphWorker(filename string, offset int, lambda float64, levelsPerGroup
 	return processedGraph
 }
 
-func workerKCore(workerID int, round int, lambda float64, psi float64, group_index float64, offset int, workLoad int, rounds_param float64, noise bool, graph map[int]*KCoreVertex, currentLevels []int32) ([]int32, []int32) {
+func workerKCore(workerID int, round int, lambda float64, psi float64, group_index float64, offset int, workLoad int, rounds_param float64, noise bool, graph map[int]*KCoreVertex, currentLevels []int32) []int32 {
 
 	// perform computation for each vertex
 	nextLevels := make([]int32, workLoad)
-	permanentZeros := make([]int32, workLoad)
-	for i := 0; i < len(permanentZeros); i++ {
-		permanentZeros[i] = 1
+	//permanentZeros := make([]int32, workLoad)
+	for i := 0; i < len(nextLevels); i++ {
+		//permanentZeros[i] = 1
 		nextLevels[i] = 0
 	}
 	for _, vertex := range graph {
 		if vertex.round_threshold == round {
 			vertex.permanent_zero = 0
-			permanentZeros[vertex.id-offset] = 0
+			//permanentZeros[vertex.id-offset] = 0
 		}
 		vertexLevel := int(currentLevels[vertex.id])
 		vertex.current_level = int(vertexLevel)
@@ -123,14 +124,14 @@ func workerKCore(workerID int, round int, lambda float64, psi float64, group_ind
 				nextLevels[vertex.id-offset] = 1
 			} else {
 				vertex.permanent_zero = 0
-				permanentZeros[vertex.id-offset] = 0
+				//permanentZeros[vertex.id-offset] = 0
 			}
 		}
 	}
 	//data_to_send := [2][]int{nextLevels, permanentZeros}
 	//coordinator.sendData(workerID, data_to_send)
 	//coordinator.worker_wg.Done()
-	return nextLevels, permanentZeros
+	return nextLevels
 }
 
 func logAToBaseB(a int, b float64) float64 {
@@ -142,7 +143,7 @@ func estimateCoreNumbers(lds *datastructures.LDS, n int, phi float64, lambda flo
 	twoPlusLambda := 2.0 + lambda
 	onePlusPhi := 1.0 + phi
 	for i := 0; i < n; i++ {
-		nodeLevel, err := lds.GetLevel(uint(i))
+		nodeLevel, err := lds.GetLevel(i)
 		if err != nil {
 			fmt.Printf(err.Error())
 		}
@@ -264,7 +265,7 @@ func KCoreLDPCoord(n int, phi float64, epsilon float64, factor float64, bias boo
 			currentLevels := make([]int32, n)
 			groupIndex := 0.0
 			for i := 0; i < n; i++ {
-				level, err := lds.GetLevel(uint(i))
+				level, err := lds.GetLevel(i)
 				if err != nil {
 					log.Fatalf(err.Error())
 				}
@@ -276,6 +277,7 @@ func KCoreLDPCoord(n int, phi float64, epsilon float64, factor float64, bias boo
 			for worker := 1; worker <= numberOfWorkers; worker++ {
 				comm.SendInt32s(currentLevels, worker, 2)
 				comm.SendFloat64(groupIndex, worker, 3)
+				comm.SendInt32(int32(round), worker, 4)
 				log.Printf("Data sent by coordinator for round %d to worker %d", round, worker)
 			}
 			//comm.BcastInt32s(currentLevels, 0)
@@ -285,6 +287,7 @@ func KCoreLDPCoord(n int, phi float64, epsilon float64, factor float64, bias boo
 		} else {
 			currentLevelsWorkers, _ := comm.RecvInt32s(0, 2)
 			groupIndexWorkers, _ := comm.RecvFloat64(0, 3)
+			roundWorker, _ := comm.RecvInt32(0, 4)
 			log.Printf("SIze of currentLevels %d recieved by worker %d", len(currentLevelsWorkers), rank)
 			offset := (rank - 1) * chunk
 			var workLoad int
@@ -293,21 +296,21 @@ func KCoreLDPCoord(n int, phi float64, epsilon float64, factor float64, bias boo
 			} else {
 				workLoad = chunk
 			}
-			nextLevels, permanentZeros := workerKCore(rank-1, round, superStep2GeomFactor, phi, groupIndexWorkers, offset, workLoad, roundsParam, noise, graph, currentLevelsWorkers)
+			nextLevels := workerKCore(rank-1, int(roundWorker), superStep2GeomFactor, phi, groupIndexWorkers, offset, workLoad, roundsParam, noise, graph, currentLevelsWorkers)
 			comm.SendInt32s(nextLevels, 0, 0)
-			comm.SendInt32s(permanentZeros, 0, 1)
+			//comm.SendInt32s(permanentZeros, 0, 1)
 			log.Printf("Data sent by worker %d for round %d", rank, round)
 		}
 
 		if rank == 0 {
 			for worker := 1; worker <= numberOfWorkers; worker++ {
-				var receivedNextLevels, receivedPermanentZeros []int32
+				var receivedNextLevels []int32
 				//var st1, st2 gompi.Status
 				receivedNextLevels, _ = comm.RecvInt32s(worker, 0)
-				receivedPermanentZeros, _ = comm.RecvInt32s(worker, 1)
+				//receivedPermanentZeros, _ = comm.RecvInt32s(worker, 1)
 				//log.Printf("next levels from worker %d status: %d", worker, st1.GetError())
 				//log.Printf("permZeros from worker %d status: %d", worker, st2.GetError())
-				updateLevels(worker-1, receivedNextLevels, receivedPermanentZeros, chunk, lds)
+				updateLevels(worker-1, receivedNextLevels, chunk, lds)
 				//log.Printf("Data received by coordinator from worker %d for round %d", worker, round)
 			}
 			log.Printf("Done with round %d", round)

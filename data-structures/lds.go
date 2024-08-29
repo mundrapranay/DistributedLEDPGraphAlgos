@@ -11,7 +11,7 @@ func GroupDegree(group int, phi float64) float64 {
 }
 
 type LDSVertex struct {
-	Level uint
+	Level int
 }
 
 type LDS struct {
@@ -33,18 +33,18 @@ func NewLDS(n int, levelsPerGroup float64) *LDS {
 	}
 }
 
-func (lds *LDS) GetLevel(ngh uint) (uint, error) {
+func (lds *LDS) GetLevel(ngh int) (int, error) {
 	// lds.lock.RLock()
 	// defer lds.lock.RUnlock()
 
-	if int(ngh) >= lds.n {
+	if ngh >= lds.n {
 		return 0, fmt.Errorf("vertex index %v out of bounds\n", ngh)
 	}
 	return lds.L[ngh].Level, nil
 }
 
-func (lds *LDS) LevelIncrease(u uint) error {
-	if int(u) >= lds.n {
+func (lds *LDS) LevelIncrease(u int) error {
+	if u >= lds.n {
 		return fmt.Errorf("vertex index %v out of bounds\n", u)
 	}
 	lds.L[u].Level++
