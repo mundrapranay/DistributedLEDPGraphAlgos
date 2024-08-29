@@ -6,7 +6,7 @@ algo_name: kcoreLDP
 num_workers: 80
 eta: 0.9
 epsilon: 1.0
-psi: 0.5
+phi: 0.5
 bias: true
 runs : 1
 bias_factor: 8
