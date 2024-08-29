@@ -4,7 +4,7 @@
 #SBATCH --time=8:00:00
 #SBATCH --nodes=81
 #SBATCH --ntasks-per-node=1
-#SBATCH --cpus-per-task=8
+#SBATCH --cpus-per-task=4
 #SBATCH --mem-per-cpu=8G
 
 #sh load-modules.sh
