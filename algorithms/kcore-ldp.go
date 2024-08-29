@@ -137,7 +137,7 @@ func logAToBaseB(a int, b float64) float64 {
 	return math.Log2(float64(a)) / math.Log2(b)
 }
 
-func estimateCoreNumbers(lds *datastructures.LDS, n int, phi float64, lambda float64, levels_per_group float64) []float64 {
+func estimateCoreNumbers(lds *datastructures.LDS, n int, phi float64, lambda float64, levelsPerGroup float64) []float64 {
 	coreNumbers := make([]float64, n)
 	twoPlusLambda := 2.0 + lambda
 	onePlusPhi := 1.0 + phi
@@ -147,7 +147,7 @@ func estimateCoreNumbers(lds *datastructures.LDS, n int, phi float64, lambda flo
 			fmt.Printf(err.Error())
 		}
 		fracNumerator := nodeLevel + 1.0
-		power := math.Max(math.Floor(float64(fracNumerator)/levels_per_group)-1.0, 0.0)
+		power := math.Max(math.Floor(float64(fracNumerator)/levelsPerGroup)-1.0, 0.0)
 		coreNumbers[i] = twoPlusLambda * math.Pow(onePlusPhi, power)
 	}
 	return coreNumbers
