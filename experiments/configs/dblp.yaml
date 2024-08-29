@@ -9,7 +9,7 @@ epsilon: 1.0
 phi: 0.5
 bias: true
 runs : 1
-bias_factor: 10
+bias_factor: 8
 noise: true
 output_file_tag: "with_noise_grace"
 graph_loc: "/home/pm886/palmer_scratch/graphs/dblp_80/"

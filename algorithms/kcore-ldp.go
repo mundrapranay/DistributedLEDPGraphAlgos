@@ -311,6 +311,7 @@ func KCoreLDPCoord(n int, phi float64, epsilon float64, factor float64, bias boo
 				//log.Printf("next levels from worker %d status: %d", worker, st1.GetError())
 				//log.Printf("permZeros from worker %d status: %d", worker, st2.GetError())
 				updateLevels(worker-1, receivedNextLevels, chunk, lds)
+				receivedNextLevels = nil
 				//log.Printf("Data received by coordinator from worker %d for round %d", worker, round)
 			}
 			log.Printf("Done with round %d", round)
