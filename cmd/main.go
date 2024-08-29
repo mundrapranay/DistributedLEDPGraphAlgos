@@ -11,7 +11,7 @@ func main() {
 	var configFile string
 	var workers int
 	flag.StringVar(&configFile, "config_file", "dblp.yaml", "path to the configuration file")
-	flag.IntVar(&workers, "workers", 81, "number of workers")
+	flag.IntVar(&workers, "workers", 80, "number of workers")
 	flag.Parse()
 
 	if configFile == "" {

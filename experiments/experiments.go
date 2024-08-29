@@ -38,7 +38,7 @@ func Runner(fileName string, workers int) {
 		fmt.Printf("error unmarshalling YAML: %v\n", err)
 	}
 
-	exp_config.NumWorkers = workers
+	//exp_config.NumWorkers = workers
 	var workerFilesNames []string
 	for i := 0; i < exp_config.NumWorkers; i++ {
 		workerFilesNames = append(workerFilesNames, fmt.Sprintf("%d.txt", i))

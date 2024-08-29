@@ -2,7 +2,7 @@
 #SBATCH --job-name=kcoreLDP
 #SBATCH --partition=mpi
 #SBATCH --time=8:00:00
-#SBATCH --nodes=81
+#SBATCH --nodes=64
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=4
 #SBATCH --mem-per-cpu=3G
