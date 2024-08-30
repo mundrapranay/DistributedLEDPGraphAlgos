@@ -4,8 +4,8 @@
 #SBATCH --time=00:10:00
 #SBATCH --nodes=64
 #SBATCH --ntasks-per-node=1
-#SBATCH --cpus-per-task=8
-#SBATCH --mem-per-cpu=10G
+#SBATCH --cpus-per-task=4
+#SBATCH --mem=0
 
 #sh load-modules.sh
 ml Go/1.21.4 OpenMPI/4.1.4-GCC-12.2.0
