@@ -10,5 +10,5 @@ bias: true
 runs : 1
 bias_factor: 8
 noise: true
-output_file_tag: "with_noise_grace_4_day"
+output_file_tag: "with_noise_grace_5_day"
 graph_loc: "/home/pm886/palmer_scratch/graphs/dblp_63/"
