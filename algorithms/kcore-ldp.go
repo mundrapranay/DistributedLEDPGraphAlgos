@@ -89,7 +89,7 @@ func loadGraphWorker(filename string, offset int, lambda float64, levels_per_gro
 	return processed_graph
 }
 
-func workerKCore(workerID int, round int, lambda float64, psi float64, group_index float64, offset int, workLoad int, rounds_param float64, noise bool, graph map[int]*KCoreVertex, coordinator *KCoreCoordinator) {
+func workerKCore(workerID int, round int, lambda float64, psi float64, group_index float64, offset int, workLoad int, rounds_param float64, noise bool, graph map[int]*KCoreVertex, coordinator *KCoreCoordinator, lds *datastructures.LDS) {
 
 	// perform computation for each vertex
 	nextLevels := make([]int, workLoad)
@@ -103,7 +103,7 @@ func workerKCore(workerID int, round int, lambda float64, psi float64, group_ind
 			vertex.permanent_zero = 0
 			permanentZeros[vertex.id-offset] = 0
 		}
-		vertex_level, err := coordinator.lds.GetLevel(uint(vertex.id))
+		vertex_level, err := lds.GetLevel(uint(vertex.id))
 		if err != nil {
 			fmt.Printf(err.Error())
 		}
@@ -111,7 +111,7 @@ func workerKCore(workerID int, round int, lambda float64, psi float64, group_ind
 		if vertex.current_level == round && vertex.permanent_zero != 0 {
 			neighbor_count := 0
 			for _, ngh := range vertex.neighbours {
-				ngh_level, err := coordinator.lds.GetLevel(uint(ngh))
+				ngh_level, err := lds.GetLevel(uint(ngh))
 				if err != nil {
 					fmt.Printf(err.Error())
 				}
@@ -210,7 +210,7 @@ func KCoreLDPTCount(n int, psi float64, epsilon float64, factor float64, bias bo
 				} else {
 					workLoad = chunk
 				}
-				workerKCore(workerID, r, super_step2_geom_factor, psi, float64(group_index), offset, workLoad, rounds_param, noise, graph, coordinator)
+				workerKCore(workerID, r, super_step2_geom_factor, psi, float64(group_index), offset, workLoad, rounds_param, noise, graph, coordinator, coordinator.lds)
 			}(i, round, graph)
 		}
 
@@ -287,7 +287,7 @@ func KCoreLDPCoord(n int, psi float64, epsilon float64, factor float64, bias boo
 				} else {
 					workLoad = chunk
 				}
-				workerKCore(workerID, r, super_step2_geom_factor, psi, float64(group_index), offset, workLoad, rounds_param, noise, graph, coordinator)
+				workerKCore(workerID, r, super_step2_geom_factor, psi, float64(group_index), offset, workLoad, rounds_param, noise, graph, coordinator, coordinator.lds)
 			}(i, round, graph)
 		}
 
