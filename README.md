@@ -28,7 +28,7 @@ We install golang, and make the necessary data and graph directory. All output f
 - ego-twitter: https://storage.googleapis.com/ledp-graphs/graphs/ego-twitter_adj_f
 - gplus : https://storage.googleapis.com/ledp-graphs/graphs/gplus_adj_f
 - stanford: https://storage.googleapis.com/ledp-graphs/graphs/stanford_adj_f
-- dblp : https://storage.googleapis.com/ledp-graphs/graphs/dblp_adj_f
+- dblp : https://storage.googleapis.com/ledp-graphs/graphs/dblp_adj
 - brain : https://storage.googleapis.com/ledp-graphs/graphs/brain_adj
 - orkut : https://storage.googleapis.com/ledp-graphs/graphs/orkut_adj
 - livejournal : https://storage.googleapis.com/ledp-graphs/graphs/livejournal_adj
