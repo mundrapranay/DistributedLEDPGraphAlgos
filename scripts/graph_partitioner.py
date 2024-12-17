@@ -90,7 +90,7 @@ def partition_graph(graph, n):
         for i, cn in enumerate(chunked_nodes):
             print("Partition : {0} | Nodes : {1} | ADL : {2}".format(i, len(cn), sum([len(data[n]) for n in cn])))
             total_m += sum([len(data[n]) for n in cn])
-            graph_file = graph_directory + '{0}.txt'.format(i + 1)
+            graph_file = graph_directory + '{0}.txt'.format(i)
             with open(graph_file, 'w') as out:
                 for node in cn:
                     adjacency_list = data[node]
