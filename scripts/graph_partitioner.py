@@ -7,27 +7,19 @@ import argparse
 import random
 
 GRAPH_SIZES = {
-    'hua_ctr' : 14081816,
-    'livejournal' : 4846609,
-    'hua_stackoverflow' : 2584164,
-    'hua_usa' : 23947347,
-    'hua_youtube' : 1138499,
-    'orkut' : 3072441,
-    'gplus' : 107614,
-    'imdb' : 896308,
-    'complete_small' : 1000,
-    'random_gen_2' : 2500,
-    'big_random' : 100000,
-    'dblp' : 317080,
-    'small-graph' : 17,
-    'random-graph' : 1000,
-    'twitter' : 41652230,
-    'brain' : 784262,
-    'friendster' : 65608366,
-    'wiki' : 7115,
-    'enron' : 36692,
-    'brightkite' : 58228,
-    'imdb3' : 892457
+    'email-eu-core': 986,
+    'wiki': 7115,
+    'enron': 36692,
+    'brightkite': 58228,
+    'ego-twitter': 81306,
+    'gplus': 107614,
+    'stanford': 281903,
+    'dblp': 317080,
+    'brain': 784262,
+    'orkut': 3072441,
+    'livejournal': 4846609,
+    'twitter': 41652230,
+    'friendster': 65608366
 }
 
 
