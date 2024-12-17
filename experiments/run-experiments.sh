@@ -5,7 +5,7 @@ for graph in 'email-eu-core' 'wiki' 'enron' 'brightkite' 'ego-twitter' 'gplus' '
 do
     for alg in 'kcoreLDP' 'triangle_countingLDP'
     do
-        cd ../plots/
+        cd ../scripts/
         echo "Partitioining Graph: $graph"
         python3 graph_partitioner.py $graph 80
         cd ../cmd/
@@ -13,7 +13,7 @@ do
         go run main.go --config_file ${graph}-${alg}.yaml --workers 80
         cd ../experiments/
     done
-    cd ../plots/
+    cd ../scripts/
     echo "Cleanup Graph: $graph"
     python3 cleanup.py $graph 80
     cd ../experiments/
