@@ -70,7 +70,7 @@ func (coord *TCountCoordinator) publishNoisyEdges(chunk int) {
 		}
 		coord.lock.Unlock()
 	}
-	fmt.Printf("Published Noisy Edges")
+	// fmt.Printf("Published Noisy Edges")
 }
 
 func (coord *TCountCoordinator) aggregateCounts() float64 {
