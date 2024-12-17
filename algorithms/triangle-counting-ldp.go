@@ -212,7 +212,7 @@ func workerCountTriangles(workerID int, epsilon float64, noisy_out_degree float6
 	workerTCount := 0.0
 	u := math.Exp(epsilon) + 1.0
 	denom := (math.Exp(epsilon) - 1)
-	fmt.Printf("Couting Triangles for Worker %d\n", workerID)
+	// fmt.Printf("Couting Triangles for Worker %d\n", workerID)
 	for id, neighbours := range graph {
 		localTCount := 0.0
 		// only keep outgoing edges
@@ -345,10 +345,10 @@ func TCountCoord(n int, phi float64, epsilon float64, factor float64, bias bool,
 	// latency = time.Duration((messageSizeBits / linkSpeedBitsPerSec) * float64(time.Second))
 	// time.Sleep(latency)
 	// compute tcount and publish
-	fmt.Printf("Published Noisy Max Out Degree\n")
+	// fmt.Printf("Published Noisy Max Out Degree\n")
 	t_coordinator.worker_wg.Add(number_of_workers)
 	for i := 0; i < number_of_workers; i++ {
-		fmt.Printf("Launching Worker %d\n", i)
+		// fmt.Printf("Launching Worker %d\n", i)
 		graph_v2 := worker_graphs_v2[i]
 		go func(workerID int, graph [][]int) {
 			offset := workerID * chunk
