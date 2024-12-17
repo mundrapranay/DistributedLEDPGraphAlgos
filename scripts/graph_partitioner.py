@@ -65,7 +65,7 @@ def calculate_workloads(n, num_process):
     return workloads
 
 def partition_graph(graph, n):
-    processes = n - 1
+    processes = n
     graph_directory = '/home/pranaymundra/graph-dp-experiments/graphs_new/{0}_partitioned_{1}/'.format(graph.lower(), n)
     if not os.path.exists(graph_directory):
         f = open('/home/pranaymundra/graph-dp-experiments/graphs_new/{0}_adj'.format(graph), 'r')
