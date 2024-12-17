@@ -22,13 +22,13 @@ type KCoreVertex struct {
 
 type KCoreCoordinator struct {
 	lds            *datastructures.LDS
-	workerChannels map[int]chan [2][]int
+	workerChannels map[int]chan []int
 	lock           sync.Mutex
 	wg             sync.WaitGroup
 	worker_wg      sync.WaitGroup
 }
 
-func (coord *KCoreCoordinator) sendData(workerID int, nextLevels [2][]int) {
+func (coord *KCoreCoordinator) sendData(workerID int, nextLevels []int) {
 	coord.lock.Lock()
 	defer coord.lock.Unlock()
 
@@ -42,11 +42,10 @@ func (coord *KCoreCoordinator) processData(chunk int) {
 
 		// Receive nextLevels from the worker's channel
 		channel_data := <-ch
-		nextLevels := channel_data[0]
-		permanentZero := channel_data[1]
+		nextLevels := channel_data
 		coord.lock.Lock()
 		for vertexID, nextLevel := range nextLevels {
-			if nextLevel == 1 && permanentZero[vertexID] != 0 {
+			if nextLevel == 1 {
 				coord.lds.LevelIncrease(uint(vertexID + workerID*chunk))
 			}
 		}
@@ -55,9 +54,10 @@ func (coord *KCoreCoordinator) processData(chunk int) {
 }
 
 // loadGraph loads the graph from a file.
-func loadGraphWorker(filename string, offset int, lambda float64, levels_per_group float64, bias bool, bias_factor int, noise bool, bidirectional bool) map[int]*KCoreVertex {
+func loadGraphWorker(filename string, offset int, lambda float64, levels_per_group float64, bias bool, bias_factor int, noise bool, bidirectional bool) (map[int]*KCoreVertex, int) {
 
 	processed_graph := make(map[int]*KCoreVertex)
+	maxWorkerRoundThreshold := 0
 	graph, err := datastructures.NewGraph(filename, bidirectional)
 	if err != nil {
 		fmt.Printf(err.Error())
@@ -85,23 +85,25 @@ func loadGraphWorker(filename string, offset int, lambda float64, levels_per_gro
 			neighbours:      neighbours,
 		}
 		processed_graph[node-offset] = vertex
+		maxWorkerRoundThreshold = max(vertex.round_threshold, maxWorkerRoundThreshold)
 	}
-	return processed_graph
+	return processed_graph, maxWorkerRoundThreshold
 }
 
-func workerKCore(workerID int, round int, lambda float64, psi float64, group_index float64, offset int, workLoad int, rounds_param float64, noise bool, graph map[int]*KCoreVertex, coordinator *KCoreCoordinator, lds *datastructures.LDS) {
+func workerKCore(workerID int, round int, lambda float64, psi float64, group_index float64, offset int, workLoad int, rounds_param float64, noise bool, graph map[int]*KCoreVertex, coordinator *KCoreCoordinator, lds *datastructures.LDS, linkSpeedBitsPerSec float64, n int) {
 
+	// simluate latency for getting current Levels
+	// messageSizeBits := float64(n * 32) // Assume each int is 32 bits
+	// latency := time.Duration((messageSizeBits / linkSpeedBitsPerSec) * float64(time.Second))
+	// time.Sleep(latency)
 	// perform computation for each vertex
 	nextLevels := make([]int, workLoad)
-	permanentZeros := make([]int, workLoad)
-	for i := 0; i < len(permanentZeros); i++ {
-		permanentZeros[i] = 1
+	for i := 0; i < len(nextLevels); i++ {
 		nextLevels[i] = 0
 	}
 	for _, vertex := range graph {
 		if vertex.round_threshold == round {
 			vertex.permanent_zero = 0
-			permanentZeros[vertex.id-offset] = 0
 		}
 		vertex_level, err := lds.GetLevel(uint(vertex.id))
 		if err != nil {
@@ -134,11 +136,14 @@ func workerKCore(workerID int, round int, lambda float64, psi float64, group_ind
 				nextLevels[vertex.id-offset] = 1
 			} else {
 				vertex.permanent_zero = 0
-				permanentZeros[vertex.id-offset] = 0
 			}
 		}
 	}
-	data_to_send := [2][]int{nextLevels, permanentZeros}
+	data_to_send := nextLevels
+	// simluate latency for sending data
+	// messageSizeBitsSend := float64(len(nextLevels) * 32) // Assume each int is 32 bits
+	// latencySend := time.Duration((messageSizeBitsSend / linkSpeedBitsPerSec) * float64(time.Second))
+	// time.Sleep(latencySend)
 	coordinator.sendData(workerID, data_to_send)
 	coordinator.worker_wg.Done()
 }
@@ -163,8 +168,9 @@ func estimateCoreNumbers(lds *datastructures.LDS, n int, phi float64, lambda flo
 	return core_numbers
 }
 
-func KCoreLDPTCount(n int, psi float64, epsilon float64, factor float64, bias bool, bias_factor int, noise bool, baseFileName string, workerFileNames []string) *datastructures.LDS {
+func KCoreLDPTCount(n int, psi float64, epsilon float64, factor float64, bias bool, bias_factor int, noise bool, baseFileName string, workerFileNames []string, linkSpeedBitsPerSec float64) *datastructures.LDS {
 
+	//linkSpeedBitsPerSec := 10_000_000_000.0 // 10 Gbps
 	levels_per_group := math.Ceil(log_a_to_base_b(n, 1.0+psi)) / 4
 	rounds_param := math.Ceil(4.0 * math.Pow(log_a_to_base_b(n, 1.0+psi), 1.2))
 	number_of_rounds := int(rounds_param)
@@ -178,22 +184,25 @@ func KCoreLDPTCount(n int, psi float64, epsilon float64, factor float64, bias bo
 	// create a coordinator
 	coordinator := &KCoreCoordinator{
 		lds:            datastructures.NewLDS(n, levels_per_group),
-		workerChannels: make(map[int]chan [2][]int, number_of_workers),
+		workerChannels: make(map[int]chan []int, number_of_workers),
 	}
 	coordinator.wg.Add(1)
 
 	// Preprocess the graphs into an array of workerGraphs.
 	var worker_graphs []map[int]*KCoreVertex
+	maxPublicRoundThreshold := 0
 	for i := 0; i < number_of_workers; i++ {
 		filename := baseFileName + workerFileNames[i]
 		offset := i * chunk
-		graph := loadGraphWorker(filename, offset, super_step1_geom_factor, levels_per_group, bias, bias_factor, noise, false)
+		graph, maxWorkerRoundThreshold := loadGraphWorker(filename, offset, super_step1_geom_factor, levels_per_group, bias, bias_factor, noise, false)
+		maxPublicRoundThreshold = max(maxWorkerRoundThreshold, maxPublicRoundThreshold)
 		worker_graphs = append(worker_graphs, graph)
-		coordinator.workerChannels[i] = make(chan [2][]int, len(graph))
+		coordinator.workerChannels[i] = make(chan []int, len(graph))
 	}
 
 	// main loop
-	for round := 0; round < number_of_rounds-2; round++ {
+	numberOfRounds := min(number_of_rounds-2, maxPublicRoundThreshold)
+	for round := 0; round < numberOfRounds; round++ {
 
 		group_index := coordinator.lds.GroupForLevel(uint(round))
 		coordinator.worker_wg.Add(number_of_workers)
@@ -210,7 +219,7 @@ func KCoreLDPTCount(n int, psi float64, epsilon float64, factor float64, bias bo
 				} else {
 					workLoad = chunk
 				}
-				workerKCore(workerID, r, super_step2_geom_factor, psi, float64(group_index), offset, workLoad, rounds_param, noise, graph, coordinator, coordinator.lds)
+				workerKCore(workerID, r, super_step2_geom_factor, psi, float64(group_index), offset, workLoad, rounds_param, noise, graph, coordinator, coordinator.lds, linkSpeedBitsPerSec, n)
 			}(i, round, graph)
 		}
 
@@ -238,6 +247,8 @@ func KCoreLDPCoord(n int, psi float64, epsilon float64, factor float64, bias boo
 	defer outputFile.Close()
 
 	startTime := time.Now()
+	//linkSpeedBitsPerSec := 10_000_000_000.0 // 10 Gbps
+	linkSpeedBitsPerSec := 25_000_000.0 // 25 Mbps
 	levels_per_group := math.Ceil(log_a_to_base_b(n, 1.0+psi)) / 4
 	rounds_param := math.Ceil(4.0 * math.Pow(log_a_to_base_b(n, 1.0+psi), 1.2))
 	number_of_rounds := int(rounds_param)
@@ -252,25 +263,28 @@ func KCoreLDPCoord(n int, psi float64, epsilon float64, factor float64, bias boo
 	// create a coordinator
 	coordinator := &KCoreCoordinator{
 		lds:            datastructures.NewLDS(n, levels_per_group),
-		workerChannels: make(map[int]chan [2][]int, number_of_workers),
+		workerChannels: make(map[int]chan []int, number_of_workers),
 	}
 	coordinator.wg.Add(1)
 
 	// Preprocess the graphs into an array of workerGraphs.
 	var worker_graphs []map[int]*KCoreVertex
+	maxPublicRoundThreshold := 0
 	for i := 0; i < number_of_workers; i++ {
 		filename := baseFileName + workerFileNames[i]
 		offset := i * chunk
-		graph := loadGraphWorker(filename, offset, super_step1_geom_factor, levels_per_group, bias, bias_factor, noise, false)
+		graph, maxWorkerRoundThreshold := loadGraphWorker(filename, offset, super_step1_geom_factor, levels_per_group, bias, bias_factor, noise, false)
+		maxPublicRoundThreshold = max(maxWorkerRoundThreshold, maxPublicRoundThreshold)
 		worker_graphs = append(worker_graphs, graph)
-		coordinator.workerChannels[i] = make(chan [2][]int, len(graph))
+		coordinator.workerChannels[i] = make(chan []int, len(graph))
 	}
 	preProcessingTime := time.Now()
 	preTime := preProcessingTime.Sub(startTime)
 	fmt.Fprintf(outputFile, "Preprocessing Time: %.8f\n", preTime.Seconds())
 
 	// main loop
-	for round := 0; round < number_of_rounds-2; round++ {
+	numberOfRounds := min(number_of_rounds-2, maxPublicRoundThreshold)
+	for round := 0; round < numberOfRounds; round++ {
 
 		group_index := coordinator.lds.GroupForLevel(uint(round))
 		coordinator.worker_wg.Add(number_of_workers)
@@ -287,7 +301,7 @@ func KCoreLDPCoord(n int, psi float64, epsilon float64, factor float64, bias boo
 				} else {
 					workLoad = chunk
 				}
-				workerKCore(workerID, r, super_step2_geom_factor, psi, float64(group_index), offset, workLoad, rounds_param, noise, graph, coordinator, coordinator.lds)
+				workerKCore(workerID, r, super_step2_geom_factor, psi, float64(group_index), offset, workLoad, rounds_param, noise, graph, coordinator, coordinator.lds, linkSpeedBitsPerSec, n)
 			}(i, round, graph)
 		}
 

@@ -70,6 +70,7 @@ func (coord *TCountCoordinator) publishNoisyEdges(chunk int) {
 		}
 		coord.lock.Unlock()
 	}
+	fmt.Printf("Published Noisy Edges")
 }
 
 func (coord *TCountCoordinator) aggregateCounts() float64 {
@@ -144,11 +145,13 @@ func randomizedResponse(epsilon float64, neighbours []int, n int, nodeID int) []
 	return updated_nghs
 }
 
-func workerRR(workerID int, n int, epsilon float64, offset int, workLoad int, noise bool, graph [][]int, coordinator *TCountCoordinator) {
+func workerRR(workerID int, n int, epsilon float64, offset int, workLoad int, noise bool, graph [][]int, coordinator *TCountCoordinator, linkSpeedBitsPerSec float64) {
 	noised_neighbours := make([][]int, workLoad)
+	max_noised := 0
 	for id, neighbours := range graph {
 		if noise {
 			neighbours_rr := randomizedResponse(epsilon, neighbours, n, id+offset)
+			max_noised = max(max_noised, len(neighbours_rr))
 			sort.Ints(neighbours_rr)
 			noised_neighbours[id] = neighbours_rr
 		} else {
@@ -157,12 +160,15 @@ func workerRR(workerID int, n int, epsilon float64, offset int, workLoad int, no
 		}
 	}
 
+	// messageSizeBits := float64((len(noised_neighbours)) * (max_noised * 32)) // Assume each int is 32 bits
+	// latency := time.Duration((messageSizeBits / linkSpeedBitsPerSec) * float64(time.Second))
+	// time.Sleep(latency)
 	coordinator.sendDataRR(workerID, noised_neighbours)
 	coordinator.worker_wg.Done()
 	// fmt.Printf("Worker RR %d Done\n", workerID)
 }
 
-func workerMaxOutDegree(workerID int, n int, epsilon float64, offset int, graph [][]int, lds *datastructures.LDS, coordinator *TCountCoordinator) {
+func workerMaxOutDegree(workerID int, n int, epsilon float64, offset int, graph [][]int, lds *datastructures.LDS, coordinator *TCountCoordinator, linkSpeedBitsPerSec float64) {
 	workerNoisyDv := 0.0
 	for id, neighbours := range graph {
 		// only keep outgoing edges
@@ -192,17 +198,21 @@ func workerMaxOutDegree(workerID int, n int, epsilon float64, offset int, graph 
 		}
 	}
 
-	// t_coordinator.sendData_a_count(workerID, noised_neighbours, outgoing_edges)
+	// t_coordinator.sendData_a_count(workerID, noised_neighbours, outgoing_edges)\
+	// messageSizeBits := float64(64) // float64 sent
+	// latency := time.Duration((messageSizeBits / linkSpeedBitsPerSec) * float64(time.Second))
+	// time.Sleep(latency)
 	coordinator.sendMaxNoisyOutDegree(workerID, workerNoisyDv)
 	coordinator.worker_wg.Done()
-	fmt.Printf("Worker Count %d Done\n", workerID)
+	// fmt.Printf("Worker Count %d Done\n", workerID)
 }
 
-func workerCountTriangles(workerID int, epsilon float64, noisy_out_degree float64, offset int, graph [][]int, lds *datastructures.LDS, coordinator *TCountCoordinator) {
+func workerCountTriangles(workerID int, epsilon float64, noisy_out_degree float64, offset int, graph [][]int, lds *datastructures.LDS, coordinator *TCountCoordinator, linkSpeedBitsPerSec float64) {
 	var b2i = map[bool]float64{false: 0, true: 1}
 	workerTCount := 0.0
 	u := math.Exp(epsilon) + 1.0
 	denom := (math.Exp(epsilon) - 1)
+	fmt.Printf("Couting Triangles for Worker %d\n", workerID)
 	for id, neighbours := range graph {
 		localTCount := 0.0
 		// only keep outgoing edges
@@ -237,6 +247,9 @@ func workerCountTriangles(workerID int, epsilon float64, noisy_out_degree float6
 		}
 		workerTCount += localNoisyTcount
 	}
+	// messageSizeBits := float64(64) // float64 sent
+	// latency := time.Duration((messageSizeBits / linkSpeedBitsPerSec) * float64(time.Second))
+	// time.Sleep(latency)
 	coordinator.sendDataTCount(workerID, workerTCount)
 	coordinator.worker_wg.Done()
 	// fmt.Printf("Worker Count %d Done\n", workerID)
@@ -250,9 +263,10 @@ func TCountCoord(n int, phi float64, epsilon float64, factor float64, bias bool,
 		return
 	}
 	defer outputFile.Close()
-
+	//linkSpeedBitsPerSec := 10_000_000_000.0 // 10 Gbps
+	linkSpeedBitsPerSec := 25_000_000.0 // 25 Mbps
 	startTime := time.Now()
-	lds := KCoreLDPTCount(n, phi, epsilon/4, factor, bias, bias_factor, noise, baseFileName, workerFileNames)
+	lds := KCoreLDPTCount(n, phi, epsilon/4, factor, bias, bias_factor, noise, baseFileName, workerFileNames, linkSpeedBitsPerSec)
 	kcoreTime := time.Now()
 	kcore_time := kcoreTime.Sub(startTime)
 	fmt.Fprintf(outputFile, "KCore Time: %.8f\n", kcore_time.Seconds())
@@ -298,12 +312,17 @@ func TCountCoord(n int, phi float64, epsilon float64, factor float64, bias bool,
 		}
 		go func(workerID int, graph [][]int) {
 			offset := workerID * chunk
-			workerRR(workerID, n, epsilon/4, offset, workLoad, noise, graph_v2, t_coordinator)
+			workerRR(workerID, n, epsilon/4, offset, workLoad, noise, graph_v2, t_coordinator, linkSpeedBitsPerSec)
 		}(i, graph_v2)
 	}
 
 	t_coordinator.worker_wg.Wait()
 	t_coordinator.publishNoisyEdges(chunk)
+	// simulate latency of publishing the noisy edges. X is n^2 matrix, where we only care about
+	// the upper triangular so (n * (n-1))/2 entries, each is a 32 bit entry.
+	// messageSizeBits := float64(((n * (n - 1)) / 2) * 32) // Assume each int is 32 bits
+	// latency := time.Duration((messageSizeBits / linkSpeedBitsPerSec) * float64(time.Second))
+	// time.Sleep(latency)
 	superStepTime := time.Now()
 	fmt.Fprintf(outputFile, "Publish RR Time: %.8f\n", superStepTime.Sub(preProcessingTime).Seconds())
 
@@ -314,20 +333,26 @@ func TCountCoord(n int, phi float64, epsilon float64, factor float64, bias bool,
 		graph_v2 := worker_graphs_v2[i]
 		go func(workerID int, graph [][]int) {
 			offset := workerID * chunk
-			workerMaxOutDegree(workerID, n, epsilon/4, offset, graph_v2, lds, t_coordinator)
+			workerMaxOutDegree(workerID, n, epsilon/4, offset, graph_v2, lds, t_coordinator, linkSpeedBitsPerSec)
 		}(i, graph_v2)
 		// worker_graphs_v2[i] = make([][]int, 1)
 	}
-	t_coordinator.wg.Wait()
+	t_coordinator.worker_wg.Wait()
 
 	max_noisy_out_degree := t_coordinator.computePublicNoisyOutDegree()
+	// simulate this
+	// messageSizeBits = float64(64) // float64 sent
+	// latency = time.Duration((messageSizeBits / linkSpeedBitsPerSec) * float64(time.Second))
+	// time.Sleep(latency)
 	// compute tcount and publish
+	fmt.Printf("Published Noisy Max Out Degree\n")
 	t_coordinator.worker_wg.Add(number_of_workers)
 	for i := 0; i < number_of_workers; i++ {
+		fmt.Printf("Launching Worker %d\n", i)
 		graph_v2 := worker_graphs_v2[i]
 		go func(workerID int, graph [][]int) {
 			offset := workerID * chunk
-			workerCountTriangles(workerID, epsilon/4, max_noisy_out_degree, offset, graph_v2, lds, t_coordinator)
+			workerCountTriangles(workerID, epsilon/4, max_noisy_out_degree, offset, graph_v2, lds, t_coordinator, linkSpeedBitsPerSec)
 		}(i, graph_v2)
 		worker_graphs_v2[i] = make([][]int, 1)
 	}

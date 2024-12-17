@@ -1,0 +1,12 @@
+graph: orkut
+graph_size: 3072441
+algo_name: triangle_countingLDP
+num_workers: 80
+epsilon: 1.0
+phi: 0.5
+runs: 5
+bias: true
+bias_factor: 8
+noise: true
+output_file_tag: gcp_new
+graph_loc: /home/pranaymundra/graph-dp-experiments/graphs_new

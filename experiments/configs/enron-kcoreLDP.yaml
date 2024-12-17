@@ -1,0 +1,12 @@
+graph: enron
+graph_size: 36692
+algo_name: kcoreLDP
+num_workers: 80
+epsilon: 1.0
+phi: 0.5
+runs: 5
+bias: true
+bias_factor: 8
+noise: true
+output_file_tag: gcp_new
+graph_loc: /home/pranaymundra/graph-dp-experiments/graphs_new
