@@ -46,7 +46,7 @@ func Runner(fileName string, workers int) {
 	}
 
 	factor := float64(4.0 / 5.0)
-	epsilons := []float64{0.25, 0.5, 0.75, 1.0, 1.5, 2.0}
+	epsilons := []float64{1.0}
 	for _, eps_t := range epsilons {
 		for run_id := 0; run_id < exp_config.Runs; run_id++ {
 			graph_size := exp_config.Graph_Size

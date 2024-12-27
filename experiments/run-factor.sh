@@ -2,7 +2,7 @@
 
 for graph in 'email-eu-core' 'wiki' 'enron' 'brightkite' 'ego-twitter' 'gplus' 'stanford' 'dblp' 'brain' 'orkut' 'livejournal' 'twitter' 'friendster'
 do
-    for alg in 'kcoreLDP' 'triangle_countingLDP'
+    for alg in 'kcoreLDP'
     do
         if [ "$alg" = "triangle_countingLDP" ] && [ "$graph" != "email-eu-core" ] && [ "$graph" != "wiki" ] && [ "$graph" != "enron" ] && [ "$graph" != "brightkite" ] && [ "$graph" != "ego-twitter" ] && [ "$graph" != "gplus" ] && [ "$graph" != "stanford" ] && [ "$graph" != "dblp" ]; then
             # Skip triangle counting for graphs after dblp

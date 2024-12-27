@@ -26,7 +26,7 @@ func KCoreCDPCoord(n int, phi float64, epsilon float64, factor float64, bias boo
 	super_step1_geom_factor := epsilon * factor
 	super_step2_geom_factor := epsilon * (1.0 - factor)
 
-	graph, maxPublicRoundThreshold := loadGraphWorker(graphFileName, 0, super_step1_geom_factor, levels_per_group, bias, bias_factor, noise, true)
+	graph, maxPublicRoundThreshold := loadGraphWorker(graphFileName, 0, super_step1_geom_factor, levels_per_group, bias, bias_factor, noise, true, number_of_rounds)
 	lds := datastructures.NewLDS(n, levels_per_group)
 	preProcessingTime := time.Now()
 	preTime := preProcessingTime.Sub(startTime)
@@ -100,7 +100,7 @@ func KCoreCDPACount(n int, phi float64, epsilon float64, factor float64, bias bo
 	super_step1_geom_factor := epsilon * factor
 	super_step2_geom_factor := epsilon * (1.0 - factor)
 
-	graph, maxPublicRoundThreshold := loadGraphWorker(graphFileName, 0, super_step1_geom_factor, levels_per_group, bias, bias_factor, noise, true)
+	graph, maxPublicRoundThreshold := loadGraphWorker(graphFileName, 0, super_step1_geom_factor, levels_per_group, bias, bias_factor, noise, true, number_of_rounds)
 	lds := datastructures.NewLDS(n, levels_per_group)
 	numberOfRounds := min(number_of_rounds-2, maxPublicRoundThreshold)
 	for round := 0; round < numberOfRounds; round++ {
