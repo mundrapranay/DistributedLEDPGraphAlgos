@@ -2,7 +2,7 @@ import shutil
 import argparse
 
 def cleanup(graph, n):
-    graph_directory = '/home/pranaymundra/graph-dp-experiments/graphs_new/{0}_partitioned_{1}/'.format(graph.lower(), n)
+    graph_directory = '/home/pm886/palmer_scratch/graph-dp-experiments/graphs_new/{0}_partitioned_{1}/'.format(graph.lower(), n)
     shutil.rmtree(graph_directory, ignore_errors=True)
 
 

@@ -124,8 +124,8 @@ func workerKCore(workerID int, round int, lambda float64, psi float64, group_ind
 			}
 			noised_neighbor_count := int64(neighbor_count)
 			if noise {
-				// scale := lambda / (2.0 * float64(vertex.round_threshold))
-				scale := lambda / (8 * math.Pow(log_a_to_base_b(n, 1.0+psi), 2))
+				scale := lambda / (2.0 * float64(vertex.round_threshold))
+				// scale := lambda / (8 * math.Pow(log_a_to_base_b(n, 1.0+psi), 2))
 				geomDist := distribution.NewGeomDistribution(scale)
 				noise_sampled := geomDist.TwoSidedGeometric()
 				// extra_bias := int64(3 * (2 * math.Exp(scale)) / math.Pow((math.Exp(2*scale)-1), 3))
@@ -257,7 +257,7 @@ func KCoreLDPCoord(n int, psi float64, epsilon float64, factor float64, bias boo
 	number_of_rounds := int(rounds_param)
 	lambda := 0.5
 	super_step1_geom_factor := epsilon * factor
-	super_step2_geom_factor := epsilon * (1.0 - factor)
+	// super_step2_geom_factor := epsilon * (1.0 - factor)
 
 	number_of_workers := len(workerFileNames)
 	chunk := n / number_of_workers
@@ -304,7 +304,7 @@ func KCoreLDPCoord(n int, psi float64, epsilon float64, factor float64, bias boo
 				} else {
 					workLoad = chunk
 				}
-				workerKCore(workerID, r, super_step2_geom_factor, psi, float64(group_index), offset, workLoad, rounds_param, noise, graph, coordinator, coordinator.lds, linkSpeedBitsPerSec, n)
+				workerKCore(workerID, r, epsilon, psi, float64(group_index), offset, workLoad, rounds_param, noise, graph, coordinator, coordinator.lds, linkSpeedBitsPerSec, n)
 			}(i, round, graph)
 		}
 
