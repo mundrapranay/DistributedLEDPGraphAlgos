@@ -1,0 +1,12 @@
+graph: stanford
+graph_size: 281903
+algo_name: kcoreLDPRound
+num_workers: 80
+epsilon: 0.5
+phi: 0.5
+runs: 5
+bias: true
+bias_factor: 8
+noise: true
+output_file_tag: hpc_baseline_rounds
+graph_loc: /home/pm886/palmer_scratch/graph-dp-experiments/graphs_new

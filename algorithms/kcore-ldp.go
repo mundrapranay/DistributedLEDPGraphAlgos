@@ -91,6 +91,44 @@ func loadGraphWorker(filename string, offset int, lambda float64, levels_per_gro
 	return processed_graph, maxWorkerRoundThreshold
 }
 
+// loadGraph loads the graph from a file.
+func loadGraphWorkerRounds(filename string, offset int, lambda float64, levels_per_group float64, bias bool, bias_factor int, noise bool, bidirectional bool, number_of_rounds int) (map[int]*KCoreVertex, int) {
+
+	processed_graph := make(map[int]*KCoreVertex)
+	maxWorkerRoundThreshold := 0
+	graph, err := datastructures.NewGraph(filename, bidirectional)
+	if err != nil {
+		fmt.Printf(err.Error())
+	}
+
+	for node, neighbours := range graph.AdjacencyList {
+		degree := len(neighbours)
+		noised_degree := int64(degree)
+		if noise {
+			geomDist := distribution.NewGeomDistribution(lambda / 2.0)
+			noise_sampled := geomDist.TwoSidedGeometric()
+			noised_degree += noise_sampled
+			noised_degree -= int64(math.Min(float64(bias_factor)*float64((2*math.Exp(lambda))/(math.Exp(2*lambda)-1)), float64(noised_degree)))
+			// to ensure degree is atleast 2
+			noised_degree += 1
+		}
+
+		threshold := math.Ceil(log_a_to_base_b(int(noised_degree), 2)) * levels_per_group
+		vertex := &KCoreVertex{
+			id:              node,
+			current_level:   0,
+			next_level:      0,
+			permanent_zero:  1,
+			round_threshold: int(threshold) + 1,
+			// round_threshold: number_of_rounds - 2,
+			neighbours: neighbours,
+		}
+		processed_graph[node-offset] = vertex
+		maxWorkerRoundThreshold = max(vertex.round_threshold, maxWorkerRoundThreshold)
+	}
+	return processed_graph, maxWorkerRoundThreshold
+}
+
 func workerKCore(workerID int, round int, lambda float64, psi float64, group_index float64, offset int, workLoad int, rounds_param float64, noise bool, graph map[int]*KCoreVertex, coordinator *KCoreCoordinator, lds *datastructures.LDS, linkSpeedBitsPerSec float64, n int) {
 
 	// simluate latency for getting current Levels
@@ -238,6 +276,29 @@ func KCoreLDPTCount(n int, psi float64, epsilon float64, factor float64, bias bo
 	}
 
 	return coordinator.lds
+}
+
+func KCoreLDPRounds(n int, psi float64, epsilon float64, factor float64, bias bool, bias_factor int, noise bool, graphFileName string, outputFileName string) {
+
+	//linkSpeedBitsPerSec := 10_000_000_000.0 // 10 Gbps
+	outputFile, err := os.Create(outputFileName)
+	if err != nil {
+		fmt.Println("Error creating file:", err)
+		return
+	}
+	defer outputFile.Close()
+	levels_per_group := math.Ceil(log_a_to_base_b(n, 1.0+psi)) / 4
+	rounds_param := math.Ceil(4.0 * math.Pow(log_a_to_base_b(n, 1.0+psi), 1.2))
+	number_of_rounds := int(rounds_param)
+	super_step1_geom_factor := epsilon * factor
+
+	_, maxPublicRoundThreshold := loadGraphWorkerRounds(graphFileName, 0, super_step1_geom_factor, levels_per_group, bias, bias_factor, noise, true, number_of_rounds)
+
+	// main loop
+	numberOfRounds := min(number_of_rounds-2, maxPublicRoundThreshold)
+	fmt.Fprintf(outputFile, "Rounds: %d\n", number_of_rounds-2)
+	fmt.Fprintf(outputFile, "RoundsD: %d\n", numberOfRounds)
+
 }
 
 func KCoreLDPCoord(n int, psi float64, epsilon float64, factor float64, bias bool, bias_factor int, noise bool, baseFileName string, workerFileNames []string, outputFileName string) {
