@@ -15,7 +15,7 @@ cd ../cmd/
 for graph in 'email-eu-core' 'wiki' 'enron' 'brightkite' 'ego-twitter' 'gplus' 'stanford' 'dblp' 'brain' 'orkut' 'livejournal' 'twitter' 'friendster'
 do
     # for alg in 'kcoreLDP' 'triangle_countingLDP'
-    for alg in 'kcoreLDPRound'
+    for alg in 'kcoreLDP'
     do
         echo "Running Experiments: $graph"
         go run main.go --config_file ${graph}-${alg}.yaml --workers 80

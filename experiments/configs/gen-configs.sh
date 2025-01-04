@@ -9,7 +9,7 @@ graph_sizes=(986 7115 36692 58228 81306 107614 281903 317080 784262 3072441 4846
 for index in "${!graphs[@]}"; do
     graph=${graphs[$index]}
     # Create N files for each graph
-    for alg in 'kcoreLDPRound' ; do
+    for alg in 'kcoreLDP' ; do
         filename="${graph}-${alg}.yaml"
         echo "graph: ${graph}" > "$filename"
         echo "graph_size: ${graph_sizes[$index]}" >> "$filename"
@@ -17,11 +17,11 @@ for index in "${!graphs[@]}"; do
         echo "num_workers: 80" >> "$filename"
         echo "epsilon: 0.5" >> "$filename"
         echo "phi: 0.5" >> "$filename"
-        echo "runs: 5" >> "$filename"
+        echo "runs: 1" >> "$filename"
         echo "bias: true" >> "$filename"
         echo "bias_factor: 8" >> "$filename"
         echo "noise: true" >> "$filename"
-        echo "output_file_tag: hpc_baseline_rounds" >> "$filename"
+        echo "output_file_tag: hpc_baseline_true" >> "$filename"
         echo "graph_loc: /home/pm886/palmer_scratch/graph-dp-experiments/graphs_new" >> "$filename"
         echo "Created $filename"
     done
