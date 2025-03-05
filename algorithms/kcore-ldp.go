@@ -102,26 +102,26 @@ func loadGraphWorkerRounds(filename string, offset int, lambda float64, levels_p
 	}
 
 	for node, neighbours := range graph.AdjacencyList {
-		// degree := len(neighbours)
-		// noised_degree := int64(degree)
-		// if noise {
-		// 	geomDist := distribution.NewGeomDistribution(lambda / 2.0)
-		// 	noise_sampled := geomDist.TwoSidedGeometric()
-		// 	noised_degree += noise_sampled
-		// 	noised_degree -= int64(math.Min(float64(bias_factor)*float64((2*math.Exp(lambda))/(math.Exp(2*lambda)-1)), float64(noised_degree)))
-		// 	// to ensure degree is atleast 2
-		// 	noised_degree += 1
-		// }
+		degree := len(neighbours)
+		noised_degree := int64(degree)
+		if noise {
+			geomDist := distribution.NewGeomDistribution(lambda / 2.0)
+			noise_sampled := geomDist.TwoSidedGeometric()
+			noised_degree += noise_sampled
+			noised_degree -= int64(math.Min(float64(bias_factor)*float64((2*math.Exp(lambda))/(math.Exp(2*lambda)-1)), float64(noised_degree)))
+			// to ensure degree is atleast 2
+			noised_degree += 1
+		}
 
-		// threshold := math.Ceil(log_a_to_base_b(int(noised_degree), 2)) * levels_per_group
+		threshold := math.Ceil(log_a_to_base_b(int(noised_degree), 2)) * levels_per_group
 		vertex := &KCoreVertex{
-			id:             node,
-			current_level:  0,
-			next_level:     0,
-			permanent_zero: 1,
-			// round_threshold: int(threshold) + 1,
-			round_threshold: number_of_rounds - 2,
-			neighbours:      neighbours,
+			id:              node,
+			current_level:   0,
+			next_level:      0,
+			permanent_zero:  1,
+			round_threshold: int(threshold) + 1,
+			//round_threshold: number_of_rounds - 2,
+			neighbours: neighbours,
 		}
 		processed_graph[node-offset] = vertex
 		maxWorkerRoundThreshold = max(vertex.round_threshold, maxWorkerRoundThreshold)
@@ -129,13 +129,8 @@ func loadGraphWorkerRounds(filename string, offset int, lambda float64, levels_p
 	return processed_graph, maxWorkerRoundThreshold
 }
 
-func workerKCore(workerID int, round int, lambda float64, psi float64, group_index float64, offset int, workLoad int, rounds_param float64, noise bool, graph map[int]*KCoreVertex, coordinator *KCoreCoordinator, lds *datastructures.LDS, linkSpeedBitsPerSec float64, n int) {
+func workerKCore(workerID int, round int, lambda float64, psi float64, group_index float64, offset int, workLoad int, rounds_param float64, noise bool, graph map[int]*KCoreVertex, coordinator *KCoreCoordinator, lds *datastructures.LDS, n int) {
 
-	// simluate latency for getting current Levels
-	// messageSizeBits := float64(n * 32) // Assume each int is 32 bits
-	// latency := time.Duration((messageSizeBits / linkSpeedBitsPerSec) * float64(time.Second))
-	// time.Sleep(latency)
-	// perform computation for each vertex
 	nextLevels := make([]int, workLoad)
 	for i := 0; i < len(nextLevels); i++ {
 		nextLevels[i] = 0
@@ -163,12 +158,12 @@ func workerKCore(workerID int, round int, lambda float64, psi float64, group_ind
 			noised_neighbor_count := int64(neighbor_count)
 			if noise {
 				scale := lambda / (2.0 * float64(vertex.round_threshold))
-				// scale := lambda / (8 * math.Pow(log_a_to_base_b(n, 1.0+psi), 2))
+				//scale := lambda / (8 * math.Pow(log_a_to_base_b(n, 1.0+psi), 2))
 				geomDist := distribution.NewGeomDistribution(scale)
 				noise_sampled := geomDist.TwoSidedGeometric()
-				// extra_bias := int64(3 * (2 * math.Exp(scale)) / math.Pow((math.Exp(2*scale)-1), 3))
+				extra_bias := int64(3 * (2 * math.Exp(scale)) / math.Pow((math.Exp(2*scale)-1), 3))
 				noised_neighbor_count += noise_sampled
-				// noised_neighbor_count += extra_bias
+				noised_neighbor_count += extra_bias
 			}
 
 			if noised_neighbor_count > int64(math.Pow((1+psi), group_index)) {
@@ -180,10 +175,6 @@ func workerKCore(workerID int, round int, lambda float64, psi float64, group_ind
 		}
 	}
 	data_to_send := nextLevels
-	// simluate latency for sending data
-	// messageSizeBitsSend := float64(len(nextLevels) * 32) // Assume each int is 32 bits
-	// latencySend := time.Duration((messageSizeBitsSend / linkSpeedBitsPerSec) * float64(time.Second))
-	// time.Sleep(latencySend)
 	coordinator.sendData(workerID, data_to_send)
 	coordinator.worker_wg.Done()
 }
@@ -208,9 +199,8 @@ func estimateCoreNumbers(lds *datastructures.LDS, n int, phi float64, lambda flo
 	return core_numbers
 }
 
-func KCoreLDPTCount(n int, psi float64, epsilon float64, factor float64, bias bool, bias_factor int, noise bool, baseFileName string, workerFileNames []string, linkSpeedBitsPerSec float64) *datastructures.LDS {
+func KCoreLDPTCount(n int, psi float64, epsilon float64, factor float64, bias bool, bias_factor int, noise bool, baseFileName string, workerFileNames []string) *datastructures.LDS {
 
-	//linkSpeedBitsPerSec := 10_000_000_000.0 // 10 Gbps
 	levels_per_group := math.Ceil(log_a_to_base_b(n, 1.0+psi)) / 4
 	rounds_param := math.Ceil(4.0 * math.Pow(log_a_to_base_b(n, 1.0+psi), 1.2))
 	number_of_rounds := int(rounds_param)
@@ -260,7 +250,7 @@ func KCoreLDPTCount(n int, psi float64, epsilon float64, factor float64, bias bo
 				} else {
 					workLoad = chunk
 				}
-				workerKCore(workerID, r, super_step2_geom_factor, psi, float64(group_index), offset, workLoad, rounds_param, noise, graph, coordinator, coordinator.lds, linkSpeedBitsPerSec, n)
+				workerKCore(workerID, r, super_step2_geom_factor, psi, float64(group_index), offset, workLoad, rounds_param, noise, graph, coordinator, coordinator.lds, n)
 			}(i, round, graph)
 		}
 
@@ -280,7 +270,6 @@ func KCoreLDPTCount(n int, psi float64, epsilon float64, factor float64, bias bo
 
 func KCoreLDPRounds(n int, psi float64, epsilon float64, factor float64, bias bool, bias_factor int, noise bool, graphFileName string, outputFileName string) {
 
-	//linkSpeedBitsPerSec := 10_000_000_000.0 // 10 Gbps
 	outputFile, err := os.Create(outputFileName)
 	if err != nil {
 		fmt.Println("Error creating file:", err)
@@ -311,8 +300,6 @@ func KCoreLDPCoord(n int, psi float64, epsilon float64, factor float64, bias boo
 	defer outputFile.Close()
 
 	startTime := time.Now()
-	//linkSpeedBitsPerSec := 10_000_000_000.0 // 10 Gbps
-	linkSpeedBitsPerSec := 25_000_000.0 // 25 Mbps
 	levels_per_group := math.Ceil(log_a_to_base_b(n, 1.0+psi)) / 4
 	// rounds_param := math.Ceil(4.0 * math.Pow(log_a_to_base_b(n, 1.0+psi), 1.2))
 	rounds_param := math.Ceil(4.0 * math.Pow(log_a_to_base_b(n, 1.0+psi), 2))
@@ -366,7 +353,7 @@ func KCoreLDPCoord(n int, psi float64, epsilon float64, factor float64, bias boo
 				} else {
 					workLoad = chunk
 				}
-				workerKCore(workerID, r, epsilon, psi, float64(group_index), offset, workLoad, rounds_param, noise, graph, coordinator, coordinator.lds, linkSpeedBitsPerSec, n)
+				workerKCore(workerID, r, epsilon, psi, float64(group_index), offset, workLoad, rounds_param, noise, graph, coordinator, coordinator.lds, n)
 			}(i, round, graph)
 		}
 
