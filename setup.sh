@@ -63,7 +63,7 @@ else
     exit 1
 fi
 
-GO_VERSION="1.22.2"
+GO_VERSION="1.24.1"
 GO_TAR="go${GO_VERSION}.linux-${GO_ARCH}.tar.gz"
 echo "Downloading Go ${GO_VERSION} for ${GO_ARCH}..."
 wget -c https://go.dev/dl/${GO_TAR}
