@@ -266,7 +266,7 @@ func TCountCoord(n int, phi float64, epsilon float64, factor float64, bias bool,
 	//linkSpeedBitsPerSec := 10_000_000_000.0 // 10 Gbps
 	linkSpeedBitsPerSec := 25_000_000.0 // 25 Mbps
 	startTime := time.Now()
-	lds := KCoreLDPTCount(n, phi, epsilon/4, factor, bias, bias_factor, noise, baseFileName, workerFileNames, linkSpeedBitsPerSec)
+	lds := KCoreLDPTCount(n, phi, epsilon/4, factor, bias, bias_factor, noise, baseFileName, workerFileNames)
 	kcoreTime := time.Now()
 	kcore_time := kcoreTime.Sub(startTime)
 	fmt.Fprintf(outputFile, "KCore Time: %.8f\n", kcore_time.Seconds())

@@ -1,19 +1,3 @@
-##!/bin/sh
-#cd
-#mkdir results
-#mkdir graph-dp-experiments
-#cd graph-dp-experiments
-#mkdir graphs
-#cd
-#wget https://go.dev/dl/go1.22.2.linux-amd64.tar.gz
-#sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xzf go1.22.2.linux-amd64.tar.gz
-#export PATH=$PATH:/usr/local/go/bin
-#go version
-#cd localgraph-dp/
-#go mod tidy
-#cd
-
-
 #!/bin/bash
 set -e  # Exit immediately if a command exits with a non-zero status
 
@@ -34,13 +18,13 @@ cd ./graph-dp-experiments/graphs
 echo "Downloading small graphs..."
 wget -c https://storage.googleapis.com/ledp-graphs/graphs/email-eu-core_adj_f -O email-eu-core_adj
 wget -c https://storage.googleapis.com/ledp-graphs/graphs/wiki_adj_f -O wiki_adj
-#wget -c https://storage.googleapis.com/ledp-graphs/graphs/enron_adj_f -O enron_adj
-#wget -c https://storage.googleapis.com/ledp-graphs/graphs/brightkite_adj_f -O brightkite_adj
-#wget -c https://storage.googleapis.com/ledp-graphs/graphs/ego-twitter_adj_f -O ego-twitter_adj
-#wget -c https://storage.googleapis.com/ledp-graphs/graphs/gplus_adj_f -O gplus_adj
-#wget -c https://storage.googleapis.com/ledp-graphs/graphs/stanford_adj_f -O stanford_adj
-#wget -c https://storage.googleapis.com/ledp-graphs/graphs/dblp_adj -O dblp_adj
-#wget -c https://storage.googleapis.com/ledp-graphs/graphs/brain_adj -O brain_adj
+wget -c https://storage.googleapis.com/ledp-graphs/graphs/enron_adj_f -O enron_adj
+wget -c https://storage.googleapis.com/ledp-graphs/graphs/brightkite_adj_f -O brightkite_adj
+wget -c https://storage.googleapis.com/ledp-graphs/graphs/ego-twitter_adj_f -O ego-twitter_adj
+wget -c https://storage.googleapis.com/ledp-graphs/graphs/gplus_adj_f -O gplus_adj
+wget -c https://storage.googleapis.com/ledp-graphs/graphs/stanford_adj_f -O stanford_adj
+wget -c https://storage.googleapis.com/ledp-graphs/graphs/dblp_adj -O dblp_adj
+wget -c https://storage.googleapis.com/ledp-graphs/graphs/brain_adj -O brain_adj
 
 # Optionally download the large graphs (the last 4)
 if [ "$DOWNLOAD_BIG" = true ]; then
