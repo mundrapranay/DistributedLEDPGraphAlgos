@@ -1,20 +1,11 @@
 #!/bin/sh
-#SBATCH --job-name=kcoreLDP
-#SBATCH --partition=week
-#SBATCH --time=3-00:00:00
-#SBATCH --nodes=1
-#SBATCH --ntasks=1
-#SBATCH --ntasks-per-node=1
-#SBATCH --cpus-per-task=48
-#SBATCH --mem=0
 
-ml Go
 
-# for graph in 'brain' 'orkut' 'livejournal' 'twitter' 'friendster'
+#for graph in 'email-eu-core'
 for graph in 'email-eu-core' 'wiki' 'enron' 'brightkite' 'ego-twitter' 'gplus' 'stanford' 'dblp' 'brain' 'orkut' 'livejournal' 'twitter' 'friendster'
 do
-    # for alg in 'kcoreLDP' 'triangle_countingLDP'
-    for alg in 'kcoreLDP'
+     for alg in 'kcoreLDP' 'triangle_countingLDP'
+#    for alg in 'kcoreLDP'
     do
         cd ../scripts/
         echo "Partitioining Graph: $graph"

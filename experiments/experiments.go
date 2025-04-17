@@ -57,7 +57,7 @@ func Runner(fileName string, workers int) {
 				graph_loc := fmt.Sprintf("%s/%s_adj", exp_config.Graph_Loc, graph)
 				baseFileName := fmt.Sprintf("%s/%s_partitioned_%d/", exp_config.Graph_Loc, graph, exp_config.Num_Workers)
 				for bf := exp_config.Bias_Factor; bf <= exp_config.Bias_Factor; bf++ {
-					outputFile = fmt.Sprintf("/home/pm886/results_new/%s_%s_%.2f_%d_%d_%d_%d_%d_%.2f_%s.txt", graph, exp_config.AlgoName, factor, b2i[exp_config.Bias], b2i[exp_config.Noise], bf, run_id, exp_config.Num_Workers, eps_t, exp_config.ExpTag)
+					outputFile = fmt.Sprintf("../results/%s_%s_%.2f_%d_%d_%d_%d_%d_%.2f_%s.txt", graph, exp_config.AlgoName, factor, b2i[exp_config.Bias], b2i[exp_config.Noise], bf, run_id, exp_config.Num_Workers, eps_t, exp_config.ExpTag)
 					if exp_config.AlgoName == "kcoreCDP" {
 						algorithms.KCoreCDPCoord(graph_size, exp_config.Phi, eps_t, factor, exp_config.Bias, bf, exp_config.Noise, graph_loc, outputFile)
 					} else if exp_config.AlgoName == "kcoreLDP" {

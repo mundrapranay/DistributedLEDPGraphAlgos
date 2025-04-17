@@ -23,21 +23,6 @@ GRAPH_SIZES = {
 }
 
 
-
-def read_graph_from_file(filename):
-    graph = {}
-    with open(filename, 'r') as file:
-        for line in file:
-            u, v = line.strip().split()
-            if u not in graph:
-                graph[u] = []
-            if v not in graph:
-                graph[v] = []
-            graph[u].append(v)
-            graph[v].append(u)  # Assuming an undirected graph
-    return graph
-
-
 def chunk_into_n(lst, n):
   size = ceil(len(lst) / n)
   return [lst[x * size:x * size + size] for x in range(n)]
@@ -56,11 +41,12 @@ def calculate_workloads(n, num_process):
 
     return workloads
 
-def partition_graph(graph, n):
+def partition_graph(graph, n, graph_loc):
     processes = n
-    graph_directory = '/home/pm886/palmer_scratch/graph-dp-experiments/graphs_new/{0}_partitioned_{1}/'.format(graph.lower(), n)
+    graph_directory = f'{graph_loc}{graph}_partitioned_{n}/'
     if not os.path.exists(graph_directory):
-        f = open('/home/pm886/palmer_scratch/graph-dp-experiments/graphs_new/{0}_adj'.format(graph), 'r')
+        adj_file = f'{graph_loc}{graph}_adj'
+        f = open(adj_file, 'r')
         lines = f.readlines()
         lines = [line.strip() for line in lines]
         f.close()
@@ -92,77 +78,12 @@ def partition_graph(graph, n):
 
 
 
-def load_graph(graph):
-    f = open('/home/ubuntu/graph-dp-experiments/graphs/{0}_adj'.format(graph), 'r')
-    lines = f.readlines()
-    del lines[0]
-    lines = [line.strip() for line in lines]
-    f.close()
-    data = defaultdict(list)
-    for l in lines:
-        edge = l.split(' ')
-        n1 = int(edge[0])
-        n2 = int(edge[1])
-        data[n1].append(n2)
-        data[n2].append(n1)
-    return data
-
-
-
-def random_sample_graph(graph, sample_size):
-    sampled_nodes = random.sample([i for i in range(GRAPH_SIZES[graph])], sample_size)
-    # print(sampled_nodes[:30])
-    data = load_graph(graph)
-    edges = 0
-    nodes = 0
-    graph_file = '/home/ubuntu/graph-dp-experiments/graphs/{0}_sampled_{1}'.format(graph, sample_size)
-    with open(graph_file, 'w') as out:
-        for node in sampled_nodes:
-            nodes += 1
-            adjacency_list = data[node]
-            adjacency_list_sampled = set(sampled_nodes).intersection(set(adjacency_list))
-            for a in adjacency_list_sampled:
-                edges += 1
-                out.write('{0} {1}\n'.format(node, a))
-    out.close()
-    print('Nodes: {0}\t Edges: {1}\n'.format(nodes, edges))
-
-
-def reindex_and_generate_subgraph(graphname, k):
-
-    graph = load_graph(graphname)
-    # Step 1: Randomly sample k nodes from the graph
-    sampled_nodes = random.sample(list(graph.keys()), k)
-    
-    # Step 2: Create a mapping for the nodes from original to [0, k)
-    node_mapping = {node: idx for idx, node in enumerate(sampled_nodes)}
-    
-    # Step 3: Generate re-indexed subgraph
-    subgraph = {}
-    for node in sampled_nodes:
-        # Get the new index for the node
-        new_node_idx = node_mapping[node]
-        # Include edges that connect to other nodes within the sampled set, using the new indexing
-        subgraph[new_node_idx] = [node_mapping[neighbor] for neighbor in graph[node] if neighbor in sampled_nodes]
-
-
-    edges = 0
-    graph_file = '/home/ubuntu/graph-dp-experiments/graphs/{0}_sampled_{1}'.format(graphname, k)
-    with open(graph_file, 'w') as out:
-        for node in subgraph:
-            adjacency_list = subgraph[node]
-            edges += len(adjacency_list)
-            for a in adjacency_list:
-                out.write('{0} {1}\n'.format(node, a))
-    out.close()
-    print('Nodes: {0}\t Edges: {1}\n'.format(len(subgraph), edges))
-
-
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('graph_name', type=str, help="name of graph")
     parser.add_argument('num_workers', type=int, help="number of workers")
+    parser.add_argument('graph_loc', type=str, help="location of graph", default="../graph-dp-experiments/graphs/")
     args = parser.parse_args()
     graph_name = args.graph_name
-    partition_graph(graph_name, args.num_workers)
+    partition_graph(graph_name, args.num_workers, args.graph_loc)
     
