@@ -1,0 +1,12 @@
+graph: ego-twitter
+graph_size: 81306
+algo_name: rr-kcore
+num_workers: 80
+epsilon: 0.5
+phi: 0.5
+runs: 1
+bias: true
+bias_factor: 8
+noise: true
+output_file_tag: rr_baseline
+graph_loc: /home/pm886/palmer_scratch/graph-dp-experiments/graphs_new

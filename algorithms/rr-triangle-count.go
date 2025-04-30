@@ -168,7 +168,7 @@ func t_superStep(workerID int, n int, epsilon float64, offset int, noise bool, g
 	fmt.Printf("Worker %d Done\n", workerID)
 }
 
-func TriangleCounting(n int, epsilon float64, noise bool, baseFileName string, workerFileNames []string, outputFileName string) {
+func TriangleCountingRR(n int, epsilon float64, noise bool, baseFileName string, workerFileNames []string, outputFileName string) {
 	outputFile, err := os.Create(outputFileName)
 	if err != nil {
 		fmt.Println("Error creating file:", err)

@@ -68,6 +68,10 @@ func Runner(fileName string, workers int) {
 						algorithms.TriangleCountingCDP(graph_size, exp_config.Phi, eps_t, factor, exp_config.Bias, exp_config.Bias_Factor, exp_config.Noise, graph_loc, outputFile)
 					} else if exp_config.AlgoName == "kcoreLDPRound" {
 						algorithms.KCoreLDPRounds(graph_size, exp_config.Phi, eps_t, factor, exp_config.Bias, bf, exp_config.Noise, graph_loc, outputFile)
+					} else if exp_config.AlgoName == "rr-kcore" {
+						algorithms.KCoreRR(graph_size, exp_config.Phi, eps_t, exp_config.Noise, graph_loc, outputFile)
+					} else if exp_config.AlgoName == "rr-tcount" {
+						algorithms.TriangleCountingRR(graph_size, eps_t, exp_config.Noise, baseFileName, workerFilesNames, outputFile)
 					}
 					fmt.Printf("Done with Exp:%s_%.2f_%t_%d_%.2f\n", graph, factor, exp_config.Bias, bf, eps_t)
 				}
