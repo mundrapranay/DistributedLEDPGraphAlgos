@@ -246,6 +246,7 @@ func TriangleCountingRR(n int, epsilon float64, noise bool, graphFileName string
 	Y := make([][]float64, n)
 
 	for i := range graph {
+		Y[i] = make([]float64, n)
 		for j := 0; j < n; j++ {
 			Y[i][j] = (float64(graph[i][j])*(math.Exp(epsilon)+1.0) - 1.0) / (math.Exp(epsilon) - 1.0)
 		}
