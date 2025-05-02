@@ -4,7 +4,7 @@ algo_name: rr-kcore
 num_workers: 80
 epsilon: 0.5
 phi: 0.5
-runs: 1
+runs: 5
 bias: true
 bias_factor: 8
 noise: true
