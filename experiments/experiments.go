@@ -71,7 +71,7 @@ func Runner(fileName string, workers int) {
 					} else if exp_config.AlgoName == "rr-kcore" {
 						algorithms.KCoreRR(graph_size, exp_config.Phi, eps_t, exp_config.Noise, graph_loc, outputFile)
 					} else if exp_config.AlgoName == "rr-tcount" {
-						algorithms.TriangleCountingRR(graph_size, eps_t, exp_config.Noise, baseFileName, workerFilesNames, outputFile)
+						algorithms.TriangleCountingRR(graph_size, eps_t, exp_config.Noise, graph_loc, outputFile)
 					}
 					fmt.Printf("Done with Exp:%s_%.2f_%t_%d_%.2f\n", graph, factor, exp_config.Bias, bf, eps_t)
 				}
