@@ -127,7 +127,7 @@ def get_tcount_data():
             avg_approx_l = []
             file = TCOUNT_FILE.format(graph, run_id)
             try:
-                approx_tcount = get_tcount_data(file)
+                approx_tcount = get_triangles(file)
                 avg_approx_l.append(float(max(tcount,approx_tcount)) / max(1, min(tcount, approx_tcount)))
                 rel_error_l.append(float(abs(approx_tcount - tcount) / tcount))
             except FileNotFoundError:
