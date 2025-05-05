@@ -103,8 +103,8 @@ def get_kcore_data():
             approx_core_numbers = get_core_numbers(file)
             approximation_factor = np.array([float(max(s,t)) / max(1, min(s, t)) for s,t in zip(core_numbers, approx_core_numbers)])
             avg_approx_l.append(statistics.mean(approximation_factor))
-            eighty_approx_l.append(np.quantile(approximation_factor, 80))
-            ninefive_approx_l.append(np.quantile(approximation_factor, 95))
+            eighty_approx_l.append(np.percentile(approximation_factor, 80))
+            ninefive_approx_l.append(np.percentile(approximation_factor, 95))
             
         avg_approx.append(statistics.mean(avg_approx_l))
         eighty_approx.append(statistics.mean(eighty_approx_l))
