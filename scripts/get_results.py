@@ -111,9 +111,9 @@ def get_kcore_data():
         ninefive_approx.append(statistics.mean(ninefive_approx_l))
 
     print('\t'.join(graphs))
-    print('\t'.join(avg_approx))
-    print('\t'.join(eighty_approx))
-    print('\t'.join(ninefive_approx))
+    print('\t'.join(f"{x:.3f}" for x in avg_approx))
+    print('\t'.join(f"{x:.3f}" for x in eighty_approx))
+    print('\t'.join(f"{x:.3f}" for x in ninefive_approx))
 
 
 def get_tcount_data():
@@ -136,8 +136,8 @@ def get_tcount_data():
         avg_approx.append(statistics.mean(avg_approx_l))
 
     print('\t'.join(graphs))
-    print('\t'.join(avg_approx))
-    print('\t'.join(rel_error))
+    print('\t'.join(f"{x:.3f}" for x in avg_approx))
+    print('\t'.join(f"{x:.3f}" for x in rel_error))
 
 
 if __name__ == '__main__':
