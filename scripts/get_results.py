@@ -32,16 +32,40 @@ def get_max_approx_index(pairs):
     return max_index
 
 
-def get_core_numbers(file):
-    f = open('/home/pm886/palmer_scratch/results/{0}'.format(file), 'r')
-    lines = f.readlines()
-    f.close()
-    lines = [line.strip().split(':') for line in lines]
-    estimated_core_numbers = []
-    for line in lines:
-        cn = float(line[1].strip())
-        estimated_core_numbers.append(cn)
-    return estimated_core_numbers
+# def get_core_numbers(file):
+#     f = open('/home/pm886/palmer_scratch/results/{0}'.format(file), 'r')
+#     lines = f.readlines()
+#     f.close()
+#     lines = [line.strip().split(':') for line in lines]
+#     estimated_core_numbers = []
+#     for line in lines:
+#         cn = float(line[1].strip())
+#         estimated_core_numbers.append(cn)
+#     return estimated_core_numbers
+
+def get_core_numbers(filename):
+    path = f'/home/pm886/palmer_scratch/results/{filename}'
+    with open(path, 'r') as f:
+        pairs = []
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
+            node_str, core_str = line.split(':', 1)
+            try:
+                node = int(node_str)
+            except ValueError:
+                # if node IDs aren’t integers, leave as string
+                node = node_str
+            core = float(core_str)
+            pairs.append((node, core))
+
+    # sort by node (int or string)
+    pairs.sort(key=lambda x: x[0])
+
+    # return just the core numbers, in node-ID order
+    return [core for _, core in pairs]
+
 
 def get_ground_truth(graph):
     f = open('/home/pm886/palmer_scratch/graph-dp-experiments/ground_truth/{0}'.format(graph), 'r')
