@@ -115,13 +115,20 @@ def get_kcore_data():
     print('\t'.join(f"{x:.3f}" for x in eighty_approx))
     print('\t'.join(f"{x:.3f}" for x in ninefive_approx))
 
+def calculate_confidence_interval(data, cf_level):
+    mean = np.mean(data)
+    stdev = np.std(data)
+    margin_of_error = cf_level * stdev / math.sqrt(len(data))
+    return mean, mean - margin_of_error, mean + margin_of_error
 
 def get_tcount_data():
     rel_error = []
     avg_approx = []
     graphs = ['email-eu-core', 'wiki', 'enron', 'brightkite']
+    rel_error_bounds = []
     for graph in graphs:
         tcount = TCOUNT[graph]
+        erro_l_count = []
         for run_id in range(5):
             rel_error_l = []
             avg_approx_l = []
@@ -130,14 +137,18 @@ def get_tcount_data():
                 approx_tcount = get_triangles(file)
                 avg_approx_l.append(float(max(tcount,approx_tcount)) / max(1, min(tcount, approx_tcount)))
                 rel_error_l.append(float(abs(approx_tcount - tcount) / tcount))
+                erro_l_count.append(float(abs(approx_tcount - tcount) / tcount))
             except FileNotFoundError:
                 continue
-        rel_error.append(statistics.mean(rel_error_l))
+        mean, lower, upper = calculate_confidence_interval(erro_l_count, 1.96)
+        rel_error.append(mean)
+        rel_error_bounds.append([lower, upper])
         avg_approx.append(statistics.mean(avg_approx_l))
 
     print('\t'.join(graphs))
     print('\t'.join(f"{x:.3f}" for x in avg_approx))
     print('\t'.join(f"{x:.3f}" for x in rel_error))
+    print('\t'.join(f"{x:.3f}" for x in rel_error_bounds))
 
 
 if __name__ == '__main__':
