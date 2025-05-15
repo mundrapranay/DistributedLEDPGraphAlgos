@@ -148,7 +148,7 @@ def get_tcount_data():
     print('\t'.join(graphs))
     print('\t'.join(f"{x:.3f}" for x in avg_approx))
     print('\t'.join(f"{x:.3f}" for x in rel_error))
-    print('\t'.join(f"{x:.3f}" for x in rel_error_bounds))
+    print(rel_error_bounds)
 
 
 if __name__ == '__main__':
