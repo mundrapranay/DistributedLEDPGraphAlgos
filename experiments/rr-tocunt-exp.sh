@@ -5,8 +5,8 @@
 #SBATCH --nodes=3
 #SBATCH --ntasks=3
 #SBATCH --ntasks-per-node=1
-#SBATCH --cpus-per-task=13
-#SBATCH --mem=0
+#SBATCH --cpus-per-task=15
+#SBATCH --mem=1000G
 #SBATCH --array=0-2
 
 ml Go
