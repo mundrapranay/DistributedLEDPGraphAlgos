@@ -151,6 +151,16 @@ def get_tcount_data():
     print(rel_error_bounds)
 
 
+def kcore_results_disc():
+    approx_core_numbers = get_core_numbers('wiki_distributedKV.txt')
+    core_numbers = get_ground_truth('wiki')
+    approximation_factor = np.array([float(max(s,t)) / max(1, min(s, t)) for s,t in zip(core_numbers, approx_core_numbers)])
+    print(statistics.mean(approximation_factor))
+    print(np.percentile(approximation_factor, 80))
+    print(np.percentile(approximation_factor, 95))
+    # print(len(approx_core_numbers))
+
 if __name__ == '__main__':
-    get_tcount_data()
-    get_kcore_data()
+    # get_tcount_data()
+    # get_kcore_data()
+    kcore_results_disc()
