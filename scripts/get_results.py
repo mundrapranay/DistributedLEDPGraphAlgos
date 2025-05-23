@@ -124,7 +124,7 @@ def calculate_confidence_interval(data, cf_level):
 def get_tcount_data():
     rel_error = []
     avg_approx = []
-    graphs = ['email-eu-core', 'wiki', 'enron', 'brightkite']
+    graphs = ['ego-twitter', 'gplus']
     rel_error_bounds = []
     for graph in graphs:
         tcount = TCOUNT[graph]
@@ -133,6 +133,7 @@ def get_tcount_data():
             rel_error_l = []
             avg_approx_l = []
             file = TCOUNT_FILE.format(graph, run_id)
+            print(file)
             try:
                 approx_tcount = get_triangles(file)
                 avg_approx_l.append(float(max(tcount,approx_tcount)) / max(1, min(tcount, approx_tcount)))
@@ -161,6 +162,6 @@ def kcore_results_disc():
     # print(len(approx_core_numbers))
 
 if __name__ == '__main__':
-    # get_tcount_data()
+    get_tcount_data()
     # get_kcore_data()
-    kcore_results_disc()
+    # kcore_results_disc()

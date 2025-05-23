@@ -1,0 +1,3 @@
+Running Experiments for graph: dblp
+signal: killed
+slurmstepd: error: Detected 1 oom_kill event in StepId=32832101.batch. Some of the step tasks have been OOM Killed.

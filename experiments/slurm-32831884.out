@@ -1,0 +1,1381 @@
+Running Experiments: brain
+fatal error: runtime: out of memory
+
+runtime stack:
+runtime.throw({0x58ab93?, 0x409c00000?})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/panic.go:1067 +0x48 fp=0x14860fccacb0 sp=0x14860fccac80 pc=0x46d4c8
+runtime.sysMapOS(0x13979000000, 0x400000)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mem_linux.go:168 +0x11b fp=0x14860fccacf0 sp=0x14860fccacb0 pc=0x414edb
+runtime.sysMap(0x13979000000, 0x400000, 0x14860fccaca8?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mem.go:155 +0x34 fp=0x14860fccad10 sp=0x14860fccacf0 pc=0x4148b4
+runtime.(*mheap).grow(0x6c7240, 0x88?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mheap.go:1539 +0x236 fp=0x14860fccad80 sp=0x14860fccad10 pc=0x4277b6
+runtime.(*mheap).allocSpan(0x6c7240, 0x88, 0x0, 0x1)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mheap.go:1244 +0x1b0 fp=0x14860fccae28 sp=0x14860fccad80 pc=0x426e30
+runtime.(*mheap).alloc.func1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mheap.go:962 +0x5c fp=0x14860fccae70 sp=0x14860fccae28 pc=0x4268dc
+runtime.systemstack(0x200000)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:514 +0x4a fp=0x14860fccae80 sp=0x14860fccae70 pc=0x472eea
+
+goroutine 1 gp=0xc0000061c0 m=4 mp=0xc0000bf508 [running]:
+runtime.systemstack_switch()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:479 +0x8 fp=0xc0001a12e0 sp=0xc0001a12d0 pc=0x472e88
+runtime.(*mheap).alloc(0x110000?, 0x88?, 0x68?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mheap.go:956 +0x5b fp=0xc0001a1328 sp=0xc0001a12e0 pc=0x42683b
+runtime.(*mcache).allocLarge(0xc0000bf508?, 0x110000, 0x1)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mcache.go:234 +0x87 fp=0xc0001a1378 sp=0xc0001a1328 pc=0x4139e7
+runtime.mallocgc(0x110000, 0x0, 0x0)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/malloc.go:1177 +0x5d0 fp=0xc0001a1418 sp=0xc0001a1378 pc=0x468d70
+runtime.growslice(0x13978e6a000, 0x4005bf0a8b145769?, 0x23de547714642f09?, 0xc216020180?, 0xa974366ba974366b?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/slice.go:264 +0x5c9 fp=0xc0001a1488 sp=0xc0001a1418 pc=0x46f569
+github.com/mundrapranay/DistributedLEDPGraphAlgos/algorithms.randomizedResponse(0x5616e0?, {0xc0e0ef2000, 0x4a9, 0x200?}, 0xbf786, 0x51352)
+	/home/pm886/DistributedLEDPGraphAlgos/algorithms/triangle-counting-ldp.go:136 +0x1ec fp=0xc0001a1500 sp=0xc0001a1488 pc=0x50884c
+github.com/mundrapranay/DistributedLEDPGraphAlgos/algorithms.loadGraphRR({0xc0000301e0?, 0x56?}, 0x42?, 0x2?, 0x3ff0000000000000, 0xbf786)
+	/home/pm886/DistributedLEDPGraphAlgos/algorithms/rr-baseline.go:67 +0x177 fp=0xc0001a1730 sp=0xc0001a1500 pc=0x504c37
+github.com/mundrapranay/DistributedLEDPGraphAlgos/algorithms.KCoreRR(0xbf786, 0x48?, 0x3ff0000000000000, 0x1, {0xc0000301e0, 0x44}, {0xc00002a1e0?, 0xd0?})
+	/home/pm886/DistributedLEDPGraphAlgos/algorithms/rr-baseline.go:106 +0x155 fp=0xc0001a1bd8 sp=0xc0001a1730 pc=0x505035
+github.com/mundrapranay/DistributedLEDPGraphAlgos/experiments.Runner({0x7ffe7ce10e1c, 0x13}, 0x50)
+	/home/pm886/DistributedLEDPGraphAlgos/experiments/experiments.go:72 +0xc66 fp=0xc0001a1ee8 sp=0xc0001a1bd8 pc=0x5481e6
+main.main()
+	/home/pm886/DistributedLEDPGraphAlgos/cmd/main.go:22 +0x16b fp=0xc0001a1f50 sp=0xc0001a1ee8 pc=0x54876b
+runtime.main()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:272 +0x28b fp=0xc0001a1fe0 sp=0xc0001a1f50 pc=0x43a30b
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0001a1fe8 sp=0xc0001a1fe0 pc=0x474ea1
+
+goroutine 2 gp=0xc000006c40 m=nil [force gc (idle), 3 minutes]:
+runtime.gopark(0x1e9b0075e2576f?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0000b8fa8 sp=0xc0000b8f88 pc=0x46d5ee
+runtime.goparkunlock(...)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:430
+runtime.forcegchelper()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:337 +0xb3 fp=0xc0000b8fe0 sp=0xc0000b8fa8 pc=0x43a653
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0000b8fe8 sp=0xc0000b8fe0 pc=0x474ea1
+created by runtime.init.7 in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:325 +0x1a
+
+goroutine 3 gp=0xc000007180 m=nil [GC sweep wait]:
+runtime.gopark(0x1?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0000b9780 sp=0xc0000b9760 pc=0x46d5ee
+runtime.goparkunlock(...)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:430
+runtime.bgsweep(0xc0000e6000)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgcsweep.go:317 +0xdf fp=0xc0000b97c8 sp=0xc0000b9780 pc=0x4231ff
+runtime.gcenable.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:204 +0x25 fp=0xc0000b97e0 sp=0xc0000b97c8 pc=0x417b25
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0000b97e8 sp=0xc0000b97e0 pc=0x474ea1
+created by runtime.gcenable in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:204 +0x66
+
+goroutine 4 gp=0xc000007340 m=nil [GC scavenge wait]:
+runtime.gopark(0xb9cb1?, 0xb4143?, 0x0?, 0x0?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0000b9f78 sp=0xc0000b9f58 pc=0x46d5ee
+runtime.goparkunlock(...)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:430
+runtime.(*scavengerState).park(0x6b9ea0)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgcscavenge.go:425 +0x49 fp=0xc0000b9fa8 sp=0xc0000b9f78 pc=0x420be9
+runtime.bgscavenge(0xc0000e6000)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgcscavenge.go:658 +0x59 fp=0xc0000b9fc8 sp=0xc0000b9fa8 pc=0x421179
+runtime.gcenable.gowrap2()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:205 +0x25 fp=0xc0000b9fe0 sp=0xc0000b9fc8 pc=0x417ac5
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0000b9fe8 sp=0xc0000b9fe0 pc=0x474ea1
+created by runtime.gcenable in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:205 +0xa5
+
+goroutine 5 gp=0xc000007c00 m=nil [finalizer wait, 936 minutes]:
+runtime.gopark(0xc0000b8648?, 0x40e325?, 0xb0?, 0x1?, 0xc0000061c0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0000b8620 sp=0xc0000b8600 pc=0x46d5ee
+runtime.runfinq()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mfinal.go:193 +0x107 fp=0xc0000b87e0 sp=0xc0000b8620 pc=0x416ba7
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0000b87e8 sp=0xc0000b87e0 pc=0x474ea1
+created by runtime.createfing in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mfinal.go:163 +0x3d
+
+goroutine 6 gp=0xc0001b0000 m=nil [select]:
+runtime.gopark(0xc0000caf80?, 0x2?, 0x80?, 0x20?, 0xc0000caf74?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0000cae10 sp=0xc0000cadf0 pc=0x46d5ee
+runtime.selectgo(0xc0000caf80, 0xc0000caf70, 0x0?, 0x0, 0x0?, 0x1)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/select.go:335 +0x7a5 fp=0xc0000caf38 sp=0xc0000cae10 pc=0x44c2e5
+github.com/golang/glog.(*fileSink).flushDaemon(0x6b9e38)
+	/home/pm886/go/pkg/mod/github.com/golang/glog@v1.1.1/glog_file.go:346 +0xb4 fp=0xc0000cafc8 sp=0xc0000caf38 pc=0x4fb6b4
+github.com/golang/glog.init.1.gowrap1()
+	/home/pm886/go/pkg/mod/github.com/golang/glog@v1.1.1/glog_file.go:161 +0x25 fp=0xc0000cafe0 sp=0xc0000cafc8 pc=0x4fa745
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0000cafe8 sp=0xc0000cafe0 pc=0x474ea1
+created by github.com/golang/glog.init.1 in goroutine 1
+	/home/pm886/go/pkg/mod/github.com/golang/glog@v1.1.1/glog_file.go:161 +0x126
+
+goroutine 7 gp=0xc0001b01c0 m=nil [GC worker (idle), 936 minutes]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0000baf38 sp=0xc0000baf18 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc00002c3f0)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0000bafc8 sp=0xc0000baf38 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0000bafe0 sp=0xc0000bafc8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0000bafe8 sp=0xc0000bafe0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 8 gp=0xc0001b0380 m=nil [GC worker (idle), 936 minutes]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0000bb738 sp=0xc0000bb718 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc00002c3f0)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0000bb7c8 sp=0xc0000bb738 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0000bb7e0 sp=0xc0000bb7c8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0000bb7e8 sp=0xc0000bb7e0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 9 gp=0xc0001b0540 m=nil [GC worker (idle), 936 minutes]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0000bbf38 sp=0xc0000bbf18 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc00002c3f0)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0000bbfc8 sp=0xc0000bbf38 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0000bbfe0 sp=0xc0000bbfc8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0000bbfe8 sp=0xc0000bbfe0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 10 gp=0xc0001b0700 m=nil [GC worker (idle), 936 minutes]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0000b4738 sp=0xc0000b4718 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc00002c3f0)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0000b47c8 sp=0xc0000b4738 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0000b47e0 sp=0xc0000b47c8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0000b47e8 sp=0xc0000b47e0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 11 gp=0xc0001b08c0 m=nil [GC worker (idle), 936 minutes]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0000b4f38 sp=0xc0000b4f18 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc00002c3f0)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0000b4fc8 sp=0xc0000b4f38 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0000b4fe0 sp=0xc0000b4fc8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0000b4fe8 sp=0xc0000b4fe0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 12 gp=0xc0001b0a80 m=nil [GC worker (idle), 936 minutes]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0000b5738 sp=0xc0000b5718 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc00002c3f0)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0000b57c8 sp=0xc0000b5738 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0000b57e0 sp=0xc0000b57c8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0000b57e8 sp=0xc0000b57e0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 13 gp=0xc0001b0c40 m=nil [GC worker (idle), 936 minutes]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0000b5f38 sp=0xc0000b5f18 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc00002c3f0)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0000b5fc8 sp=0xc0000b5f38 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0000b5fe0 sp=0xc0000b5fc8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0000b5fe8 sp=0xc0000b5fe0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 14 gp=0xc0001b0e00 m=nil [GC worker (idle), 936 minutes]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0000b6738 sp=0xc0000b6718 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc00002c3f0)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0000b67c8 sp=0xc0000b6738 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0000b67e0 sp=0xc0000b67c8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0000b67e8 sp=0xc0000b67e0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 15 gp=0xc0001b0fc0 m=nil [GC worker (idle), 936 minutes]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0000b6f38 sp=0xc0000b6f18 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc00002c3f0)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0000b6fc8 sp=0xc0000b6f38 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0000b6fe0 sp=0xc0000b6fc8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0000b6fe8 sp=0xc0000b6fe0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 16 gp=0xc0001b1180 m=nil [GC worker (idle), 936 minutes]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0000b7738 sp=0xc0000b7718 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc00002c3f0)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0000b77c8 sp=0xc0000b7738 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0000b77e0 sp=0xc0000b77c8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0000b77e8 sp=0xc0000b77e0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 18 gp=0xc0001b1340 m=nil [GC worker (idle), 936 minutes]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0000b7f38 sp=0xc0000b7f18 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc00002c3f0)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0000b7fc8 sp=0xc0000b7f38 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0000b7fe0 sp=0xc0000b7fc8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0000b7fe8 sp=0xc0000b7fe0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 19 gp=0xc0001b1500 m=nil [GC worker (idle), 936 minutes]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0003b4738 sp=0xc0003b4718 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc00002c3f0)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0003b47c8 sp=0xc0003b4738 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0003b47e0 sp=0xc0003b47c8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0003b47e8 sp=0xc0003b47e0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 20 gp=0xc0001b16c0 m=nil [GC worker (idle), 936 minutes]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0003b4f38 sp=0xc0003b4f18 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc00002c3f0)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0003b4fc8 sp=0xc0003b4f38 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0003b4fe0 sp=0xc0003b4fc8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0003b4fe8 sp=0xc0003b4fe0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 21 gp=0xc0001b1880 m=nil [GC worker (idle), 936 minutes]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0003b5738 sp=0xc0003b5718 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc00002c3f0)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0003b57c8 sp=0xc0003b5738 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0003b57e0 sp=0xc0003b57c8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0003b57e8 sp=0xc0003b57e0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 22 gp=0xc0001b1a40 m=nil [GC worker (idle), 936 minutes]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0003b5f38 sp=0xc0003b5f18 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc00002c3f0)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0003b5fc8 sp=0xc0003b5f38 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0003b5fe0 sp=0xc0003b5fc8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0003b5fe8 sp=0xc0003b5fe0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 23 gp=0xc0001b1c00 m=nil [GC worker (idle), 936 minutes]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0003b6738 sp=0xc0003b6718 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc00002c3f0)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0003b67c8 sp=0xc0003b6738 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0003b67e0 sp=0xc0003b67c8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0003b67e8 sp=0xc0003b67e0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 24 gp=0xc0001b1dc0 m=nil [GC worker (idle), 936 minutes]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0003b6f38 sp=0xc0003b6f18 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc00002c3f0)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0003b6fc8 sp=0xc0003b6f38 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0003b6fe0 sp=0xc0003b6fc8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0003b6fe8 sp=0xc0003b6fe0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 25 gp=0xc0003b8000 m=nil [GC worker (idle), 936 minutes]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0003b7738 sp=0xc0003b7718 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc00002c3f0)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0003b77c8 sp=0xc0003b7738 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0003b77e0 sp=0xc0003b77c8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0003b77e8 sp=0xc0003b77e0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 26 gp=0xc0003b81c0 m=nil [GC worker (idle), 936 minutes]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0003b7f38 sp=0xc0003b7f18 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc00002c3f0)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0003b7fc8 sp=0xc0003b7f38 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0003b7fe0 sp=0xc0003b7fc8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0003b7fe8 sp=0xc0003b7fe0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 27 gp=0xc0003b8380 m=nil [GC worker (idle), 936 minutes]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0003b0738 sp=0xc0003b0718 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc00002c3f0)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0003b07c8 sp=0xc0003b0738 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0003b07e0 sp=0xc0003b07c8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0003b07e8 sp=0xc0003b07e0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 28 gp=0xc0003b8540 m=nil [GC worker (idle), 936 minutes]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0003b0f38 sp=0xc0003b0f18 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc00002c3f0)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0003b0fc8 sp=0xc0003b0f38 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0003b0fe0 sp=0xc0003b0fc8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0003b0fe8 sp=0xc0003b0fe0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 29 gp=0xc0003b8700 m=nil [GC worker (idle), 936 minutes]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0003b1738 sp=0xc0003b1718 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc00002c3f0)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0003b17c8 sp=0xc0003b1738 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0003b17e0 sp=0xc0003b17c8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0003b17e8 sp=0xc0003b17e0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 30 gp=0xc0003b88c0 m=nil [GC worker (idle), 936 minutes]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0003b1f38 sp=0xc0003b1f18 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc00002c3f0)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0003b1fc8 sp=0xc0003b1f38 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0003b1fe0 sp=0xc0003b1fc8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0003b1fe8 sp=0xc0003b1fe0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 31 gp=0xc0003b8a80 m=nil [GC worker (idle), 934 minutes]:
+runtime.gopark(0x1e681b6dc958cd?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0003b2738 sp=0xc0003b2718 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc00002c3f0)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0003b27c8 sp=0xc0003b2738 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0003b27e0 sp=0xc0003b27c8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0003b27e8 sp=0xc0003b27e0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 32 gp=0xc0003b8c40 m=nil [GC worker (idle), 934 minutes]:
+runtime.gopark(0x1e681b6f7927ae?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0003b2f38 sp=0xc0003b2f18 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc00002c3f0)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0003b2fc8 sp=0xc0003b2f38 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0003b2fe0 sp=0xc0003b2fc8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0003b2fe8 sp=0xc0003b2fe0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 33 gp=0xc0003b8e00 m=nil [GC worker (idle)]:
+runtime.gopark(0x1e9b007a179035?, 0x1?, 0x17?, 0x2a?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0003b3738 sp=0xc0003b3718 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc00002c3f0)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0003b37c8 sp=0xc0003b3738 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0003b37e0 sp=0xc0003b37c8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0003b37e8 sp=0xc0003b37e0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 34 gp=0xc0003b8fc0 m=nil [GC worker (idle), 934 minutes]:
+runtime.gopark(0x1e681b6f84b9a8?, 0x3?, 0x3d?, 0xbb?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0003b3f38 sp=0xc0003b3f18 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc00002c3f0)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0003b3fc8 sp=0xc0003b3f38 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0003b3fe0 sp=0xc0003b3fc8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0003b3fe8 sp=0xc0003b3fe0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 35 gp=0xc0003b9180 m=nil [GC worker (idle), 934 minutes]:
+runtime.gopark(0x6deb80?, 0x1?, 0x39?, 0x73?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0003be738 sp=0xc0003be718 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc00002c3f0)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0003be7c8 sp=0xc0003be738 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0003be7e0 sp=0xc0003be7c8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0003be7e8 sp=0xc0003be7e0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 36 gp=0xc0003b9340 m=nil [GC worker (idle)]:
+runtime.gopark(0x1e9b007a241ae4?, 0x1?, 0x33?, 0x80?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0003bef38 sp=0xc0003bef18 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc00002c3f0)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0003befc8 sp=0xc0003bef38 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0003befe0 sp=0xc0003befc8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0003befe8 sp=0xc0003befe0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 37 gp=0xc0003b9500 m=nil [GC worker (idle)]:
+runtime.gopark(0x6deb80?, 0x1?, 0x76?, 0xc9?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0003bf738 sp=0xc0003bf718 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc00002c3f0)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0003bf7c8 sp=0xc0003bf738 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0003bf7e0 sp=0xc0003bf7c8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0003bf7e8 sp=0xc0003bf7e0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 38 gp=0xc0003b96c0 m=nil [GC worker (idle)]:
+runtime.gopark(0x6deb80?, 0x1?, 0xe8?, 0x1c?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0003bff38 sp=0xc0003bff18 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc00002c3f0)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0003bffc8 sp=0xc0003bff38 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0003bffe0 sp=0xc0003bffc8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0003bffe8 sp=0xc0003bffe0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 39 gp=0xc0003b9880 m=nil [GC worker (idle), 934 minutes]:
+runtime.gopark(0x1e681b6dc90de4?, 0x1?, 0x41?, 0xde?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0003c0738 sp=0xc0003c0718 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc00002c3f0)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0003c07c8 sp=0xc0003c0738 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0003c07e0 sp=0xc0003c07c8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0003c07e8 sp=0xc0003c07e0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 40 gp=0xc0003b9a40 m=nil [GC worker (idle), 934 minutes]:
+runtime.gopark(0x6deb80?, 0x1?, 0xbf?, 0x97?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0003c0f38 sp=0xc0003c0f18 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc00002c3f0)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0003c0fc8 sp=0xc0003c0f38 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0003c0fe0 sp=0xc0003c0fc8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0003c0fe8 sp=0xc0003c0fe0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 41 gp=0xc0003b9c00 m=nil [GC worker (idle)]:
+runtime.gopark(0x6deb80?, 0x1?, 0xbb?, 0xb8?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0003c1738 sp=0xc0003c1718 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc00002c3f0)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0003c17c8 sp=0xc0003c1738 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0003c17e0 sp=0xc0003c17c8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0003c17e8 sp=0xc0003c17e0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 42 gp=0xc0003b9dc0 m=nil [GC worker (idle)]:
+runtime.gopark(0x1e9b0079f2c1ed?, 0x1?, 0xbd?, 0x93?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0003c1f38 sp=0xc0003c1f18 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc00002c3f0)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0003c1fc8 sp=0xc0003c1f38 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0003c1fe0 sp=0xc0003c1fc8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0003c1fe8 sp=0xc0003c1fe0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 43 gp=0xc0003c2000 m=nil [GC worker (idle)]:
+runtime.gopark(0x6deb80?, 0x1?, 0x28?, 0x10?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0003ba738 sp=0xc0003ba718 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc00002c3f0)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0003ba7c8 sp=0xc0003ba738 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0003ba7e0 sp=0xc0003ba7c8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0003ba7e8 sp=0xc0003ba7e0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 44 gp=0xc0003c21c0 m=nil [GC worker (idle), 934 minutes]:
+runtime.gopark(0x1e681b6f792d81?, 0x3?, 0xda?, 0xa5?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0003baf38 sp=0xc0003baf18 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc00002c3f0)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0003bafc8 sp=0xc0003baf38 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0003bafe0 sp=0xc0003bafc8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0003bafe8 sp=0xc0003bafe0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 45 gp=0xc0003c2380 m=nil [GC worker (idle), 55 minutes]:
+runtime.gopark(0x1e98295c9ca895?, 0x1?, 0x96?, 0x2d?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0003bb738 sp=0xc0003bb718 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc00002c3f0)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0003bb7c8 sp=0xc0003bb738 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0003bb7e0 sp=0xc0003bb7c8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0003bb7e8 sp=0xc0003bb7e0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 46 gp=0xc0003c2540 m=nil [GC worker (idle), 934 minutes]:
+runtime.gopark(0x1e681b6dcca5a0?, 0x1?, 0xcf?, 0xd6?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0003bbf38 sp=0xc0003bbf18 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc00002c3f0)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0003bbfc8 sp=0xc0003bbf38 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0003bbfe0 sp=0xc0003bbfc8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0003bbfe8 sp=0xc0003bbfe0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 47 gp=0xc0003c2700 m=nil [GC worker (idle)]:
+runtime.gopark(0x6deb80?, 0x1?, 0xd1?, 0x90?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0003bc738 sp=0xc0003bc718 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc00002c3f0)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0003bc7c8 sp=0xc0003bc738 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0003bc7e0 sp=0xc0003bc7c8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0003bc7e8 sp=0xc0003bc7e0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 48 gp=0xc0003c28c0 m=nil [GC worker (idle), 934 minutes]:
+runtime.gopark(0x1e681b6dc958f6?, 0x3?, 0x83?, 0x3c?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0003bcf38 sp=0xc0003bcf18 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc00002c3f0)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0003bcfc8 sp=0xc0003bcf38 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0003bcfe0 sp=0xc0003bcfc8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0003bcfe8 sp=0xc0003bcfe0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 49 gp=0xc0003c2a80 m=nil [GC worker (idle)]:
+runtime.gopark(0x6deb80?, 0x1?, 0x17?, 0x10?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0003bd738 sp=0xc0003bd718 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc00002c3f0)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0003bd7c8 sp=0xc0003bd738 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0003bd7e0 sp=0xc0003bd7c8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0003bd7e8 sp=0xc0003bd7e0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 50 gp=0xc0003c2c40 m=nil [GC worker (idle)]:
+runtime.gopark(0x1e9b007a178d5a?, 0x1?, 0x89?, 0x77?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0003bdf38 sp=0xc0003bdf18 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc00002c3f0)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0003bdfc8 sp=0xc0003bdf38 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0003bdfe0 sp=0xc0003bdfc8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0003bdfe8 sp=0xc0003bdfe0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 51 gp=0xc0003c2e00 m=nil [GC worker (idle)]:
+runtime.gopark(0x1e9b007a1def05?, 0x1?, 0x52?, 0x6e?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0003c8738 sp=0xc0003c8718 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc00002c3f0)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0003c87c8 sp=0xc0003c8738 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0003c87e0 sp=0xc0003c87c8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0003c87e8 sp=0xc0003c87e0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 52 gp=0xc0003c2fc0 m=nil [GC worker (idle)]:
+runtime.gopark(0x1e9b0079a8d78f?, 0x1?, 0xc6?, 0x42?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0003c8f38 sp=0xc0003c8f18 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc00002c3f0)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0003c8fc8 sp=0xc0003c8f38 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0003c8fe0 sp=0xc0003c8fc8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0003c8fe8 sp=0xc0003c8fe0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 53 gp=0xc0003c3180 m=nil [GC worker (idle), 934 minutes]:
+runtime.gopark(0x1e681b6dc95d3c?, 0x1?, 0x30?, 0xd1?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0003c9738 sp=0xc0003c9718 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc00002c3f0)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0003c97c8 sp=0xc0003c9738 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0003c97e0 sp=0xc0003c97c8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0003c97e8 sp=0xc0003c97e0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 54 gp=0xc0003c3340 m=nil [GC worker (idle), 934 minutes]:
+runtime.gopark(0x1e681b6dc91ee6?, 0x1?, 0x46?, 0x68?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0003c9f38 sp=0xc0003c9f18 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc00002c3f0)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0003c9fc8 sp=0xc0003c9f38 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0003c9fe0 sp=0xc0003c9fc8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0003c9fe8 sp=0xc0003c9fe0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 55 gp=0xc0003c3500 m=nil [GC worker (idle), 934 minutes]:
+runtime.gopark(0x1e681b6dc90f4d?, 0x1?, 0x6e?, 0x37?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0003ca738 sp=0xc0003ca718 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc00002c3f0)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0003ca7c8 sp=0xc0003ca738 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0003ca7e0 sp=0xc0003ca7c8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0003ca7e8 sp=0xc0003ca7e0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+exit status 2
+Running Experiments: orkut
+fatal error: runtime: out of memory
+
+runtime stack:
+runtime.throw({0x58ab93?, 0x409c00000?})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/panic.go:1067 +0x48 fp=0x7ffee38e35d8 sp=0x7ffee38e35a8 pc=0x46d4c8
+runtime.sysMapOS(0x1397d400000, 0x800000)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mem_linux.go:168 +0x11b fp=0x7ffee38e3618 sp=0x7ffee38e35d8 pc=0x414edb
+runtime.sysMap(0x1397d400000, 0x800000, 0x7ffee38e35d0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mem.go:155 +0x34 fp=0x7ffee38e3638 sp=0x7ffee38e3618 pc=0x4148b4
+runtime.(*mheap).grow(0x6c7240, 0x338?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mheap.go:1539 +0x236 fp=0x7ffee38e36a8 sp=0x7ffee38e3638 pc=0x4277b6
+runtime.(*mheap).allocSpan(0x6c7240, 0x338, 0x0, 0x1)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mheap.go:1244 +0x1b0 fp=0x7ffee38e3750 sp=0x7ffee38e36a8 pc=0x426e30
+runtime.(*mheap).alloc.func1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mheap.go:962 +0x5c fp=0x7ffee38e3798 sp=0x7ffee38e3750 pc=0x4268dc
+runtime.systemstack(0x47755f)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:514 +0x4a fp=0x7ffee38e37a8 sp=0x7ffee38e3798 pc=0x472eea
+
+goroutine 1 gp=0xc0000061c0 m=0 mp=0x6bad40 [running]:
+runtime.systemstack_switch()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:479 +0x8 fp=0xc0001d92e0 sp=0xc0001d92d0 pc=0x472e88
+runtime.(*mheap).alloc(0x670000?, 0x338?, 0x68?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mheap.go:956 +0x5b fp=0xc0001d9328 sp=0xc0001d92e0 pc=0x42683b
+runtime.(*mcache).allocLarge(0x6bad40?, 0x670000, 0x1)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mcache.go:234 +0x87 fp=0xc0001d9378 sp=0xc0001d9328 pc=0x4139e7
+runtime.mallocgc(0x670000, 0x0, 0x0)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/malloc.go:1177 +0x5d0 fp=0xc0001d9418 sp=0xc0001d9378 pc=0x468d70
+runtime.growslice(0xc145f4e000, 0x4005bf0a8b145769?, 0xd800?, 0x1?, 0x559460?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/slice.go:264 +0x5c9 fp=0xc0001d9488 sp=0xc0001d9418 pc=0x46f569
+github.com/mundrapranay/DistributedLEDPGraphAlgos/algorithms.randomizedResponse(0x5616e0?, {0xc052854400, 0x49, 0x10?}, 0x2ee1b9, 0x12425)
+	/home/pm886/DistributedLEDPGraphAlgos/algorithms/triangle-counting-ldp.go:136 +0x1ec fp=0xc0001d9500 sp=0xc0001d9488 pc=0x50884c
+github.com/mundrapranay/DistributedLEDPGraphAlgos/algorithms.loadGraphRR({0xc0001e4140?, 0x56?}, 0x42?, 0x2?, 0x3ff0000000000000, 0x2ee1b9)
+	/home/pm886/DistributedLEDPGraphAlgos/algorithms/rr-baseline.go:67 +0x177 fp=0xc0001d9730 sp=0xc0001d9500 pc=0x504c37
+github.com/mundrapranay/DistributedLEDPGraphAlgos/algorithms.KCoreRR(0x2ee1b9, 0x48?, 0x3ff0000000000000, 0x1, {0xc0001e4140, 0x44}, {0xc000220060?, 0xd0?})
+	/home/pm886/DistributedLEDPGraphAlgos/algorithms/rr-baseline.go:106 +0x155 fp=0xc0001d9bd8 sp=0xc0001d9730 pc=0x505035
+github.com/mundrapranay/DistributedLEDPGraphAlgos/experiments.Runner({0x7ffee38e3e1c, 0x13}, 0x50)
+	/home/pm886/DistributedLEDPGraphAlgos/experiments/experiments.go:72 +0xc66 fp=0xc0001d9ee8 sp=0xc0001d9bd8 pc=0x5481e6
+main.main()
+	/home/pm886/DistributedLEDPGraphAlgos/cmd/main.go:22 +0x16b fp=0xc0001d9f50 sp=0xc0001d9ee8 pc=0x54876b
+runtime.main()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:272 +0x28b fp=0xc0001d9fe0 sp=0xc0001d9f50 pc=0x43a30b
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0001d9fe8 sp=0xc0001d9fe0 pc=0x474ea1
+
+goroutine 2 gp=0xc000006c40 m=nil [force gc (idle), 2 minutes]:
+runtime.gopark(0x1eb0d5068bc76c?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0000b8fa8 sp=0xc0000b8f88 pc=0x46d5ee
+runtime.goparkunlock(...)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:430
+runtime.forcegchelper()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:337 +0xb3 fp=0xc0000b8fe0 sp=0xc0000b8fa8 pc=0x43a653
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0000b8fe8 sp=0xc0000b8fe0 pc=0x474ea1
+created by runtime.init.7 in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:325 +0x1a
+
+goroutine 18 gp=0xc000104380 m=nil [GC sweep wait]:
+runtime.gopark(0x1?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0000b4780 sp=0xc0000b4760 pc=0x46d5ee
+runtime.goparkunlock(...)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:430
+runtime.bgsweep(0xc000112000)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgcsweep.go:317 +0xdf fp=0xc0000b47c8 sp=0xc0000b4780 pc=0x4231ff
+runtime.gcenable.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:204 +0x25 fp=0xc0000b47e0 sp=0xc0000b47c8 pc=0x417b25
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0000b47e8 sp=0xc0000b47e0 pc=0x474ea1
+created by runtime.gcenable in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:204 +0x66
+
+goroutine 19 gp=0xc000104540 m=nil [GC scavenge wait]:
+runtime.gopark(0x10000?, 0x5bf3e8?, 0x0?, 0x0?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0000b4f78 sp=0xc0000b4f58 pc=0x46d5ee
+runtime.goparkunlock(...)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:430
+runtime.(*scavengerState).park(0x6b9ea0)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgcscavenge.go:425 +0x49 fp=0xc0000b4fa8 sp=0xc0000b4f78 pc=0x420be9
+runtime.bgscavenge(0xc000112000)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgcscavenge.go:658 +0x59 fp=0xc0000b4fc8 sp=0xc0000b4fa8 pc=0x421179
+runtime.gcenable.gowrap2()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:205 +0x25 fp=0xc0000b4fe0 sp=0xc0000b4fc8 pc=0x417ac5
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0000b4fe8 sp=0xc0000b4fe0 pc=0x474ea1
+created by runtime.gcenable in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:205 +0xa5
+
+goroutine 34 gp=0xc000186380 m=nil [finalizer wait, 398 minutes]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0001aa620 sp=0xc0001aa600 pc=0x46d5ee
+runtime.runfinq()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mfinal.go:193 +0x107 fp=0xc0001aa7e0 sp=0xc0001aa620 pc=0x416ba7
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0001aa7e8 sp=0xc0001aa7e0 pc=0x474ea1
+created by runtime.createfing in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mfinal.go:163 +0x3d
+
+goroutine 35 gp=0xc000186700 m=nil [select]:
+runtime.gopark(0xc0000d0f80?, 0x2?, 0x80?, 0xa0?, 0xc0000d0f74?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0000d0e10 sp=0xc0000d0df0 pc=0x46d5ee
+runtime.selectgo(0xc0000d0f80, 0xc0000d0f70, 0x0?, 0x0, 0x0?, 0x1)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/select.go:335 +0x7a5 fp=0xc0000d0f38 sp=0xc0000d0e10 pc=0x44c2e5
+github.com/golang/glog.(*fileSink).flushDaemon(0x6b9e38)
+	/home/pm886/go/pkg/mod/github.com/golang/glog@v1.1.1/glog_file.go:346 +0xb4 fp=0xc0000d0fc8 sp=0xc0000d0f38 pc=0x4fb6b4
+github.com/golang/glog.init.1.gowrap1()
+	/home/pm886/go/pkg/mod/github.com/golang/glog@v1.1.1/glog_file.go:161 +0x25 fp=0xc0000d0fe0 sp=0xc0000d0fc8 pc=0x4fa745
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0000d0fe8 sp=0xc0000d0fe0 pc=0x474ea1
+created by github.com/golang/glog.init.1 in goroutine 1
+	/home/pm886/go/pkg/mod/github.com/golang/glog@v1.1.1/glog_file.go:161 +0x126
+
+goroutine 36 gp=0xc0001868c0 m=nil [GC worker (idle), 398 minutes]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0001ab738 sp=0xc0001ab718 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc000180310)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0001ab7c8 sp=0xc0001ab738 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0001ab7e0 sp=0xc0001ab7c8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0001ab7e8 sp=0xc0001ab7e0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 37 gp=0xc000186a80 m=nil [GC worker (idle), 398 minutes]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0001abf38 sp=0xc0001abf18 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc000180310)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0001abfc8 sp=0xc0001abf38 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0001abfe0 sp=0xc0001abfc8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0001abfe8 sp=0xc0001abfe0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 38 gp=0xc000186c40 m=nil [GC worker (idle), 398 minutes]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0001ac738 sp=0xc0001ac718 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc000180310)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0001ac7c8 sp=0xc0001ac738 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0001ac7e0 sp=0xc0001ac7c8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0001ac7e8 sp=0xc0001ac7e0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 39 gp=0xc000186e00 m=nil [GC worker (idle), 398 minutes]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0001acf38 sp=0xc0001acf18 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc000180310)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0001acfc8 sp=0xc0001acf38 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0001acfe0 sp=0xc0001acfc8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0001acfe8 sp=0xc0001acfe0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 40 gp=0xc000186fc0 m=nil [GC worker (idle), 398 minutes]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0001ad738 sp=0xc0001ad718 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc000180310)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0001ad7c8 sp=0xc0001ad738 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0001ad7e0 sp=0xc0001ad7c8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0001ad7e8 sp=0xc0001ad7e0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 41 gp=0xc000187180 m=nil [GC worker (idle), 398 minutes]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0001adf38 sp=0xc0001adf18 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc000180310)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0001adfc8 sp=0xc0001adf38 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0001adfe0 sp=0xc0001adfc8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0001adfe8 sp=0xc0001adfe0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 42 gp=0xc000187340 m=nil [GC worker (idle), 398 minutes]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0001a6738 sp=0xc0001a6718 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc000180310)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0001a67c8 sp=0xc0001a6738 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0001a67e0 sp=0xc0001a67c8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0001a67e8 sp=0xc0001a67e0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 43 gp=0xc000187500 m=nil [GC worker (idle), 398 minutes]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0001a6f38 sp=0xc0001a6f18 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc000180310)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0001a6fc8 sp=0xc0001a6f38 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0001a6fe0 sp=0xc0001a6fc8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0001a6fe8 sp=0xc0001a6fe0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 44 gp=0xc0001876c0 m=nil [GC worker (idle), 398 minutes]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0001a7738 sp=0xc0001a7718 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc000180310)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0001a77c8 sp=0xc0001a7738 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0001a77e0 sp=0xc0001a77c8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0001a77e8 sp=0xc0001a77e0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 45 gp=0xc000187880 m=nil [GC worker (idle), 398 minutes]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0001a7f38 sp=0xc0001a7f18 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc000180310)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0001a7fc8 sp=0xc0001a7f38 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0001a7fe0 sp=0xc0001a7fc8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0001a7fe8 sp=0xc0001a7fe0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 46 gp=0xc000187a40 m=nil [GC worker (idle), 398 minutes]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0001a8738 sp=0xc0001a8718 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc000180310)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0001a87c8 sp=0xc0001a8738 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0001a87e0 sp=0xc0001a87c8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0001a87e8 sp=0xc0001a87e0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 47 gp=0xc000187c00 m=nil [GC worker (idle), 398 minutes]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0001a8f38 sp=0xc0001a8f18 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc000180310)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0001a8fc8 sp=0xc0001a8f38 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0001a8fe0 sp=0xc0001a8fc8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0001a8fe8 sp=0xc0001a8fe0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 48 gp=0xc000187dc0 m=nil [GC worker (idle), 396 minutes]:
+runtime.gopark(0x6deb80?, 0x3?, 0x4a?, 0x43?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0001a9738 sp=0xc0001a9718 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc000180310)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0001a97c8 sp=0xc0001a9738 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0001a97e0 sp=0xc0001a97c8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0001a97e8 sp=0xc0001a97e0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 49 gp=0xc000470000 m=nil [GC worker (idle)]:
+runtime.gopark(0x6deb80?, 0x1?, 0x1e?, 0x61?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0001a9f38 sp=0xc0001a9f18 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc000180310)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0001a9fc8 sp=0xc0001a9f38 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0001a9fe0 sp=0xc0001a9fc8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0001a9fe8 sp=0xc0001a9fe0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 50 gp=0xc0004701c0 m=nil [GC worker (idle), 393 minutes]:
+runtime.gopark(0x1e9b72dc1ad3d8?, 0x3?, 0xa0?, 0xfa?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc000476738 sp=0xc000476718 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc000180310)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0004767c8 sp=0xc000476738 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0004767e0 sp=0xc0004767c8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0004767e8 sp=0xc0004767e0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 51 gp=0xc000470380 m=nil [GC worker (idle), 393 minutes]:
+runtime.gopark(0x1e9b72dc1aff77?, 0x1?, 0x85?, 0xef?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc000476f38 sp=0xc000476f18 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc000180310)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc000476fc8 sp=0xc000476f38 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc000476fe0 sp=0xc000476fc8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc000476fe8 sp=0xc000476fe0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 52 gp=0xc000470540 m=nil [GC worker (idle), 388 minutes]:
+runtime.gopark(0x1e9ba55c029234?, 0x1?, 0xea?, 0x79?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc000477738 sp=0xc000477718 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc000180310)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0004777c8 sp=0xc000477738 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0004777e0 sp=0xc0004777c8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0004777e8 sp=0xc0004777e0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 53 gp=0xc000470700 m=nil [GC worker (idle)]:
+runtime.gopark(0x1eb0d50a972bfa?, 0x1?, 0xaf?, 0xbc?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc000477f38 sp=0xc000477f18 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc000180310)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc000477fc8 sp=0xc000477f38 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc000477fe0 sp=0xc000477fc8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc000477fe8 sp=0xc000477fe0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 54 gp=0xc0004708c0 m=nil [GC worker (idle)]:
+runtime.gopark(0x1eb0d50aa32a70?, 0x1?, 0xd2?, 0xa?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc000478738 sp=0xc000478718 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc000180310)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0004787c8 sp=0xc000478738 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0004787e0 sp=0xc0004787c8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0004787e8 sp=0xc0004787e0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 55 gp=0xc000470a80 m=nil [GC worker (idle)]:
+runtime.gopark(0x1eb0d50a97295e?, 0x1?, 0xd4?, 0xce?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc000478f38 sp=0xc000478f18 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc000180310)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc000478fc8 sp=0xc000478f38 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc000478fe0 sp=0xc000478fc8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc000478fe8 sp=0xc000478fe0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 56 gp=0xc000470c40 m=nil [GC worker (idle), 391 minutes]:
+runtime.gopark(0x1e9b72dc229471?, 0x3?, 0x80?, 0x42?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc000479738 sp=0xc000479718 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc000180310)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0004797c8 sp=0xc000479738 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0004797e0 sp=0xc0004797c8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0004797e8 sp=0xc0004797e0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 57 gp=0xc000470e00 m=nil [GC worker (idle), 388 minutes]:
+runtime.gopark(0x1e9ba5597d9ff9?, 0x1?, 0x6c?, 0xa4?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc000479f38 sp=0xc000479f18 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc000180310)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc000479fc8 sp=0xc000479f38 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc000479fe0 sp=0xc000479fc8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc000479fe8 sp=0xc000479fe0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 58 gp=0xc000470fc0 m=nil [GC worker (idle), 388 minutes]:
+runtime.gopark(0x1e9ba55c2bd84c?, 0x3?, 0xe4?, 0xc3?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc000472738 sp=0xc000472718 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc000180310)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0004727c8 sp=0xc000472738 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0004727e0 sp=0xc0004727c8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0004727e8 sp=0xc0004727e0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 59 gp=0xc000471180 m=nil [GC worker (idle), 388 minutes]:
+runtime.gopark(0x1e9ba55c25f4aa?, 0x1?, 0x9a?, 0xad?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc000472f38 sp=0xc000472f18 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc000180310)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc000472fc8 sp=0xc000472f38 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc000472fe0 sp=0xc000472fc8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc000472fe8 sp=0xc000472fe0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 60 gp=0xc000471340 m=nil [GC worker (idle), 388 minutes]:
+runtime.gopark(0x1e9ba5597eee76?, 0x1?, 0xbb?, 0x7a?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc000473738 sp=0xc000473718 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc000180310)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0004737c8 sp=0xc000473738 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0004737e0 sp=0xc0004737c8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0004737e8 sp=0xc0004737e0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 61 gp=0xc000471500 m=nil [GC worker (idle), 388 minutes]:
+runtime.gopark(0x1e9ba55c2bd9bb?, 0x1?, 0x38?, 0x1f?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc000473f38 sp=0xc000473f18 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc000180310)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc000473fc8 sp=0xc000473f38 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc000473fe0 sp=0xc000473fc8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc000473fe8 sp=0xc000473fe0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 62 gp=0xc0004716c0 m=nil [GC worker (idle), 388 minutes]:
+runtime.gopark(0x1e9ba55c2be41a?, 0x1?, 0x4?, 0x60?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc000474738 sp=0xc000474718 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc000180310)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0004747c8 sp=0xc000474738 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0004747e0 sp=0xc0004747c8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0004747e8 sp=0xc0004747e0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 63 gp=0xc000471880 m=nil [GC worker (idle)]:
+runtime.gopark(0x6deb80?, 0x1?, 0x59?, 0xe9?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc000474f38 sp=0xc000474f18 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc000180310)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc000474fc8 sp=0xc000474f38 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc000474fe0 sp=0xc000474fc8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc000474fe8 sp=0xc000474fe0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 64 gp=0xc000471a40 m=nil [GC worker (idle)]:
+runtime.gopark(0x1eb0d50a834f8e?, 0x1?, 0x40?, 0x75?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc000475738 sp=0xc000475718 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc000180310)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0004757c8 sp=0xc000475738 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0004757e0 sp=0xc0004757c8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0004757e8 sp=0xc0004757e0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 65 gp=0xc000471c00 m=nil [GC worker (idle), 388 minutes]:
+runtime.gopark(0x1e9ba55c149055?, 0x1?, 0x18?, 0x5b?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc000475f38 sp=0xc000475f18 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc000180310)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc000475fc8 sp=0xc000475f38 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc000475fe0 sp=0xc000475fc8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc000475fe8 sp=0xc000475fe0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 66 gp=0xc000471dc0 m=nil [GC worker (idle), 388 minutes]:
+runtime.gopark(0x1e9ba55c1524bd?, 0x3?, 0xaf?, 0x6c?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0005a6738 sp=0xc0005a6718 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc000180310)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0005a67c8 sp=0xc0005a6738 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0005a67e0 sp=0xc0005a67c8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0005a67e8 sp=0xc0005a67e0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 67 gp=0xc00047a000 m=nil [GC worker (idle)]:
+runtime.gopark(0x6deb80?, 0x1?, 0xa0?, 0xd3?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0005a6f38 sp=0xc0005a6f18 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc000180310)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0005a6fc8 sp=0xc0005a6f38 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0005a6fe0 sp=0xc0005a6fc8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0005a6fe8 sp=0xc0005a6fe0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 68 gp=0xc00047a1c0 m=nil [GC worker (idle)]:
+runtime.gopark(0x6deb80?, 0x1?, 0xbe?, 0x4e?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0005a7738 sp=0xc0005a7718 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc000180310)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0005a77c8 sp=0xc0005a7738 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0005a77e0 sp=0xc0005a77c8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0005a77e8 sp=0xc0005a77e0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 69 gp=0xc00047a380 m=nil [GC worker (idle), 350 minutes]:
+runtime.gopark(0x1e9db889841d15?, 0x1?, 0x7f?, 0x92?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0005a7f38 sp=0xc0005a7f18 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc000180310)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0005a7fc8 sp=0xc0005a7f38 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0005a7fe0 sp=0xc0005a7fc8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0005a7fe8 sp=0xc0005a7fe0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 70 gp=0xc00047a540 m=nil [GC worker (idle), 388 minutes]:
+runtime.gopark(0x1e9ba55c203fdd?, 0x1?, 0x9c?, 0xf0?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0005a8738 sp=0xc0005a8718 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc000180310)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0005a87c8 sp=0xc0005a8738 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0005a87e0 sp=0xc0005a87c8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0005a87e8 sp=0xc0005a87e0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 71 gp=0xc00047a700 m=nil [GC worker (idle), 396 minutes]:
+runtime.gopark(0x1e9b32a46a796a?, 0x3?, 0x5e?, 0xfb?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0005a8f38 sp=0xc0005a8f18 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc000180310)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0005a8fc8 sp=0xc0005a8f38 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0005a8fe0 sp=0xc0005a8fc8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0005a8fe8 sp=0xc0005a8fe0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 72 gp=0xc00047a8c0 m=nil [GC worker (idle), 396 minutes]:
+runtime.gopark(0x1e9b32a46a786c?, 0x1?, 0x7d?, 0x43?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0005a9738 sp=0xc0005a9718 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc000180310)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0005a97c8 sp=0xc0005a9738 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0005a97e0 sp=0xc0005a97c8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0005a97e8 sp=0xc0005a97e0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 73 gp=0xc00047aa80 m=nil [GC worker (idle), 388 minutes]:
+runtime.gopark(0x1e9ba55c2be801?, 0x3?, 0x2e?, 0xe3?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0005a9f38 sp=0xc0005a9f18 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc000180310)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0005a9fc8 sp=0xc0005a9f38 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0005a9fe0 sp=0xc0005a9fc8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0005a9fe8 sp=0xc0005a9fe0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 74 gp=0xc00047ac40 m=nil [GC worker (idle), 390 minutes]:
+runtime.gopark(0x1e9ba559766042?, 0x1?, 0x28?, 0xc4?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0005a2738 sp=0xc0005a2718 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc000180310)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0005a27c8 sp=0xc0005a2738 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0005a27e0 sp=0xc0005a27c8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0005a27e8 sp=0xc0005a27e0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 75 gp=0xc00047ae00 m=nil [GC worker (idle), 393 minutes]:
+runtime.gopark(0x1e9b72dc1ae3d2?, 0x3?, 0xd4?, 0xf8?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0005a2f38 sp=0xc0005a2f18 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc000180310)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0005a2fc8 sp=0xc0005a2f38 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0005a2fe0 sp=0xc0005a2fc8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0005a2fe8 sp=0xc0005a2fe0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 76 gp=0xc00047afc0 m=nil [GC worker (idle), 388 minutes]:
+runtime.gopark(0x1e9ba5597e13a7?, 0x1?, 0x97?, 0x11?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0005a3738 sp=0xc0005a3718 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc000180310)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0005a37c8 sp=0xc0005a3738 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0005a37e0 sp=0xc0005a37c8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0005a37e8 sp=0xc0005a37e0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 77 gp=0xc00047b180 m=nil [GC worker (idle), 393 minutes]:
+runtime.gopark(0x1e9b72dc1ad6f6?, 0x3?, 0x96?, 0x10?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0005a3f38 sp=0xc0005a3f18 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc000180310)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0005a3fc8 sp=0xc0005a3f38 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0005a3fe0 sp=0xc0005a3fc8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0005a3fe8 sp=0xc0005a3fe0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 78 gp=0xc00047b340 m=nil [GC worker (idle)]:
+runtime.gopark(0x6deb80?, 0x1?, 0x6?, 0x53?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0005a4738 sp=0xc0005a4718 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc000180310)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0005a47c8 sp=0xc0005a4738 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0005a47e0 sp=0xc0005a47c8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0005a47e8 sp=0xc0005a47e0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 79 gp=0xc00047b500 m=nil [GC worker (idle)]:
+runtime.gopark(0x6deb80?, 0x1?, 0xe0?, 0x67?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0005a4f38 sp=0xc0005a4f18 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc000180310)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0005a4fc8 sp=0xc0005a4f38 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0005a4fe0 sp=0xc0005a4fc8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0005a4fe8 sp=0xc0005a4fe0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 80 gp=0xc00047b6c0 m=nil [GC worker (idle)]:
+runtime.gopark(0x6deb80?, 0x1?, 0xf?, 0x54?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0005a5738 sp=0xc0005a5718 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc000180310)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0005a57c8 sp=0xc0005a5738 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0005a57e0 sp=0xc0005a57c8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0005a57e8 sp=0xc0005a57e0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 81 gp=0xc00047b880 m=nil [GC worker (idle), 390 minutes]:
+runtime.gopark(0x1e9ba5597d930d?, 0x1?, 0xae?, 0xb2?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0005a5f38 sp=0xc0005a5f18 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc000180310)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0005a5fc8 sp=0xc0005a5f38 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0005a5fe0 sp=0xc0005a5fc8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0005a5fe8 sp=0xc0005a5fe0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 82 gp=0xc00047ba40 m=nil [GC worker (idle)]:
+runtime.gopark(0x6deb80?, 0x1?, 0x1a?, 0x0?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0005ae738 sp=0xc0005ae718 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc000180310)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0005ae7c8 sp=0xc0005ae738 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0005ae7e0 sp=0xc0005ae7c8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0005ae7e8 sp=0xc0005ae7e0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+
+goroutine 83 gp=0xc00047bc00 m=nil [GC worker (idle), 396 minutes]:
+runtime.gopark(0x1e9b32a46a78f2?, 0x1?, 0x9?, 0x58?, 0x0?)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/proc.go:424 +0xce fp=0xc0005aef38 sp=0xc0005aef18 pc=0x46d5ee
+runtime.gcBgMarkWorker(0xc000180310)
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1412 +0xe9 fp=0xc0005aefc8 sp=0xc0005aef38 pc=0x419c69
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x25 fp=0xc0005aefe0 sp=0xc0005aefc8 pc=0x419b45
+runtime.goexit({})
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/asm_amd64.s:1700 +0x1 fp=0xc0005aefe8 sp=0xc0005aefe0 pc=0x474ea1
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/vast/palmer/apps/avx2/software/Go/1.23.6/src/runtime/mgc.go:1328 +0x105
+exit status 2
+Running Experiments: livejournal
+signal: killed
+Running Experiments: twitter
+signal: killed
+Running Experiments: friendster
+signal: killed
+slurmstepd: error: Detected 3 oom_kill events in StepId=32831884.batch. Some of the step tasks have been OOM Killed.
