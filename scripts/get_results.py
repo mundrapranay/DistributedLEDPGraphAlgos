@@ -55,7 +55,7 @@ def get_core_numbers(filename):
             try:
                 node = int(node_str)
             except ValueError:
-                # if node IDs aren’t integers, leave as string
+                # if node IDs aren't integers, leave as string
                 node = node_str
             core = float(core_str)
             pairs.append((node, core))
@@ -82,7 +82,8 @@ def get_ground_truth(graph):
     return core_numbers
 
 def get_triangles(file):
-    f = open('/home/pm886/palmer_scratch/results/{0}'.format(file), 'r')
+    # f = open('/home/pm886/palmer_scratch/results/{0}'.format(file), 'r')
+    f = open("/Users/pranaymundra/Desktop/research_code/results-gcp/{0}".format(file), 'r')
     lines = f.readlines()
     f.close()
     return float(lines[0].strip().split(':')[1])
@@ -129,26 +130,34 @@ def get_tcount_data():
     for graph in graphs:
         tcount = TCOUNT[graph]
         erro_l_count = []
+        avg_approx_l = []
         for run_id in range(5):
-            rel_error_l = []
-            avg_approx_l = []
             file = TCOUNT_FILE.format(graph, run_id)
             print(file)
             try:
                 approx_tcount = get_triangles(file)
+                print(approx_tcount)
                 avg_approx_l.append(float(max(tcount,approx_tcount)) / max(1, min(tcount, approx_tcount)))
-                rel_error_l.append(float(abs(approx_tcount - tcount) / tcount))
-                erro_l_count.append(float(abs(approx_tcount - tcount) / tcount))
+                rel_error_l = float(abs(approx_tcount - tcount) / tcount)
+                erro_l_count.append(rel_error_l)
             except FileNotFoundError:
+                print(f"File {file} not found, skipping...")
                 continue
-        mean, lower, upper = calculate_confidence_interval(erro_l_count, 1.96)
-        rel_error.append(mean)
-        rel_error_bounds.append([lower, upper])
-        avg_approx.append(statistics.mean(avg_approx_l))
+        
+        if erro_l_count:  # Only compute statistics if we have data
+            mean, lower, upper = calculate_confidence_interval(erro_l_count, 1.96)
+            rel_error.append(mean)
+            rel_error_bounds.append([lower, upper])
+            avg_approx.append(statistics.mean(avg_approx_l))
+        else:
+            print(f"No valid data found for graph {graph}")
+            # rel_error.append(None)
+            # rel_error_bounds.append([None, None])
+            # avg_approx.append(None)
 
     print('\t'.join(graphs))
-    print('\t'.join(f"{x:.3f}" for x in avg_approx))
-    print('\t'.join(f"{x:.3f}" for x in rel_error))
+    print('\t'.join(f"{x:.3f}" if x is not None else "N/A" for x in avg_approx))
+    print('\t'.join(f"{x:.3f}" if x is not None else "N/A" for x in rel_error))
     print(rel_error_bounds)
 
 
