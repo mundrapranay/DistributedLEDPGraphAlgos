@@ -1,11 +1,7 @@
 #!/bin/sh
-
-
-#for graph in 'email-eu-core'
 for graph in 'email-eu-core' 'wiki' 'enron' 'brightkite' 'ego-twitter' 'gplus' 'stanford' 'dblp' 'brain' 'orkut' 'livejournal' 'twitter' 'friendster'
 do
      for alg in 'kcoreLDP' 'triangle_countingLDP'
-#    for alg in 'kcoreLDP'
     do
         cd ../scripts/
         echo "Partitioining Graph: $graph"

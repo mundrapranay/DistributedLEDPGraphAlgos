@@ -9,7 +9,7 @@ graph_sizes=(986 7115 36692 58228 81306 107614 281903 317080 784262 3072441 4846
 for index in "${!graphs[@]}"; do
     graph=${graphs[$index]}
     # Create N files for each graph
-    for alg in 'rr-kcore'; do
+    for alg in 'rr-kcore' 'rr-tcount' 'kcoreLDP' 'triangle_countingLDP'; do
         filename="${graph}-${alg}.yaml"
         echo "graph: ${graph}" > "$filename"
         echo "graph_size: ${graph_sizes[$index]}" >> "$filename"
