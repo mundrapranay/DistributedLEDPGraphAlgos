@@ -1,4 +1,6 @@
-# Distributed LEDP Graph Algorithms
+[![DOI](https://zenodo.org/badge/791471403.svg)](https://doi.org/10.5281/zenodo.15741879)
+------
+# Distributed LEDP Graph Algorithms 
 
 This repository contains the implementation for the following Practical and Accurate Local Differentially Private Graph Algorithms. The code is written in Go, with python scripts for data processing. 
 
